@@ -1,16 +1,16 @@
 {
   "name": "cookhouse",
   "version": "1.0.0",
-  "main": "backend/index.js",
+  "main": "backend/server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon backend/index.js",
-    "start": "node backend/index.js"
+    "dev": "nodemon backend/server.js",
+    "start": "node backend/server.js"
   },
   "keywords": [],
   "author": "Rahul Murali",
   "license": "Unilicense",
-  "description": "",
+  "description": "A Social App for Cooks and Culinary Enthusiasts",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.6.0",
