@@ -1,10 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-
 import dbConnect from "./utils/dbConnect.js";
-
+// api-routes
 import authRoute from "./routes/auth.route.js";
+import userRoute from "./routes/user.route.js";
 
 dotenv.config({});
 
@@ -18,6 +18,7 @@ app.use(express.urlencoded({ extended: true })); // to parse form data(urlencode
 app.use(cookieParser());
 
 app.use("/api/v0/auth", authRoute);
+app.use("/api/v0/user", userRoute);
 
 app.listen(PORT, async () => {
   console.log(`Server is running on port: ${PORT}`);
