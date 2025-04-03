@@ -44,12 +44,18 @@ const userSchema = new mongoose.Schema(
         type: String,
         default: "",
       },
-      communities: [
-        {
+      communities: [{
+        community: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Community",
           default: [],
         },
+        community_role: {
+          type: String,
+          enum : ["community_member", "community_admin"],
+          default: "community_member",
+        },
+       },
       ],
     },
     following: [
@@ -63,13 +69,6 @@ const userSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        default: [],
-      },
-    ],
-    selfPosts: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Post",
         default: [],
       },
     ],

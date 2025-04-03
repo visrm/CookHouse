@@ -8,34 +8,34 @@ export const register = async (req, res) => {
 
     // To check if any required fields are missing
     if (!username || !fullname || !email || !password)
-      res.status(400).json({
+      return res.status(400).json({
         message: "Required field(s) are missing!",
         success: false,
       });
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email))
-      res.status(400).json({
+      return res.status(400).json({
         message: "Invalid email format",
         success: false,
       });
 
     let isExistingUser = await User.findOne({ email });
     if (isExistingUser)
-      res.status(400).json({
+      return res.status(400).json({
         message: "User already exists!",
         success: false,
       });
 
     let isExistingUsername = await User.findOne({ username });
     if (isExistingUsername)
-      res.status(400).json({
+      return res.status(400).json({
         message: "Username already exists!",
         success: false,
       });
 
     if (password.length < 8)
-      res.status(400).json({
+      return res.status(400).json({
         message: "Password isn't sufficiently long.",
         success: false,
       });
@@ -62,13 +62,12 @@ export const register = async (req, res) => {
   }
 };
 
-
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password)
-      res.status(400).json({
+      return res.status(400).json({
         message: "Required field(s) are missing!",
         success: false,
       });
@@ -79,7 +78,7 @@ export const login = async (req, res) => {
       user?.password || ""
     );
     if (!user || !isPasswordMatching)
-      res.status(400).json({
+      return res.status(400).json({
         message: "Incorrect email or password",
         success: false,
       });
@@ -121,12 +120,13 @@ export const login = async (req, res) => {
   }
 };
 
-
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.id).select("-password");
     if (!user)
-      res.status(404).json({ message: "User not found.", success: false });
+      return res
+        .status(404)
+        .json({ message: "User not found.", success: false });
     return res.status(200).json({
       message: "User info fetched successfully.",
       user,
@@ -134,7 +134,6 @@ export const getMe = async (req, res) => {
     });
   } catch (error) {}
 };
-
 
 export const logout = async (req, res) => {
   try {

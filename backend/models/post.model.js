@@ -7,7 +7,7 @@ const postSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    content: { type: String },
+    text: { type: String },
     media_url: { type: String },
     likes: [
       {
@@ -17,7 +17,7 @@ const postSchema = new mongoose.Schema(
     ],
     comments: [
       {
-        content: {
+        text: {
           type: String,
           required: true,
         },

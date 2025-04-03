@@ -1,12 +1,20 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import { v2 as cloudinary } from "cloudinary";
 import dbConnect from "./utils/dbConnect.js";
 // api-routes
 import authRoute from "./routes/auth.route.js";
 import userRoute from "./routes/user.route.js";
+import postRoute from "./routes/post.route.js";
+import notificationRoute from "./routes/notification.route.js"
 
 dotenv.config({});
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // Initialise app
 const app = new express();
@@ -18,7 +26,9 @@ app.use(express.urlencoded({ extended: true })); // to parse form data(urlencode
 app.use(cookieParser());
 
 app.use("/api/v0/auth", authRoute);
-app.use("/api/v0/user", userRoute);
+app.use("/api/v0/users", userRoute);
+app.use("/api/v0/posts", postRoute);
+app.use("/api/v0/notifications", notificationRoute);
 
 app.listen(PORT, async () => {
   console.log(`Server is running on port: ${PORT}`);
