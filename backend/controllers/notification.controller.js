@@ -1,20 +1,28 @@
 import Notification from "../models/notification.model.js";
 
 export const getNotifications = async (req, res) => {
+  
   try {
     const userId = req.id;
     const notifications = await Notification.find({ to: userId })
       .sort({ createdAt: -1 })
       .populate({
         path: "from",
-        select: "username profileImg",
+        select: "username profile.profileImg",
       });
 
-      await Notification.updateMany({to: userId}, {read: true})
-    return res.status(200).json(notifications);
+    await Notification.updateMany({ to: userId }, { read: true });
+    return res.status(200).json({
+      message: "Notifications fetched successfully.",
+      notifications,
+      success: true,
+    });
   } catch (error) {
     console.log("Error in getNotifications: ", error.message);
-    res.status(500).json({ error: "Internal Server Error." });
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
   }
 };
 
@@ -49,26 +57,33 @@ export const deleteNotification = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in deleteNotification: ", error.message);
-    res.status(500).json({ error: "Internal Server Error." });
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
   }
 };
 
 export const deleteAllNotifications = async (req, res) => {
-    try {
-      const userId = req.id;
-  
-      const notifications = await Notification.find({ to: userId });
-      if (!notifications)
-        return res.status(404).json({ error: "Notifications not found." });
-  
-      await Notification.deleteMany({ to: userId });
-      return res.status(200).json({
-        message: "Notifications deleted successfully.",
-        success: true,
+  try {
+    const userId = req.id;
+    const notifications = await Notification.find({ to: userId });
+    if (!notifications)
+      return res.status(404).json({
+        message: "Notifications not found.",
+        success: false,
       });
-    } catch (error) {
-      console.log("Error in deleteAllNotifications: ", error.message);
-      res.status(500).json({ error: "Internal Server Error." });
-    }
-  };
-  
+
+    await Notification.deleteMany({ to: userId });
+    return res.status(200).json({
+      message: "Notifications deleted successfully.",
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error in deleteAllNotifications: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};

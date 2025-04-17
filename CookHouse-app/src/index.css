@@ -35,6 +35,12 @@ input {
   backdrop-filter: blur(8px);
 }
 
+img {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
 /* Utilities */
 
 .section-title {

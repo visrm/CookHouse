@@ -13,7 +13,7 @@ import isAuthenticated from "../middlewares/isAuthenticated.js";
 
 const router = Router();
 router.post("/create", isAuthenticated, createPost);
-router.post("/like/:id", isAuthenticated, likeUnlikePost);
+router.get("/like/:id", isAuthenticated, likeUnlikePost);
 router.post("/comment/:id", isAuthenticated, commentOnPost);
 router.get("/all", isAuthenticated, getAllPosts);
 router.get("/likes/:id", isAuthenticated, getLikedPosts);

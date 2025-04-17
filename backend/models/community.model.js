@@ -2,30 +2,29 @@ import mongoose from "mongoose";
 
 const communitySchema = new mongoose.Schema(
   {
-    Comn_name: {
+    name: {
       type: String,
       required: true,
       unique: true,
       maxLength: 30,
     },
-    Comn_description: {
+    description: {
       type: String,
       required: true,
       default: "",
     },
-    Comn_owner: {
+    owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    Comn_members: [
+    members: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        default: [],
       },
     ],
-    Comn_posts: [
+    posts: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Post",

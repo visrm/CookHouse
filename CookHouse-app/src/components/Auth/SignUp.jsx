@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import NavBar from "../NavigationBar";
 import { AUTH_API_END_POINT } from "../../utils/constants.js";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -54,7 +53,6 @@ const SignUp = () => {
 
   return (
     <>
-      <NavBar />
       <section className="grid fixed top-0 left-0 place-content-center max-w-full w-full min-h-svh md:min-h-dvh">
         <article className="p-3 bg-[#fdfdfd] rounded-xl md:px-6 lg:px-8 text-left">
           <form
@@ -114,7 +112,7 @@ const SignUp = () => {
             <span className="inline-block my-2 text-sm text-neutral-600">
               Already have an account?{" "}
               <span>
-                <NavLink to="/login" className="text-blue-700 text-semibold cursor-pointer">Log in</NavLink>
+                <NavLink to="/login" className="text-blue-700 font-semibold cursor-pointer">Log in</NavLink>
               </span>
             </span>
           </form>

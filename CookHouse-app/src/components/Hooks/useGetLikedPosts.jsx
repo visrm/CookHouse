@@ -1,0 +1,35 @@
+import axios from "axios";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import {
+  setLoading,
+  setLikedPosts,
+  setFetching,
+} from "../../redux/slices/post.slice.js";
+import { POSTS_API_END_POINT } from "../../utils/constants.js";
+
+const useGetLikedPosts = (userId) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    (async function FetchLikedPosts() {
+      try {
+        dispatch(setLoading(true));
+        dispatch(setFetching(true));
+
+        const res = await axios.get(`${POSTS_API_END_POINT}/likes/${userId}`, {
+          withCredentials: true,
+        });
+        if (res.data.success) {
+          dispatch(setLikedPosts(res.data.likedPosts));
+        }
+      } catch (error) {
+        alert(error);
+      } finally {
+        dispatch(setFetching(false));
+        dispatch(setLoading(false));
+      }
+    })();
+  }, []);
+};
+
+export default useGetLikedPosts;

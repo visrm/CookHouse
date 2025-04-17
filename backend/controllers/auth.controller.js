@@ -57,7 +57,8 @@ export const register = async (req, res) => {
   } catch (error) {
     console.log("Error in SignUp: ", error.message);
     res.status(500).json({
-      error: "Internal Server Error.",
+      message: "Internal Server Error.",
+      success: false,
     });
   }
 };
@@ -91,7 +92,7 @@ export const login = async (req, res) => {
     });
 
     user = {
-      user_id: user._id,
+      _id: user._id,
       fullname: user.fullname,
       username: user.username,
       email: user.email,
@@ -115,7 +116,8 @@ export const login = async (req, res) => {
   } catch (error) {
     console.log("Error in LogIn: ", error.message);
     res.status(500).json({
-      error: "Internal Server Error.",
+      message: "Internal Server Error.",
+      success: false,
     });
   }
 };
@@ -124,15 +126,22 @@ export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.id).select("-password");
     if (!user)
-      return res
-        .status(404)
-        .json({ message: "User not found.", success: false });
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
     return res.status(200).json({
       message: "User info fetched successfully.",
       user,
       success: true,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log("Error in getMe: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
 };
 
 export const logout = async (req, res) => {
@@ -144,7 +153,8 @@ export const logout = async (req, res) => {
   } catch (error) {
     console.log("Error in LogOut: ", error.message);
     res.status(500).json({
-      error: "Internal Server Error.",
+      message: "Internal Server Error.",
+      success: false,
     });
   }
 };

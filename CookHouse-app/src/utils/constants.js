@@ -1,1 +1,6 @@
-export const AUTH_API_END_POINT = "http://localhost:8004/api/v0/auth" 
+const HEAD = "http://localhost:8004";
+export const AUTH_API_END_POINT = `${HEAD}/api/v0/auth`;
+export const USERS_API_END_POINT = `${HEAD}/api/v0/users`;
+export const POSTS_API_END_POINT = `${HEAD}/api/v0/posts`;
+export const RECIPES_API_END_POINT = `${HEAD}/api/v0/recipes`;
+export const NOTIFICATIONS_API_END_POINT = `${HEAD}/api/v0/notifications`;

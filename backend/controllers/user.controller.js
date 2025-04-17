@@ -21,7 +21,8 @@ export const getProfile = async (req, res) => {
   } catch (error) {
     console.log("Error in getProfile: ", error.message);
     res.status(500).json({
-      error: "Internal Server Error.",
+      message: "Internal Server Error.",
+      success: false,
     });
   }
 };
@@ -32,14 +33,15 @@ export const followUnfollowUser = async (req, res) => {
     const userById = await User.findById(id);
     const currentUser = await User.findById(req.id);
 
-    if (userById.id == currentUser.id) {
-      return res
-        .status(400)
-        .json({ error: "Users can't follow/unfollow themselves." });
+    if (userById._id == currentUser._id) {
+      return res.status(400).json({
+        message: "Users can't follow/unfollow themselves.",
+        successs: false,
+      });
     }
 
     if (!userById || !currentUser)
-      res.status(400).json({ error: "User not found." });
+      res.status(400).json({ message: "User not found.", success: false });
 
     let isFollowing = currentUser.following.includes(id);
 
@@ -71,7 +73,8 @@ export const followUnfollowUser = async (req, res) => {
   } catch (error) {
     console.log("Error in followUnfollowUser: ", error.message);
     res.status(500).json({
-      error: "Internal Server Error.",
+      message: "Internal Server Error.",
+      success: false,
     });
   }
 };
@@ -95,26 +98,23 @@ export const getSuggestedUsers = async (req, res) => {
     const suggestedUsers = filteredUsers.slice(0, 4);
 
     suggestedUsers.forEach((user) => (user.password = null));
-    return res.status(200).json(suggestedUsers);
+    return res.status(200).json({
+      message: "Fetched suggested users successfully.",
+      suggestedUsers,
+      success: true,
+    });
   } catch (error) {
     console.log("Error in getSuggestedUsers: ", error.message);
     res.status(500).json({
-      error: "Internal Server Error.",
+      message: "Internal Server Error.",
+      success: false,
     });
   }
 };
 
 export const updateUser = async (req, res) => {
-  const {
-    username,
-    fullname,
-    email,
-    currentPassword,
-    newPassword,
-    phoneNumber,
-    profile,
-  } = req.body;
-
+  const { username, fullname, email, currentPassword, newPassword } = req.body;
+  let { profile, phoneNumber } = req.body;
   try {
     var user = await User.findById(req.id);
     if (!user)
@@ -124,13 +124,18 @@ export const updateUser = async (req, res) => {
       });
 
     if ((!currentPassword && newPassword) || (currentPassword && !newPassword))
-      return res
-        .status(400)
-        .json({ error: "Please provide both current & new password." });
+      return res.status(400).json({
+        message: "Please provide both current & new password.",
+        success: false,
+      });
 
     if (currentPassword && newPassword) {
       let isMatch = await bcrypt.compare(currentPassword, user.password);
-      if (!isMatch) return res.status(400).json({ error: "Invalid password." });
+      if (!isMatch)
+        return res.status(400).json({
+          message: "Invalid password.",
+          success: false,
+        });
 
       user.password = await bcrypt.hash(newPassword, 10);
     }
@@ -176,11 +181,16 @@ export const updateUser = async (req, res) => {
     user = await user.save();
     user.password = null;
 
-    return res.status(200).json(user);
+    return res.status(200).json({
+      message: "User updated successfully.",
+      user,
+      success: true,
+    });
   } catch (error) {
     console.log("Error in updateUser: ", error.message);
     res.status(500).json({
-      error: "Internal Server Error.",
+      message: "Internal Server Error.",
+      success: false,
     });
   }
 };

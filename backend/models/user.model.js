@@ -44,18 +44,19 @@ const userSchema = new mongoose.Schema(
         type: String,
         default: "",
       },
-      communities: [{
-        community: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Community",
-          default: [],
+      communities: [
+        {
+          community: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Community",
+            default: [],
+          },
+          role: {
+            type: String,
+            enum: ["community_member", "community_admin", "community_owner"],
+            default: "community_member",
+          },
         },
-        community_role: {
-          type: String,
-          enum : ["community_member", "community_admin"],
-          default: "community_member",
-        },
-       },
       ],
     },
     following: [
@@ -76,6 +77,13 @@ const userSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Post",
+        default: [],
+      },
+    ],
+    likedRecipes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Recipe",
         default: [],
       },
     ],

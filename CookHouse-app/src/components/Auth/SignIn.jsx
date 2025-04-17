@@ -1,15 +1,16 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import NavBar from "../NavigationBar";
 import { useState } from "react";
 import axios from "axios";
 import { AUTH_API_END_POINT } from "../../utils/constants.js";
+import { useDispatch } from "react-redux";
+import { setLoading, setUser } from "../../redux/slices/auth.slice.js";
 
 const SignIn = () => {
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
   });
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -23,6 +24,7 @@ const SignIn = () => {
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
+      dispatch(setLoading(true));
       let loginInfo = {
         email: userInfo.email,
         password: userInfo.password,
@@ -40,17 +42,19 @@ const SignIn = () => {
       );
       if (response.data.success) {
         alert(response.data.message);
-        navigate("/");
+        dispatch(setUser(response.data.user));
+        navigate("/home");
       }
     } catch (err) {
       console.log(err);
       alert(err.response.data.message);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
   return (
     <>
-      <NavBar />
       <section className="grid fixed top-0 left-0 place-content-center max-w-full w-full min-h-svh md:min-h-dvh">
         <article className="p-3  bg-[#fdfdfd] rounded-xl md:px-6 lg:px-8 text-left">
           <form
@@ -89,7 +93,7 @@ const SignIn = () => {
               <span>
                 <NavLink
                   to="/register"
-                  className="text-blue-700 text-semibold cursor-pointer">
+                  className="text-blue-700 font-semibold cursor-pointer">
                   Register
                 </NavLink>
               </span>
