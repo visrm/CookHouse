@@ -72,7 +72,7 @@ const CreatePost = () => {
           </div>
           <form className="flex flex-col gap-2 w-full" onSubmit={handleSubmit} id="handleCreatePost">
             <textarea
-              className="textarea sm:textarea-md w-full p-1 sm:p-2 text-base sm:text-lg resize-none border-none focus:outline-none  border-gray-200"
+              className="textarea sm:textarea-md w-full p-1 sm:p-2 text-base sm:text-lg resize-none border-none focus:outline-none bg-amber-50 border-gray-200"
               placeholder="What's happening?!"
               value={text}
               onChange={(e) => setText(e.target.value)}
@@ -96,12 +96,12 @@ const CreatePost = () => {
             <div className="flex justify-between border-t py-2 border-t-gray-100">
               <div className="flex gap-1 sm:gap-2 lg:gap-4 items-center">
                 <CiImageOn
-                  className="fill-primary w-6 h-6 cursor-pointer"
+                  className="fill-indigo-600 w-6 h-6 cursor-pointer"
                   onClick={() => imgRef.current.click()}
                   title="Add image"
                 />
                 <BsEmojiSmileFill
-                  className="fill-primary w-5 h-5 cursor-pointer"
+                  className="fill-indigo-600 w-5 h-5 cursor-pointer"
                   title="Add emoji"
                 />
               </div>
@@ -112,7 +112,7 @@ const CreatePost = () => {
                 ref={imgRef}
                 onChange={handleImgChange}
               />
-              <button className="btn btn-primary rounded-full btn-sm text-white px-4">
+              <button className="btn border-0 bg-indigo-600 rounded-full btn-sm text-white px-4">
                 {isPending ? "Posting..." : "Post"}
               </button>
             </div>

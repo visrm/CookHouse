@@ -5,25 +5,29 @@ import Posts from "../Posts";
 import LoadingSpinner from "../LoadingSpinner";
 import PostsCard from "../PostsCard";
 import { useGetAllFollowingPosts } from "../Hooks/useGetAllFollowingPosts.jsx";
+import { useGetLikedPosts } from "../Hooks/useGetLikedPosts.jsx";
 
 const Home = () => {
   const [feedType, setFeedType] = useState("posts");
   useGetAllFollowingPosts();
 
   const { fetching, followingPosts } = useSelector((store) => store.posts);
+  const { user } = useSelector((store) => store.auth);
+
+  useGetLikedPosts(user?._id);
 
   return (
     <>
       <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto">
         <CreatePost />
         <section>
-          <div className="flex w-full border-b border-gray-800 mt-4">
+          <div className="flex w-full border-b border-gray-800 mt-4 font-semibold">
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("posts")}>
               Posts
               {feedType === "posts" && (
-                <div className="absolute bottom-0 w-10 h-1 rounded-full bg-primary" />
+                <div className="absolute bottom-0 w-10 h-1 rounded-full bg-indigo-600" />
               )}
             </div>
             <div
@@ -31,7 +35,7 @@ const Home = () => {
               onClick={() => setFeedType("recipes")}>
               Recipes
               {feedType === "recipes" && (
-                <div className="absolute bottom-0 w-10  h-1 rounded-full bg-primary" />
+                <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />
               )}
             </div>
             <div
@@ -39,7 +43,7 @@ const Home = () => {
               onClick={() => setFeedType("following")}>
               Following
               {feedType === "following" && (
-                <div className="absolute bottom-0 w-10  h-1 rounded-full bg-primary" />
+                <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />
               )}
             </div>
           </div>

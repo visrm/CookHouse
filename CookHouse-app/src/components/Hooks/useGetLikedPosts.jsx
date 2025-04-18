@@ -9,7 +9,7 @@ import {
 import { POSTS_API_END_POINT } from "../../utils/constants.js";
 import toast from "react-hot-toast";
 
-export const useGetLikedPosts = (userId) => {
+export const useGetLikedPosts = async (userId) => {
   const dispatch = useDispatch();
   useEffect(() => {
     (async function FetchLikedPosts() {
@@ -24,7 +24,7 @@ export const useGetLikedPosts = (userId) => {
           dispatch(setLikedPosts(res.data.likedPosts));
         }
       } catch (error) {
-        toast.error(error.response.data.message);
+        console.log(error.response.data.message);
       } finally {
         dispatch(setFetching(false));
         dispatch(setLoading(false));

@@ -6,7 +6,7 @@ import { setFetching } from "../../redux/slices/post.slice.js";
 import { POSTS_API_END_POINT } from "../../utils/constants.js";
 import toast from "react-hot-toast";
 
-export const useGetUserPosts = (username) => {
+export const useGetUserPosts = async (username) => {
   const dispatch = useDispatch();
   useEffect(() => {
     (async function FetchUserPosts() {

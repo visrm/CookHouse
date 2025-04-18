@@ -30,7 +30,7 @@ const SideBar = () => {
         navigate("/");
       }
     } catch (error) {
-      toast.error(response.data.message);
+      toast.error(error);
     } finally {
       dispatch(setLoading(false));
     }
@@ -47,7 +47,8 @@ const SideBar = () => {
               <li className="flex justify-center md:justify-start">
                 <Link
                   to="/home"
-                  className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer">
+                  className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
+                  replace>
                   <MdOutlineHome className="w-8 h-8" />
                   <span className="text-base hidden font-semibold md:block">
                     Home
@@ -57,7 +58,8 @@ const SideBar = () => {
               <li className="flex justify-center md:justify-start">
                 <Link
                   to="/notifications"
-                  className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer">
+                  className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
+                  replace>
                   <MdNotificationsNone className="w-8 h-8" />
                   <span className="text-base hidden font-semibold md:block">
                     Notifications
@@ -67,7 +69,8 @@ const SideBar = () => {
               <li className="flex justify-center md:justify-start">
                 <Link
                   to="/community"
-                  className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer">
+                  className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
+                  replace>
                   <MdOutlinePeople className="w-8 h-8" />
                   <span className="text-base hidden font-semibold md:block">
                     Community
@@ -78,8 +81,9 @@ const SideBar = () => {
               {user && (
                 <li className="flex justify-center md:justify-start">
                   <Link
-                    to={"/profile"}
-                    className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer">
+                   to={`/profile/${user?.username}`}
+                    className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
+                    replace>
                     <LuUserRound className="h-8 w-8" />
                     <span className="text-base hidden font-semibold md:block">
                       Profile
@@ -89,16 +93,17 @@ const SideBar = () => {
               )}
             </ul>
 
-            <div className="sticky bottom-0 left-0 mt-auto flex py-2 px-4 w-full min-h-fit bg-[#feb340]/50">
+            <div className="sticky bottom-0 left-0 mt-auto flex gap-1 sm:gap-2  py-2 px-4 w-full min-h-fit bg-[#feb340]/50">
               <Link
                 to={`/profile/${user?.username}`}
-                className="flex gap-2 item-start">
+                className="flex gap-2 item-start"
+                >
                 <div className="avatar hidden md:inline-flex">
                   <div className="w-10 rounded-full border border-slate-900">
                     <img
                       src={
                         user?.profile?.profileImg ||
-                        "assets/avatar-placeholder.png"
+                        "/assets/avatar-placeholder.png"
                       }
                     />
                   </div>
@@ -108,16 +113,14 @@ const SideBar = () => {
                     <p className="text-slate-900 font-bold text-sm w-20 truncate">
                       {user?.fullname}
                     </p>
-                    <p className="text-slate-700 text-sm">@{user?.username}</p>
+                    <p className="text-slate-700 text-xs">@{user?.username}</p>
                   </div>
                 </div>
               </Link>
               <div className="tooltip" data-tip="LogOut">
                 <TbLogout
                   className="w-6 h-6 cursor-pointer hover:scale-105"
-                  onClick={() => {
-                    handleLogOut();
-                  }}
+                  onClick={handleLogOut}
                 />
               </div>
             </div>

@@ -9,11 +9,15 @@ const rootReducer = combineReducers({
   auth: authSlice,
   users: userSlice,
   posts: postSlice,
-  recipes: recipeSlice
+  recipes: recipeSlice,
 });
 
 const store = configureStore({
   reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export default store;

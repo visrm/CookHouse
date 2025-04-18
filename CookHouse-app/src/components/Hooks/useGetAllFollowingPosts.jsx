@@ -9,7 +9,7 @@ import {
 import { POSTS_API_END_POINT } from "../../utils/constants.js";
 import toast from "react-hot-toast";
 
-export const useGetAllFollowingPosts = () => {
+export const useGetAllFollowingPosts = async () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
