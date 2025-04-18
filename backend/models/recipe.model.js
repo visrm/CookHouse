@@ -16,20 +16,16 @@ const recipeSchema = new mongoose.Schema(
       required: true,
       default: "",
     },
-    ingredients: [
-      {
-        type: String,
-        required: true,
-      },
-    ],
-    instructions: [
-      {
-        type: String,
-        required: true,
-      },
-    ],
+    ingredients: {
+      type: String,
+      required: true,
+    },
+    instructions: {
+      type: String,
+      required: true,
+    },
     cuisine_type: { type: String },
-    dietary_tags: [{ type: String }],
+    dietary_tags: { type: String },
     media_url: { type: String },
     likes: [
       {

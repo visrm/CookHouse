@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import Recipe from "../models/recipe.model.js";
+import Notification from "../models/notification.model.js"
 
 import { v2 as cloudinary } from "cloudinary";
 
@@ -29,11 +30,11 @@ export const createRecipe = async (req, res) => {
       user: userId,
       title,
       description,
-      ingredients: ingredients.split(","),
-      instructions: instructions.split(" - "),
+      ingredients,
+      instructions,
       media_url,
       cuisine_type,
-      dietary_tags: dietary_tags.split(","),
+      dietary_tags,
     });
 
     await newRecipe.save();
@@ -74,15 +75,16 @@ export const likeUnlikeRecipe = async (req, res) => {
         message: "User not found.",
         success: false,
       });
+
     const userLiked = recipe.likes.includes(userId);
     if (userLiked) {
       //unlike recipe
-      await recipe.updateOne({ _id: recipeId }, { $pull: { likes: userId } });
+      await Recipe.updateOne({ _id: recipeId }, { $pull: { likes: userId } });
       await User.updateOne(
         { _id: userId },
         { $pull: { likedRecipes: recipeId } }
       );
-      return res.status(200).json({
+      res.status(200).json({
         message: "recipe unliked successfully.",
         success: true,
       });
@@ -102,7 +104,7 @@ export const likeUnlikeRecipe = async (req, res) => {
       });
       await notification.save();
 
-      return res.status(200).json({
+      res.status(200).json({
         message: "Recipe liked successfully.",
         success: true,
       });
@@ -128,7 +130,7 @@ export const commentOnRecipe = async (req, res) => {
         success: false,
       });
 
-    const recipe = await recipe.findById(recipeId);
+    const recipe = await Recipe.findById(recipeId);
     if (!recipe)
       return res.status(404).json({
         message: "recipe not found.",
@@ -181,7 +183,7 @@ export const deleteRecipe = async (req, res) => {
       const imgId = recipe.media_url.split("/").pop().split(".")[0];
       await cloudinary.uploader.destroy(imgId);
     }
-    await recipe.findByIdAndDelete(id);
+    await Recipe.findByIdAndDelete(id);
     return res.status(200).json({
       message: "recipe deleted successfully!",
       success: true,

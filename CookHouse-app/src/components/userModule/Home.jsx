@@ -18,14 +18,14 @@ const Home = () => {
 
   return (
     <>
-      <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto">
+      <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto bg-[#ffffff]">
         <CreatePost />
         <section>
-          <div className="flex w-full border-b border-gray-800 mt-4 font-semibold">
+          <div className="sticky top-12 md:top-15 flex w-full font-semibold bg-[#ffffff] z-50 shadow-md">
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("posts")}>
-              Posts
+              For you
               {feedType === "posts" && (
                 <div className="absolute bottom-0 w-10 h-1 rounded-full bg-indigo-600" />
               )}
@@ -56,7 +56,7 @@ const Home = () => {
                   </div>
                 )}
                 {!fetching && followingPosts.length === 0 && (
-                  <div className="block text-center text-sm p-2 sm:p-4">
+                  <div className="block text-center text-sm p-2 sm:p-4 bg-[#fdfdfd]">
                     No following feeds found.
                   </div>
                 )}
@@ -74,7 +74,7 @@ const Home = () => {
                   </div>
                 )}
                 {!fetching && (
-                  <div className="block text-center text-sm p-2 sm:p-4">
+                  <div className="block text-center text-sm p-2 sm:p-4 bg-[#fdfdfd]">
                     No recipes found.
                   </div>
                 )}

@@ -89,7 +89,7 @@ const PostCard = ({ post }) => {
   return (
     <>
       <article className="w-[90%] sm:w-[80%] mx-auto">
-        <div className="flex gap-2 items-start p-4 border-b border-gray-700 bg-[#fdfdfd]">
+        <div className="flex gap-2 items-start p-4 border-b-2 border-gray-300 bg-[#fdfdfd]">
           <div className="avatar">
             <Link
               to={`/profile/${postOwner?.username}`}
@@ -162,7 +162,7 @@ const PostCard = ({ post }) => {
                         ✕
                       </button>
                     </form>
-                    <h3 className="font-bold text-lg mb-4">COMMENTS</h3>
+                    <h3 className="font-bold text-lg mb-3">COMMENTS</h3>
                     <div className="flex flex-col gap-3 max-h-60 overflow-auto">
                       {post?.comments?.length === 0 && (
                         <p className="text-sm text-slate-500">

@@ -339,7 +339,7 @@ const Profile = () => {
   // console.log(user?._id);
   return (
     <>
-      <main className="w-full max-w-6xl md:max-w-full min-h-[90svh] md:min-h-screen">
+      <main className="w-full max-w-6xl md:max-w-full min-h-[90svh] md:min-h-screen bg-[#ffffff]">
         {/* User Profile Details*/}
         {loading && <ProfileSkeleton />}
         {!loading && singleUser && (
@@ -396,7 +396,7 @@ const Profile = () => {
                 )}
               </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full bg-[#ffffff]">
               <span className="grid col-start-2 sm:col-start-2 col-span-2 py-1 text-left w-fit">
                 <h1 className="flex gap-1 items-baseline text-lg font-semibold">
                   {singleUser?.fullname}
@@ -447,7 +447,7 @@ const Profile = () => {
                 type="button"
                 className="btn btn-sm bg-indigo-600 text-[#fdfdfd] border-0"
                 onClick={() => {
-                  handleFollows(user?._id);
+                  handleFollows(singleUser?._id);
                 }}>
                 Follow
               </button>
@@ -463,7 +463,7 @@ const Profile = () => {
         </article>
 
         <section>
-          <div className="flex w-full border-b border-gray-700 mt-4 font-semibold">
+          <div className="sticky top-12 md:top-15 flex w-full font-semibold shadow-md z-50 bg-[#ffffff]">
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("posts")}>
