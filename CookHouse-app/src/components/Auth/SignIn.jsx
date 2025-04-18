@@ -4,6 +4,7 @@ import axios from "axios";
 import { AUTH_API_END_POINT } from "../../utils/constants.js";
 import { useDispatch } from "react-redux";
 import { setLoading, setUser } from "../../redux/slices/auth.slice.js";
+import toast from "react-hot-toast";
 
 const SignIn = () => {
   const [userInfo, setUserInfo] = useState({
@@ -41,13 +42,12 @@ const SignIn = () => {
         }
       );
       if (response.data.success) {
-        alert(response.data.message);
+        toast.success(response.data.message)
         dispatch(setUser(response.data.user));
         navigate("/home");
       }
     } catch (err) {
-      console.log(err);
-      alert(err.response.data.message);
+      toast.error(err.response.data.message);
     } finally {
       dispatch(setLoading(false));
     }

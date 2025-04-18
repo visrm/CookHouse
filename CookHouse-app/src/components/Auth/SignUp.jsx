@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { AUTH_API_END_POINT } from "../../utils/constants.js";
 import { NavLink, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast"
 
 const SignUp = () => {
   const [registerInfo, setRegisterInfo] = useState({
@@ -42,12 +43,11 @@ const SignUp = () => {
         }
       );
       if (response.data.success) {
-        alert(response.data.message);
+       toast.success(response.data.message)
         navigate("/login");
       }
     } catch (err) {
-      console.log(err);
-      alert(err.response.data.message);
+      toast.error(err.response.data.message);
     }
   };
 

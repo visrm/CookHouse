@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { POSTS_API_END_POINT } from "../utils/constants.js";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const PostCard = ({ post }) => {
   const [comment, setComment] = useState("");
@@ -31,11 +32,10 @@ const PostCard = ({ post }) => {
       );
 
       if (response.data.success) {
-        alert(response.data.message);
+        toast.success(response.data.message);
       }
     } catch (error) {
-      console.log(error);
-      alert(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -57,12 +57,11 @@ const PostCard = ({ post }) => {
       );
 
       if (response.data.success) {
-        alert(response.data.message);
+        toast.success(response.data.message);
         setComment("");
       }
     } catch (error) {
-      console.log(error);
-      alert(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -76,15 +75,14 @@ const PostCard = ({ post }) => {
       );
 
       if (response.data.success) {
-        alert(response.data.message);
+        toast.success(response.data.message);
         // let myRegex = /unlike/g;
         // if(!myRegex.test(response.data.message)){
         //   setPostState({isLiked: true})
         // }
       }
     } catch (error) {
-      console.log(error);
-      alert(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   };
 

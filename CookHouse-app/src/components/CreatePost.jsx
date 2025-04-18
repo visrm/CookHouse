@@ -5,6 +5,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import axios from "axios";
 import { POSTS_API_END_POINT } from "../utils/constants";
 import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 const CreatePost = () => {
   const [text, setText] = useState("");
@@ -37,12 +38,11 @@ const CreatePost = () => {
       );
 
       if (response.data.success) {
-        alert(response.data.message);
+       toast.success(response.data.message);
         window.location.reload();
       }
     } catch (error) {
-      console.log(error);
-      alert(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   };
 

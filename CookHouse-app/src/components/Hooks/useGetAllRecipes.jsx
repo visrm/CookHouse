@@ -9,6 +9,7 @@ import {
   setLoading,
   setFetching,
 } from "../../redux/slices/recipe.slice.js";
+import toast from "react-hot-toast";
 
 const useGetAllRecipes = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,8 @@ const useGetAllRecipes = () => {
           dispatch(setAllRecipes(response.data.recipes));
         }
       } catch (error) {
-        alert(error);
+        toast.error(error.response.data.message);
+
       } finally {
         dispatch(setFetching(false));
         dispatch(setLoading(false));

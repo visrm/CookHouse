@@ -1,11 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
-import { MdOutlineHome, MdNotificationsNone, MdOutlinePeople } from "react-icons/md";
+import {
+  MdOutlineHome,
+  MdNotificationsNone,
+  MdOutlinePeople,
+} from "react-icons/md";
 import { LuUserRound } from "react-icons/lu";
 import { TbLogout } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setUser } from "../redux/slices/auth.slice.js";
 import { AUTH_API_END_POINT } from "../utils/constants.js";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const SideBar = () => {
   const { user } = useSelector((store) => store.auth);
@@ -21,12 +26,11 @@ const SideBar = () => {
       });
       if (response.data.success) {
         dispatch(setUser(null));
+        toast.success(response.data.message);
         navigate("/");
-        alert(response.data.message);
       }
     } catch (error) {
-      console.log(error);
-      alert(response.data.message);
+      toast.error(response.data.message);
     } finally {
       dispatch(setLoading(false));
     }
@@ -66,7 +70,7 @@ const SideBar = () => {
                   className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer">
                   <MdOutlinePeople className="w-8 h-8" />
                   <span className="text-base hidden font-semibold md:block">
-                   Community
+                    Community
                   </span>
                 </Link>
               </li>
@@ -112,7 +116,6 @@ const SideBar = () => {
                 <TbLogout
                   className="w-6 h-6 cursor-pointer hover:scale-105"
                   onClick={() => {
-                    alert("You are getting logged out");
                     handleLogOut();
                   }}
                 />

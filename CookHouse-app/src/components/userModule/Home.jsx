@@ -4,7 +4,7 @@ import CreatePost from "../createPost";
 import Posts from "../Posts";
 import LoadingSpinner from "../LoadingSpinner";
 import PostsCard from "../PostsCard";
-import useGetAllFollowingPosts from "../Hooks/useGetAllFollowingPosts.jsx";
+import { useGetAllFollowingPosts } from "../Hooks/useGetAllFollowingPosts.jsx";
 
 const Home = () => {
   const [feedType, setFeedType] = useState("posts");

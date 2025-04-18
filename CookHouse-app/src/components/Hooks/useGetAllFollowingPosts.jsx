@@ -7,8 +7,9 @@ import {
   setLoading,
 } from "../../redux/slices/post.slice.js";
 import { POSTS_API_END_POINT } from "../../utils/constants.js";
+import toast from "react-hot-toast";
 
-const useGetAllFollowingPosts = () => {
+export const useGetAllFollowingPosts = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const useGetAllFollowingPosts = () => {
           dispatch(setFollowingPosts(response.data.feedPosts));
         }
       } catch (error) {
-        alert(error);
+        toast.error(error.response.data.message);
       } finally {
         dispatch(setFetching(false));
         dispatch(setLoading(false));
@@ -31,5 +32,3 @@ const useGetAllFollowingPosts = () => {
     })();
   }, []);
 };
-
-export default useGetAllFollowingPosts;

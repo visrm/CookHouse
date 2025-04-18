@@ -4,8 +4,9 @@ import { useDispatch } from "react-redux";
 import { setSelfPosts } from "../../redux/slices/user.slice.js";
 import { setFetching } from "../../redux/slices/post.slice.js";
 import { POSTS_API_END_POINT } from "../../utils/constants.js";
+import toast from "react-hot-toast";
 
-const useGetUserPosts = (username) => {
+export const useGetUserPosts = (username) => {
   const dispatch = useDispatch();
   useEffect(() => {
     (async function FetchUserPosts() {
@@ -21,12 +22,10 @@ const useGetUserPosts = (username) => {
           dispatch(setSelfPosts(response.data.posts));
         }
       } catch (error) {
-        console.log(error.response.data.message);
+        toast.error(error.response.data.message);
       } finally {
         dispatch(setFetching(false));
       }
     })();
   }, []);
 };
-
-export default useGetUserPosts;

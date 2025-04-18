@@ -7,6 +7,7 @@ import {
   setFetching,
 } from "../../redux/slices/post.slice.js";
 import { POSTS_API_END_POINT } from "../../utils/constants.js";
+import toast from "react-hot-toast";
 
 export const useGetLikedPosts = (userId) => {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ export const useGetLikedPosts = (userId) => {
           dispatch(setLikedPosts(res.data.likedPosts));
         }
       } catch (error) {
-        console.log(error.response.data.message);
+        toast.error(error.response.data.message);
       } finally {
         dispatch(setFetching(false));
         dispatch(setLoading(false));

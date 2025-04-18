@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { setLoading, setUser } from "./redux/slices/auth.slice.js";
 import { AUTH_API_END_POINT } from "./utils/constants.js";
 import axios from "axios";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ function App() {
           dispatch(setUser(response.data.user));
         }
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data.message);
       } finally {
         dispatch(setLoading(false));
       }
@@ -38,6 +39,9 @@ function App() {
 
   return (
     <>
+      <div>
+        <Toaster />
+      </div>
       <NavigationBar />
       <div className="flex p-0 m-0 max-w-6xl md:max-w-full h-full mx-auto scroll-auto">
         <SideBar />

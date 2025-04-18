@@ -11,6 +11,7 @@ import {
   setLoading,
 } from "../../redux/slices/user.slice.js";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const Notifications = () => {
   const { loading, allNotifications } = useSelector((store) => store.users);
@@ -27,8 +28,7 @@ const Notifications = () => {
           dispatch(setAllNotifications(response.data.notifications));
         }
       } catch (error) {
-        alert(error.response.data.message);
-        console.log(error);
+        toast.error(error.response.data.message);
       } finally {
         dispatch(setLoading(false));
       }
@@ -41,12 +41,11 @@ const Notifications = () => {
         withCredentials: true,
       });
       if (response.data.success) {
-        alert(response.data.message);
+        toast.success(response.data.message);
         window.location.reload();
       }
     } catch (error) {
-      alert(error.response.data.message);
-      console.log(error);
+      toast.error(error.response.data.message);
     }
   };
   return (

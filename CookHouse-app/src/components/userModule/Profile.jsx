@@ -5,11 +5,12 @@ import { useSelector } from "react-redux";
 import { USERS_API_END_POINT } from "../../utils/constants.js";
 import axios from "axios";
 import { useGetLikedPosts } from "../Hooks/useGetLikedPosts.jsx";
-import useGetUserPosts from "../Hooks/useGetUserPosts.jsx";
+import { useGetUserPosts } from "../Hooks/useGetUserPosts.jsx";
 
 import ProfileSkeleton from "../Skeleton/ProfileSkeleton.jsx";
 import PostsCard from "../PostsCard.jsx";
 import LoadingSpinner from "../LoadingSpinner.jsx";
+import toast from "react-hot-toast";
 
 const EditProfileModal = () => {
   const { user } = useSelector((store) => store.auth);
@@ -48,11 +49,10 @@ const EditProfileModal = () => {
       );
 
       if (response.data.success) {
-        alert(response.data.message);
+        toast.success(response.data.message);
       }
     } catch (error) {
-      console.log(error.response.data.message);
-      console.log(error);
+      toast.error(error.response.data.message);
     } finally {
       setUserData({
         username: user?.username || "",
@@ -236,12 +236,11 @@ const Profile = () => {
       );
 
       if (response.data.success) {
-        alert(response.data.message);
+        toast.success(response.data.message);
         window.location.reload();
       }
     } catch (error) {
-      alert(error.response.data.message);
-      console.log(error);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -259,11 +258,10 @@ const Profile = () => {
       );
 
       if (response.data.success) {
-        alert(response.data.message);
+        toast.success(response.data.message);
       }
     } catch (error) {
-      alert(error.response.data.message);
-      console.log(error);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -448,7 +446,7 @@ const Profile = () => {
                 )}
                 {!fetching &&
                   selfPosts.map((feed) => {
-                    return (<PostsCard post={feed} key={feed?._id} />);
+                    return <PostsCard post={feed} key={feed?._id} />;
                   })}
               </div>
             )}
@@ -467,7 +465,7 @@ const Profile = () => {
 
                 {!fetching &&
                   likedPosts.map((feed) => {
-                    return (<PostsCard post={feed} key={feed?._id} />);
+                    return <PostsCard post={feed} key={feed?._id} />;
                   })}
               </div>
             )}

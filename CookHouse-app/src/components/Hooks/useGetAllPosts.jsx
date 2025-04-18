@@ -9,7 +9,7 @@ import {
   setLoading,
   setFetching,
 } from "../../redux/slices/post.slice.js";
-
+import toast from "react-hot-toast";
 
 export const useGetAllPosts = () => {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ export const useGetAllPosts = () => {
           dispatch(setAllPosts(response.data.posts));
         }
       } catch (error) {
-        console.log(error);
+        toast.error(error.response.data.message);
       } finally {
         dispatch(setFetching(false));
         dispatch(setLoading(false));
