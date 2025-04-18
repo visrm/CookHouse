@@ -1,14 +1,11 @@
 import { MdOutlineModeEdit } from "react-icons/md";
 import { IoCalendarOutline } from "react-icons/io5";
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  AUTH_API_END_POINT,
-  USERS_API_END_POINT,
-} from "../../utils/constants.js";
-import { setLoading, setUser } from "../../redux/slices/auth.slice.js";
+import { useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { USERS_API_END_POINT } from "../../utils/constants.js";
 import axios from "axios";
-import useGetLikedPosts from "../Hooks/useGetLikedPosts.jsx";
+import { useGetLikedPosts } from "../Hooks/useGetLikedPosts.jsx";
+import useGetUserPosts from "../Hooks/useGetUserPosts.jsx";
 
 import ProfileSkeleton from "../Skeleton/ProfileSkeleton.jsx";
 import PostsCard from "../PostsCard.jsx";
@@ -26,7 +23,6 @@ const EditProfileModal = () => {
   });
 
   const handleChange = async (e) => {
-    console.log(e);
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
@@ -53,11 +49,18 @@ const EditProfileModal = () => {
 
       if (response.data.success) {
         alert(response.data.message);
-        window.location.reload();
       }
     } catch (error) {
-      alert(error.response.data.message);
+      console.log(error.response.data.message);
       console.log(error);
+    } finally {
+      setUserData({
+        username: user?.username || "",
+        fullname: user?.fullname || "",
+        email: user?.email || "",
+        currentPassword: "",
+        newPassword: "",
+      });
     }
   };
 
@@ -71,7 +74,7 @@ const EditProfileModal = () => {
       </button>
       <dialog id="editModal" className="modal">
         <div className="modal-box w-102">
-          <form method="dialog">
+          <form method="dialog" id="handleClose">
             {/* if there is a button in form, it will close the modal */}
             <button
               className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
@@ -91,13 +94,17 @@ const EditProfileModal = () => {
           <form
             method="PATCH"
             className="flex flex-col flex-[2_2_0] flex-wrap gap-1"
+            id="handlePatch"
             onSubmit={handleSubmit}>
             <div>
-              <label className="w-fit font-base text-sm">Fullname:</label>
+              <label className="w-fit font-base text-sm" htmlFor="fullname">
+                Fullname:
+              </label>
               <input
                 type="text"
                 className="input font-medium"
                 placeholder="Fullname"
+                id="fullname"
                 name="fullname"
                 value={userData.fullname}
                 pattern="[A-Za-z]*"
@@ -107,11 +114,14 @@ const EditProfileModal = () => {
               />
             </div>
             <div>
-              <label className="w-fit font-base text-sm">Username:</label>
+              <label className="w-fit font-base text-sm" htmlFor="username">
+                Username:
+              </label>
               <input
                 type="input"
                 className="input font-medium"
                 placeholder="Username"
+                id="username"
                 name="username"
                 value={userData.username}
                 pattern="[A-Za-z][A-Za-z0-9\-]*"
@@ -123,11 +133,14 @@ const EditProfileModal = () => {
               />
             </div>
             <div>
-              <label className="w-fit font-base text-sm">Email:</label>
+              <label className="w-fit font-base text-sm" htmlFor="email">
+                Email:
+              </label>
               <input
                 type="email"
                 className="input font-medium"
                 placeholder="Email Address"
+                id="email"
                 name="email"
                 value={userData.email}
                 autoComplete="username"
@@ -135,12 +148,13 @@ const EditProfileModal = () => {
               />
             </div>
             <div>
-              <label className="w-fit font-base text-sm">
+              <label className="w-fit font-base text-sm" htmlFor="CrPassword">
                 Current Password:
               </label>
               <input
                 type="password"
                 className="input font-medium"
+                id="CrPassword"
                 name="currentPassword"
                 value={userData.currentPassword}
                 maxLength={20}
@@ -149,10 +163,13 @@ const EditProfileModal = () => {
               />
             </div>
             <div>
-              <label className="w-fit font-base text-sm">New Password:</label>
+              <label className="w-fit font-base text-sm" htmlFor="NwPassword">
+                New Password:
+              </label>
               <input
                 type="password"
                 className="input font-medium"
+                id="NwPassword"
                 name="newPassword"
                 value={userData.newPassword}
                 maxLength={20}
@@ -178,29 +195,11 @@ const Profile = () => {
   const coverImgRef = useRef(null);
   const profileImgRef = useRef(null);
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    (async function FetchUserInfo() {
-      try {
-        dispatch(setLoading(true));
-        const response = await axios.get(`${AUTH_API_END_POINT}/me`, {
-          withCredentials: true,
-        });
-        if (response.data.success) {
-          dispatch(setUser(response.data.user));
-        }
-      } catch (error) {
-        alert(error);
-      } finally {
-        dispatch(setLoading(false));
-      }
-    })();
-  }, []);
-
   const { loading, user } = useSelector((store) => store.auth);
   const { fetching, likedPosts } = useSelector((store) => store.posts);
+  const { selfPosts } = useSelector((store) => store.users);
   useGetLikedPosts(user?._id);
+  useGetUserPosts(user?.username);
 
   const isMyProfile = true;
 
@@ -216,13 +215,6 @@ const Profile = () => {
     }
   };
 
-  // let updateInfo = {
-  //   profile: {
-  //     profileImg: profileImg,
-  //     coverImg: coverImg,
-  //   },
-  // };
-  // console.log(updateInfo.profile);
   const handleImgSubmit = async (e) => {
     e.preventDefault();
     let updateInfo = {
@@ -246,6 +238,28 @@ const Profile = () => {
       if (response.data.success) {
         alert(response.data.message);
         window.location.reload();
+      }
+    } catch (error) {
+      alert(error.response.data.message);
+      console.log(error);
+    }
+  };
+
+  const handleFollows = async (userId) => {
+    try {
+      const response = await axios.post(
+        `${USERS_API_END_POINT}/follow/${userId}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.success) {
+        alert(response.data.message);
       }
     } catch (error) {
       alert(error.response.data.message);
@@ -281,10 +295,10 @@ const Profile = () => {
         return "December";
     }
   };
-
+  // console.log(user?._id);
   return (
     <>
-      <main className="w-full max-w-6xl md:max-w-full h-screen min-h-[90svh] md:min-h-screen">
+      <main className="w-full max-w-6xl md:max-w-full min-h-[90svh] md:min-h-screen">
         {/* User Profile Details*/}
         {loading && <ProfileSkeleton />}
         {!loading && user && (
@@ -345,7 +359,9 @@ const Profile = () => {
                     @{user?.username}
                   </span>
                 </h1>
-                <div className="flex pr-1 mb-2 text-sm">{user?.profile?.bio || "Add bio section."}</div>
+                <div className="flex pr-1 mb-2 text-sm">
+                  {user?.profile?.bio || "Add bio section."}
+                </div>
                 <div className="flex gap-2 items-center mb-2">
                   <IoCalendarOutline className="w-4 h-4 text-slate-500" />
                   <span className="text-xs text-slate-500">
@@ -375,12 +391,17 @@ const Profile = () => {
           </section>
         )}
 
-        <article className="block ml-auto p-1 w-fit">
+        <article className="flex ml-auto p-1 gap-1 w-fit">
           {isMyProfile && <EditProfileModal />}
           {!isMyProfile && (
-            <span className="grid">
-              <button type="button" className="btn">
-                Follow/unfollow
+            <span className="grid gap-1">
+              <button
+                type="button"
+                className="btn btn-sm rounded-2xl btn-primary"
+                onClick={() => {
+                  handleFollows(user?._id);
+                }}>
+                Follow
               </button>
             </span>
           )}
@@ -405,25 +426,34 @@ const Profile = () => {
             </div>
             <div
               className="flex justify-center flex-1 p-3 text-slate-500 transition duration-300 relative cursor-pointer"
-              onClick={() => setFeedType("likes")}>
-              Likes
-              {feedType === "likes" && (
+              onClick={() => setFeedType("liked")}>
+              Liked
+              {feedType === "liked" && (
                 <div className="absolute bottom-0 w-10  h-1 rounded-full bg-primary" />
               )}
             </div>
           </div>
           <div className="flex w-full mt-2 justify-center">
             {feedType === "posts" && (
-              <div className="flex flex-col flex-nowrap min-h-full ">
+              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
                 {fetching && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
                   </div>
                 )}
+                {!fetching && selfPosts.length === 0 && (
+                  <div className="block text-center text-sm p-2 sm:p-4">
+                    No Posts found.
+                  </div>
+                )}
+                {!fetching &&
+                  selfPosts.map((feed) => {
+                    return (<PostsCard post={feed} key={feed?._id} />);
+                  })}
               </div>
             )}
-            {feedType === "likes" && (
-              <div className="flex flex-col flex-nowrap max-w-full h-full w-[80vw] md:w-[66vw] min-h-[90svh] md:min-h-screen mx-auto">
+            {feedType === "liked" && (
+              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
                 {fetching && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
@@ -431,13 +461,13 @@ const Profile = () => {
                 )}
                 {!fetching && likedPosts.length === 0 && (
                   <div className="block text-center text-sm p-2 sm:p-4">
-                    No liked feeds found.
+                    No Liked Feeds found.
                   </div>
                 )}
 
                 {!fetching &&
                   likedPosts.map((feed) => {
-                    return <PostsCard post={feed} key={feed?._id} />;
+                    return (<PostsCard post={feed} key={feed?._id} />);
                   })}
               </div>
             )}

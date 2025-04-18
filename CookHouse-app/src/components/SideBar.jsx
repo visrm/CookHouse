@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { MdOutlineHome, MdNotificationsNone } from "react-icons/md";
+import { MdOutlineHome, MdNotificationsNone, MdOutlinePeople } from "react-icons/md";
 import { LuUserRound } from "react-icons/lu";
 import { TbLogout } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
@@ -60,6 +60,16 @@ const SideBar = () => {
                   </span>
                 </Link>
               </li>
+              <li className="flex justify-center md:justify-start">
+                <Link
+                  to="/community"
+                  className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer">
+                  <MdOutlinePeople className="w-8 h-8" />
+                  <span className="text-base hidden font-semibold md:block">
+                   Community
+                  </span>
+                </Link>
+              </li>
 
               {user && (
                 <li className="flex justify-center md:justify-start">
@@ -75,7 +85,7 @@ const SideBar = () => {
               )}
             </ul>
 
-            <div className="mt-auto flex py-2 px-4 w-full min-h-fit bg-[#feb340]/50">
+            <div className="sticky bottom-0 left-0 mt-auto flex py-2 px-4 w-full min-h-fit bg-[#feb340]/50">
               <Link
                 to={`/profile/${user?.username}`}
                 className="flex gap-2 item-start">

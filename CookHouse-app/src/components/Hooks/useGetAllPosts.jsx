@@ -11,7 +11,7 @@ import {
 } from "../../redux/slices/post.slice.js";
 
 
-const useGetAllPosts = () => {
+export const useGetAllPosts = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const useGetAllPosts = () => {
           dispatch(setAllPosts(response.data.posts));
         }
       } catch (error) {
-        alert(error);
+        console.log(error);
       } finally {
         dispatch(setFetching(false));
         dispatch(setLoading(false));
@@ -34,5 +34,3 @@ const useGetAllPosts = () => {
     })();
   }, []);
 };
-
-export default useGetAllPosts;

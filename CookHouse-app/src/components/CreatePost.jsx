@@ -59,7 +59,7 @@ const CreatePost = () => {
 
   return (
     <>
-      <article className="flex flex-col min-w-fit w-[90%] sm:w-[80%] max-w-full mx-auto">
+      <article className="flex flex-col min-w-fit w-[75%] md:w-[50%] max-w-[90%] mx-auto">
         <div className="flex flex-col flex-nowrap my-2 sm:my-3 md:my-6 lg:my-8 w-full rounded-xl bg-amber-200 p-4 items-start gap-4 border-b border-gray-100">
           <div className="avatar">
             <div className="w-8 rounded-full">
@@ -70,7 +70,7 @@ const CreatePost = () => {
               />
             </div>
           </div>
-          <form className="flex flex-col gap-2 w-full" onSubmit={handleSubmit}>
+          <form className="flex flex-col gap-2 w-full" onSubmit={handleSubmit} id="handleCreatePost">
             <textarea
               className="textarea sm:textarea-md w-full p-1 sm:p-2 text-base sm:text-lg resize-none border-none focus:outline-none  border-gray-200"
               placeholder="What's happening?!"
@@ -100,7 +100,10 @@ const CreatePost = () => {
                   onClick={() => imgRef.current.click()}
                   title="Add image"
                 />
-                <BsEmojiSmileFill className="fill-primary w-5 h-5 cursor-pointer" title="Add emoji" />
+                <BsEmojiSmileFill
+                  className="fill-primary w-5 h-5 cursor-pointer"
+                  title="Add emoji"
+                />
               </div>
               <input
                 type="file"

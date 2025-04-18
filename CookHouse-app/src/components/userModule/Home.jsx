@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import CreatePost from "../createPost";
 import Posts from "../Posts";
 import LoadingSpinner from "../LoadingSpinner";
-import PostsCard from "../PostsCard"
+import PostsCard from "../PostsCard";
 import useGetAllFollowingPosts from "../Hooks/useGetAllFollowingPosts.jsx";
 
 const Home = () => {
@@ -14,7 +14,7 @@ const Home = () => {
 
   return (
     <>
-      <main className="flex flex-col flex-nowrap max-w-full h-full w-[75vw] md:w-[50vw] min-h-[90svh] md:min-h-screen mx-auto">
+      <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto">
         <CreatePost />
         <section>
           <div className="flex w-full border-b border-gray-800 mt-4">
@@ -45,7 +45,7 @@ const Home = () => {
           </div>
           <div className="flex w-full mt-2 justify-center">
             {feedType === "following" && (
-              <div className="flex flex-col flex-nowrap min-h-full ">
+              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
                 {fetching && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
@@ -62,8 +62,8 @@ const Home = () => {
                   })}
               </div>
             )}
-             {feedType === "recipes" && (
-              <div className="flex flex-col flex-nowrap min-h-full ">
+            {feedType === "recipes" && (
+              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
                 {fetching && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
@@ -77,7 +77,7 @@ const Home = () => {
               </div>
             )}
             {feedType === "posts" && (
-              <div className="flex flex-col flex-nowrap max-w-full h-full w-[80vw] md:w-[66vw] mx-auto">
+              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
                 <Posts />
               </div>
             )}

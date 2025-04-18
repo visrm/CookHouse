@@ -1,28 +1,45 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { FaTrashAlt, FaUser } from "react-icons/fa";
 import { AiFillHeart } from "react-icons/ai";
-import useGetAllNotifications from "../Hooks/useGetAllNotifications";
 import { NOTIFICATIONS_API_END_POINT } from "../../utils/constants.js";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../../redux/slices/user.slice.js";
+import {
+  setAllNotifications,
+  setLoading,
+} from "../../redux/slices/user.slice.js";
 import axios from "axios";
 
 const Notifications = () => {
-  // const notifications = [];
-  useGetAllNotifications();
   const { loading, allNotifications } = useSelector((store) => store.users);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    (async function FetchNotifications() {
+      try {
+        dispatch(setLoading(true));
+        const response = await axios.get(`${NOTIFICATIONS_API_END_POINT}/`, {
+          withCredentials: true,
+        });
+        if (response.data.success) {
+          dispatch(setAllNotifications(response.data.notifications));
+        }
+      } catch (error) {
+        alert(error.response.data.message);
+        console.log(error);
+      } finally {
+        dispatch(setLoading(false));
+      }
+    })();
+  }, []);
+
   const deleteNotifications = async () => {
     try {
-      const response = await axios.delete(
-        `${NOTIFICATIONS_API_END_POINT}`,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.delete(`${NOTIFICATIONS_API_END_POINT}`, {
+        withCredentials: true,
+      });
       if (response.data.success) {
         alert(response.data.message);
         window.location.reload();

@@ -8,6 +8,8 @@ const userSlice = createSlice({
     allFollowing: [],
     allFollowers: [],
     allNotifications: [],
+    selfPosts: [],
+    singleUser: null,
   },
   reducers: {
     // actions
@@ -26,6 +28,12 @@ const userSlice = createSlice({
     setAllNotifications: (state, action) => {
       state.allNotifications = action.payload;
     },
+    setSelfPosts: (state, action) => {
+      state.selfPosts = action.payload;
+    },
+    setSingleUser: (state, action) => {
+      state.singleUser = action.payload;
+    },
   },
 });
 
@@ -35,5 +43,7 @@ export const {
   setAllFollowing,
   setAllFollowers,
   setAllNotifications,
+  setSelfPosts,
+  setSingleUser,
 } = userSlice.actions;
 export default userSlice.reducer;

@@ -8,7 +8,7 @@ import {
 } from "../../redux/slices/post.slice.js";
 import { POSTS_API_END_POINT } from "../../utils/constants.js";
 
-const useGetLikedPosts = (userId) => {
+export const useGetLikedPosts = (userId) => {
   const dispatch = useDispatch();
   useEffect(() => {
     (async function FetchLikedPosts() {
@@ -23,7 +23,7 @@ const useGetLikedPosts = (userId) => {
           dispatch(setLikedPosts(res.data.likedPosts));
         }
       } catch (error) {
-        alert(error);
+        console.log(error.response.data.message);
       } finally {
         dispatch(setFetching(false));
         dispatch(setLoading(false));
@@ -31,5 +31,3 @@ const useGetLikedPosts = (userId) => {
     })();
   }, []);
 };
-
-export default useGetLikedPosts;
