@@ -93,7 +93,7 @@ const RecipesCard = ({ recipe }) => {
     <>
       <article className="w-[85%] sm:w-[75%] mx-auto">
         <div className="flex gap-2 items-start p-4 border-b-2 border-gray-300 bg-[#fdfdfd]">
-          <div className="avatar">
+          <div className="avatar h-8">
             <Link
               to={`/profile/${recipeMaker?.username}`}
               className="w-8 rounded-full overflow-hidden">
@@ -166,7 +166,7 @@ const RecipesCard = ({ recipe }) => {
                     </div>
                   </div>
 
-                  <div className="block p-1 sm:p-2 w-full h-full max-w-[75%] whitespace-normal">
+                  <div className="block p-1 sm:px-2 w-full h-full max-w-[75%] whitespace-normal">
                     <span className="block font-semibold text-base text-left">
                       How to prepare?
                     </span>
@@ -230,7 +230,7 @@ const RecipesCard = ({ recipe }) => {
                         <div
                           key={comment._id}
                           className="flex gap-2 items-start">
-                          <div className="avatar">
+                          <div className="avatar h-8">
                             <div className="w-8 rounded-full">
                               <img
                                 src={

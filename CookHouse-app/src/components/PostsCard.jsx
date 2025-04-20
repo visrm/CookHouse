@@ -92,23 +92,28 @@ const PostCard = ({ post }) => {
     <>
       <article className="w-[90%] sm:w-[80%] mx-auto">
         <div className="flex gap-2 items-start p-4 border-b-2 border-gray-300 bg-[#fdfdfd]">
-          <div className="avatar">
-            <Link
-              to={`/profile/${postOwner?.username}`}
-              className="w-8 rounded-full overflow-hidden">
-              <img
-                src={
-                  postOwner?.profile?.profileImg ||
-                  "/assets/avatar-placeholder.png"
-                }
-              />
-            </Link>
-          </div>
+      
+            <div className="avatar h-8">
+              <Link
+                to={`/profile/${postOwner?.username}`}
+                className="w-8 rounded-full overflow-hidden"
+              >
+                <img
+                  src={
+                    postOwner?.profile?.profileImg ||
+                    "/assets/avatar-placeholder.png"
+                  }
+                />
+              </Link>
+            </div>
+       
+
           <div className="flex flex-col flex-1">
             <div className="flex gap-2 items-center">
               <Link
                 to={`/profile/${postOwner?.username}`}
-                className="font-bold">
+                className="font-bold"
+              >
                 {postOwner?.fullname}
               </Link>
               <span className="text-gray-700 flex gap-1 text-sm">
@@ -147,7 +152,8 @@ const PostCard = ({ post }) => {
                     document
                       .getElementById("comments_modal" + post?._id)
                       .showModal()
-                  }>
+                  }
+                >
                   <FaRegComment className="w-4 h-4 text-slate-500 group-hover:text-sky-400" />
                   <span className="text-sm text-slate-500 group-hover:text-sky-400">
                     {post?.comments?.length}
@@ -156,7 +162,8 @@ const PostCard = ({ post }) => {
                 {/* We're using Modal Component from DaisyUI */}
                 <dialog
                   id={`comments_modal${post?._id}`}
-                  className="modal border-none outline-none">
+                  className="modal border-none outline-none"
+                >
                   <div className="modal-box rounded border-0">
                     <form method="dialog">
                       {/* if there is a button in form, it will close the modal */}
@@ -174,8 +181,9 @@ const PostCard = ({ post }) => {
                       {post?.comments.map((comment) => (
                         <div
                           key={comment._id}
-                          className="flex gap-2 items-start">
-                          <div className="avatar">
+                          className="flex gap-2 items-start"
+                        >
+                          <div className="avatar h-8">
                             <div className="w-8 rounded-full">
                               <img
                                 src={
@@ -201,7 +209,8 @@ const PostCard = ({ post }) => {
                     </div>
                     <form
                       className="flex flex-col gap-2 items-center mt-4 border-t border-gray-600 pt-2"
-                      onSubmit={handlePostComment}>
+                      onSubmit={handlePostComment}
+                    >
                       <textarea
                         className="textarea sm:textarea-md w-full p-1 sm:px-2 rounded text-base resize-none border focus:outline-none  border-gray-800"
                         placeholder="Add a comment..."
@@ -224,7 +233,8 @@ const PostCard = ({ post }) => {
 
                 <div
                   className="flex gap-1 items-center group cursor-pointer"
-                  onClick={handleLikePost}>
+                  onClick={handleLikePost}
+                >
                   {!isLiked && (
                     <FaRegHeart className="w-4 h-4 cursor-pointer text-slate-500 group-hover:text-pink-500" />
                   )}
@@ -235,7 +245,8 @@ const PostCard = ({ post }) => {
                   <span
                     className={`text-sm text-slate-500 group-hover:text-pink-500 ${
                       isLiked ? "text-pink-500" : ""
-                    }`}>
+                    }`}
+                  >
                     {post?.likes?.length}
                   </span>
                 </div>

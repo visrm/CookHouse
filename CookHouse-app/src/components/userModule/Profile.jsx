@@ -81,7 +81,8 @@ const EditProfileModal = () => {
       {/* You can open the modal using document.getElementById('ID').showModal() method */}
       <button
         className="btn btn-sm bg-indigo-600 text-[#fdfdfd] border-0"
-        onClick={() => document.getElementById("editModal").showModal()}>
+        onClick={() => document.getElementById("editModal").showModal()}
+      >
         Edit Profile
       </button>
       <dialog id="editModal" className="modal">
@@ -98,7 +99,8 @@ const EditProfileModal = () => {
                   currentPassword: "",
                   newPassword: "",
                 });
-              }}>
+              }}
+            >
               ✕
             </button>
           </form>
@@ -107,7 +109,8 @@ const EditProfileModal = () => {
             method="PATCH"
             className="flex flex-col flex-[2_2_0] flex-wrap gap-1"
             id="handlePatch"
-            onSubmit={handleSubmit}>
+            onSubmit={handleSubmit}
+          >
             <div>
               <label className="w-fit font-base text-sm" htmlFor="fullname">
                 Fullname:
@@ -264,8 +267,8 @@ const Profile = () => {
     e.preventDefault();
     let updateInfo = {
       profile: {
-        profileImg: profileImg,
-        coverImg: coverImg,
+        profileImg,
+        coverImg,
       },
     };
     try {
@@ -289,6 +292,8 @@ const Profile = () => {
       toast.error(error.response.data.message);
     } finally {
       dispatch(setLoading(false));
+      setCoverImg(null);
+      setProfileImg(null);
     }
   };
 
@@ -352,8 +357,8 @@ const Profile = () => {
             <div className="relative block h-fit">
               <img
                 src={
-                  singleUser?.profile?.coverImg ||
                   coverImg ||
+                  singleUser?.profile?.coverImg ||
                   "/assets/cover.png"
                 }
                 className="object-cover w-full max-h-56 z-0"
@@ -386,8 +391,8 @@ const Profile = () => {
                 <div className="relative w-28 sm:w-28 md:w-36 ring-green-500  rounded-full ring-2 ring-offset-2">
                   <img
                     src={
-                      singleUser?.profile?.profileImg ||
                       profileImg ||
+                      singleUser?.profile?.profileImg ||
                       "/assets/avatar-placeholder.png"
                     }
                   />
@@ -395,7 +400,8 @@ const Profile = () => {
                 {isMyProfile && (
                   <span
                     className="absolute bottom-0 left-[75%] rounded-full truncate flex place-items-center h-7.5 w-8 hover:scale-105 bg-slate-600 border-2 border-slate-600 hover:bg-slate-300 hover:border-slate-300"
-                    onClick={() => profileImgRef.current.click()}>
+                    onClick={() => profileImgRef.current.click()}
+                  >
                     <MdOutlineModeEdit className="h-6 w-6 mx-auto cursor-pointer text-white hover:text-slate-800" />
                   </span>
                 )}
@@ -453,7 +459,8 @@ const Profile = () => {
                 className="btn btn-sm bg-indigo-600 text-[#fdfdfd] border-0"
                 onClick={() => {
                   handleFollows(singleUser?._id);
-                }}>
+                }}
+              >
                 {isFollowing ? "Unfollow" : "Follow"}
               </button>
             </span>
@@ -461,7 +468,8 @@ const Profile = () => {
           {(coverImg || profileImg) && (
             <button
               className="btn bg-indigo-600 text-[#fdfdfd] border-0 btn-sm  px-4 ml-2"
-              onClick={handleImgSubmit}>
+              onClick={handleImgSubmit}
+            >
               Update
             </button>
           )}
@@ -471,7 +479,8 @@ const Profile = () => {
           <div className="sticky top-12 md:top-15 flex w-full font-semibold shadow-md z-50 bg-[#ffffff]">
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
-              onClick={() => setFeedType("posts")}>
+              onClick={() => setFeedType("posts")}
+            >
               Posts
               {feedType === "posts" && (
                 <div className="absolute bottom-0 w-10 h-1 rounded-full bg-indigo-600" />
@@ -479,7 +488,8 @@ const Profile = () => {
             </div>
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
-              onClick={() => setFeedType("recipes")}>
+              onClick={() => setFeedType("recipes")}
+            >
               Recipes
               {feedType === "recipes" && (
                 <div className="absolute bottom-0 w-10 h-1 rounded-full bg-indigo-600" />
@@ -488,7 +498,8 @@ const Profile = () => {
             {isMyProfile && (
               <div
                 className="flex justify-center flex-1 p-3 text-slate-500 transition duration-300 relative cursor-pointer"
-                onClick={() => setFeedType("liked")}>
+                onClick={() => setFeedType("liked")}
+              >
                 Liked
                 {feedType === "liked" && (
                   <div className="absolute bottom-0 w-10 h-1 rounded-full bg-indigo-600" />

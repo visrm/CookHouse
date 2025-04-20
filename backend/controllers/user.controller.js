@@ -150,7 +150,7 @@ export const updateUser = async (req, res) => {
       const uploadedResponse = await cloudinary.uploader.upload(
         profile.profileImg
       );
-      profile.profileImg = uploadedResponse.secure_url;
+      user.profile.profileImg = uploadedResponse.secure_url;
     }
     // update coverImg
     if (profile.coverImg) {
@@ -162,7 +162,7 @@ export const updateUser = async (req, res) => {
       const uploadedResponse = await cloudinary.uploader.upload(
         profile.coverImg
       );
-      profile.coverImg = uploadedResponse.secure_url;
+      user.profile.coverImg = uploadedResponse.secure_url;
     }
     if (profile.bio) user.profile.bio = profile.bio;
     if (profile.diet_preference)

@@ -319,16 +319,17 @@ export const getLikedPosts = async (req, res) => {
         success: false,
       });
 
-    const likedPosts = await Post.find({ _id: { $in: user.likedPosts } })
-      .populate({
-        path: "user",
-        select: "-password",
-      })
-      .populate({
-        path: "comments.user",
-        select: "-password",
-      })
-      .populate("community");
+    const likedPosts =
+      (await Post.find({ _id: { $in: user.likedPosts } })
+        .populate({
+          path: "user",
+          select: "-password",
+        })
+        .populate({
+          path: "comments.user",
+          select: "-password",
+        })
+        .populate("community")) || [];
 
     return res.status(200).json({
       message: "Posts fetched successfully",
