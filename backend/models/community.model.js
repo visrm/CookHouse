@@ -13,6 +13,14 @@ const communitySchema = new mongoose.Schema(
       required: true,
       default: "",
     },
+    profileImg: {
+      type: String,
+      default: "",
+    },
+    coverImg: {
+      type: String,
+      default: "",
+    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -28,9 +36,18 @@ const communitySchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Post",
-        default: [],
+      },
+    ],
+    recipes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Recipe",
       },
     ],
   },
   { timestamps: true }
 );
+
+const Community = mongoose.model("Community", communitySchema);
+
+export default Community;

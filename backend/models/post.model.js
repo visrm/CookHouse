@@ -28,10 +28,15 @@ const postSchema = new mongoose.Schema(
         },
       },
     ],
+    community: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Community",
+      default: "",
+    },
   },
   { timestamps: true }
 );
 
 const Post = mongoose.model("Post", postSchema);
 
-export default  Post;
+export default Post;

@@ -141,35 +141,33 @@ export const updateUser = async (req, res) => {
     }
 
     // update profileImg
-    if (profile) {
-      if (profile.profileImg) {
-        if (user.profile.profileImg)
-          await cloudinary.uploader.destroy(
-            user.profile.profileImg.split("/").pop().split(".")[0]
-          );
-
-        const uploadedResponse = await cloudinary.uploader.upload(
-          profile.profileImg
+    if (profile.profileImg) {
+      if (user.profile.profileImg)
+        await cloudinary.uploader.destroy(
+          user.profile.profileImg.split("/").pop().split(".")[0]
         );
-        profile.profileImg = uploadedResponse.secure_url;
-      }
-      // update coverImg
-      if (profile.coverImg) {
-        if (user.profile.coverImg)
-          await cloudinary.uploader.destroy(
-            user.profile.coverImg.split("/").pop().split(".")[0]
-          );
 
-        const uploadedResponse = await cloudinary.uploader.upload(
-          profile.coverImg
-        );
-        profile.coverImg = uploadedResponse.secure_url;
-      }
-      if (profile.bio) user.profile.bio = profile.bio;
-      if (profile.diet_preference)
-        user.profile.diet_preference = profile.diet_preference;
-      if (profile.location) user.profile.location = profile.location;
+      const uploadedResponse = await cloudinary.uploader.upload(
+        profile.profileImg
+      );
+      profile.profileImg = uploadedResponse.secure_url;
     }
+    // update coverImg
+    if (profile.coverImg) {
+      if (user.profile.coverImg)
+        await cloudinary.uploader.destroy(
+          user.profile.coverImg.split("/").pop().split(".")[0]
+        );
+
+      const uploadedResponse = await cloudinary.uploader.upload(
+        profile.coverImg
+      );
+      profile.coverImg = uploadedResponse.secure_url;
+    }
+    if (profile.bio) user.profile.bio = profile.bio;
+    if (profile.diet_preference)
+      user.profile.diet_preference = profile.diet_preference;
+    if (profile.location) user.profile.location = profile.location;
 
     if (phoneNumber) user.phoneNumber = phoneNumber;
 

@@ -50,7 +50,7 @@ export const register = async (req, res) => {
       password: hashedPassword,
     });
 
-    return res.status(200).json({
+    return res.status(201).json({
       message: "Account successfully created!",
       success: true,
     });

@@ -1,8 +1,9 @@
 import User from "../models/user.model.js";
 import Recipe from "../models/recipe.model.js";
-import Notification from "../models/notification.model.js"
+import Notification from "../models/notification.model.js";
 
 import { v2 as cloudinary } from "cloudinary";
+import Community from "../models/community.model.js";
 
 export const createRecipe = async (req, res) => {
   try {
@@ -26,25 +27,112 @@ export const createRecipe = async (req, res) => {
       const uploadedResponse = await cloudinary.uploader.upload(media_url);
       media_url = uploadedResponse.secure_url;
     }
-    const newRecipe = new Recipe({
+
+    const newRecipe = await Recipe.create({
       user: userId,
       title,
       description,
-      ingredients,
-      instructions,
+      ingredients: ingredients.split(","),
+      instructions: instructions.split("."),
       media_url,
       cuisine_type,
-      dietary_tags,
+      dietary_tags: dietary_tags.split(","),
     });
 
-    await newRecipe.save();
-    return res.status(200).json({
+    if (!newRecipe) {
+      return res.status(400).json({
+        message: "Recipe NOT created.",
+        success: false,
+      });
+    }
+
+    return res.status(201).json({
       message: "Recipe created successfully!",
       newRecipe,
       success: true,
     });
   } catch (error) {
     console.log("Error in createRecipe: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};
+
+export const createCommunityRecipe = async (req, res) => {
+  try {
+    const { title, description, ingredients, instructions } = req.body;
+    let { media_url, cuisine_type, dietary_tags } = req.body;
+    const userId = req.id;
+    const { communityId } = req.params;
+
+    if (!title || !description || !ingredients || !instructions)
+      return res.status(400).json({
+        message: "Required field(s) missing.",
+        success: false,
+      });
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
+    const community = await Community.findById(communityId);
+    if (!community)
+      return res.status(404).json({
+        message: "Community not found.",
+        success: false,
+      });
+
+    var memberId = user._id.toString();
+    if (
+      !community.members.includes(memberId) &&
+      community.owner.toString() !== memberId
+    )
+      return res.status(401).json({
+        message: "Unauthorised Community Recipe publication.",
+        success: false,
+      });
+
+    if (media_url) {
+      const uploadedResponse = await cloudinary.uploader.upload(media_url);
+      media_url = uploadedResponse.secure_url;
+    }
+
+    const newRecipe = await Recipe.create({
+      user: userId,
+      title,
+      description,
+      ingredients: ingredients.split(","),
+      instructions: instructions.split("."),
+      media_url,
+      cuisine_type,
+      dietary_tags: dietary_tags.split(","),
+      community: communityId,
+    });
+
+    if (!newRecipe) {
+      return res.status(400).json({
+        message: "Recipe NOT created.",
+        success: false,
+      });
+    }
+
+    let recipeId = newRecipe._id;
+    await Community.updateOne(
+      { _id: communityId },
+      { $push: { recipes: recipeId } }
+    );
+
+    return res.status(201).json({
+      message: "Recipe created successfully!",
+      newRecipe,
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error in createCommunityRecipe: ", error.message);
     res.status(500).json({
       message: "Internal Server Error.",
       success: false,
@@ -183,6 +271,12 @@ export const deleteRecipe = async (req, res) => {
       const imgId = recipe.media_url.split("/").pop().split(".")[0];
       await cloudinary.uploader.destroy(imgId);
     }
+
+    await Community.updateOne(
+      { _id: recipe.community },
+      { $pull: { recipes: id } }
+    );
+
     await Recipe.findByIdAndDelete(id);
     return res.status(200).json({
       message: "recipe deleted successfully!",
@@ -208,7 +302,8 @@ export const getAllRecipes = async (req, res) => {
       .populate({
         path: "comments.user",
         select: "-password",
-      });
+      })
+      .populate("community");
 
     if (recipes.length === 0)
       return res.status(200).json({
@@ -249,7 +344,8 @@ export const getLikedRecipes = async (req, res) => {
       .populate({
         path: "comments.user",
         select: "-password",
-      });
+      })
+      .populate("community");
 
     return res.status(200).json({
       message: "Recipe fetched successfully",
@@ -284,7 +380,8 @@ export const getFollowingRecipes = async (req, res) => {
       .populate({
         path: "comments.user",
         select: "-password",
-      });
+      })
+      .populate("community");
 
     return res.status(200).json({
       message: "Recipes fetched successfully",
@@ -303,7 +400,7 @@ export const getFollowingRecipes = async (req, res) => {
 export const getUserRecipes = async (req, res) => {
   try {
     const { username } = req.params;
-    const user = await User.FindOne({ username });
+    const user = await User.findOne({ username });
     if (!user)
       return res.status(404).json({
         message: "User not found.",
@@ -319,7 +416,9 @@ export const getUserRecipes = async (req, res) => {
       .populate({
         path: "comments.user",
         select: "-password",
-      });
+      })
+      .populate("community");
+
     return res.status(200).json({
       message: "Recipes fetched successfully",
       recipes,
@@ -327,6 +426,43 @@ export const getUserRecipes = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in getUserRecipes: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};
+
+export const getCommunityRecipes = async (req, res) => {
+  try {
+    const { communityName } = req.params;
+
+    const community = await Community.findOne({ name: communityName });
+    if (!community)
+      return res.status(404).json({
+        message: "Community not found.",
+        success: false,
+      });
+
+    const recipes = await Recipe.find({ community: community._id })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "user",
+        select: "-password",
+      })
+      .populate({
+        path: "comments.user",
+        select: "profile _id username",
+      })
+      .populate("community");
+
+    return res.status(200).json({
+      message: "Recipes fetched successfully",
+      recipes,
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error in getCommunityRecipes: ", error.message);
     res.status(500).json({
       message: "Internal Server Error.",
       success: false,

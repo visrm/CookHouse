@@ -10,6 +10,7 @@ import userRoute from "./routes/user.route.js";
 import postRoute from "./routes/post.route.js";
 import recipeRoute from "./routes/recipe.route.js";
 import notificationRoute from "./routes/notification.route.js";
+import  communityRoute from "./routes/community.route.js"
 
 dotenv.config({});
 cloudinary.config({
@@ -38,6 +39,7 @@ app.use("/api/v0/users", userRoute);
 app.use("/api/v0/posts", postRoute);
 app.use("/api/v0/recipes", recipeRoute);
 app.use("/api/v0/notifications", notificationRoute);
+app.use("/api/v0/communities", communityRoute);
 
 app.listen(PORT, async () => {
   console.log(`Server is running on port: ${PORT}`);

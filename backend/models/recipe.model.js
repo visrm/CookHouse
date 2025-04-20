@@ -16,16 +16,20 @@ const recipeSchema = new mongoose.Schema(
       required: true,
       default: "",
     },
-    ingredients: {
-      type: String,
-      required: true,
-    },
-    instructions: {
-      type: String,
-      required: true,
-    },
-    cuisine_type: { type: String },
-    dietary_tags: { type: String },
+    ingredients: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
+    instructions: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
+    cuisine_type: { type: String, default: "" },
+    dietary_tags: [{ type: String, default: "" }],
     media_url: { type: String },
     likes: [
       {
@@ -46,6 +50,11 @@ const recipeSchema = new mongoose.Schema(
         },
       },
     ],
+    community: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Community",
+      default: "",
+    },
   },
   { timestamps: true }
 );

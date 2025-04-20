@@ -49,12 +49,11 @@ const userSchema = new mongoose.Schema(
           community: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Community",
-            default: [],
           },
           role: {
             type: String,
-            enum: ["community_member", "community_admin", "community_owner"],
-            default: "community_member",
+            enum: ["member", "admin", "owner"],
+            default: "member",
           },
         },
       ],
