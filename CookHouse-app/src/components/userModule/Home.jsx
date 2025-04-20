@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import CreatePost from "../createPost";
+import CreatePostAndRecipe from "../CreatePostAndRecipe.jsx";
 import Posts from "../Posts";
 import LoadingSpinner from "../LoadingSpinner";
 import PostsCard from "../PostsCard";
+import Recipes from "../Recipes.jsx";
 import { useGetAllFollowingPosts } from "../Hooks/useGetAllFollowingPosts.jsx";
 import { useGetLikedPosts } from "../Hooks/useGetLikedPosts.jsx";
 
@@ -19,7 +20,7 @@ const Home = () => {
   return (
     <>
       <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto bg-[#ffffff]">
-        <CreatePost />
+        <CreatePostAndRecipe />
         <section>
           <div className="sticky top-12 md:top-15 flex w-full font-semibold bg-[#ffffff] z-50 shadow-md">
             <div
@@ -68,16 +69,7 @@ const Home = () => {
             )}
             {feedType === "recipes" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                {fetching && (
-                  <div className="block text-center">
-                    <LoadingSpinner size="lg" />
-                  </div>
-                )}
-                {!fetching && (
-                  <div className="block text-center text-sm p-2 sm:p-4 bg-[#fdfdfd]">
-                    No recipes found.
-                  </div>
-                )}
+                <Recipes />
               </div>
             )}
             {feedType === "posts" && (

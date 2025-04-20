@@ -8,9 +8,11 @@ import axios from "axios";
 
 // import { useGetLikedPosts } from "../Hooks/useGetLikedPosts.jsx";
 import { useGetUserPosts } from "../Hooks/useGetUserPosts.jsx";
+import { useGetUserRecipes } from "../Hooks/useGetUserRecipes.jsx";
 
 import ProfileSkeleton from "../Skeleton/ProfileSkeleton.jsx";
 import PostsCard from "../PostsCard.jsx";
+import RecipesCard from "../RecipesCard.jsx";
 import LoadingSpinner from "../LoadingSpinner.jsx";
 import toast from "react-hot-toast";
 import { setLoading, setSingleUser } from "../../redux/slices/user.slice.js";
@@ -201,6 +203,7 @@ const Profile = () => {
   const [coverImg, setCoverImg] = useState(null);
   const [profileImg, setProfileImg] = useState(null);
   const [feedType, setFeedType] = useState("posts");
+  const [isFollowing, setIsFollowing] = useState(false);
 
   const coverImgRef = useRef(null);
   const profileImgRef = useRef(null);
@@ -209,7 +212,7 @@ const Profile = () => {
 
   const { user } = useSelector((store) => store.auth);
   const { fetching, likedPosts } = useSelector((store) => store.posts);
-  const { loading, singleUser, selfPosts } = useSelector(
+  const { loading, singleUser, selfPosts, selfRecipes } = useSelector(
     (store) => store.users
   );
 
@@ -238,8 +241,10 @@ const Profile = () => {
 
   // console.log(singleUser);
   useGetUserPosts(userName);
+  useGetUserRecipes(userName);
+
   let isMyProfile = false;
-  if (singleUser?._id.toString() === user?._id.toString()) {
+  if (user?._id.toString() === singleUser?._id.toString()) {
     isMyProfile = true;
   }
 
@@ -449,7 +454,7 @@ const Profile = () => {
                 onClick={() => {
                   handleFollows(singleUser?._id);
                 }}>
-                Follow
+                {isFollowing ? "Unfollow" : "Follow"}
               </button>
             </span>
           )}
@@ -507,6 +512,24 @@ const Profile = () => {
                 {!fetching &&
                   selfPosts.map((feed) => {
                     return <PostsCard post={feed} key={feed?._id} />;
+                  })}
+              </div>
+            )}
+            {feedType === "recipes" && (
+              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+                {fetching && (
+                  <div className="block text-center">
+                    <LoadingSpinner size="lg" />
+                  </div>
+                )}
+                {!fetching && selfRecipes.length === 0 && (
+                  <div className="block text-center text-sm p-2 sm:p-4">
+                    No Recipes found.
+                  </div>
+                )}
+                {!fetching &&
+                  selfRecipes.map((recipe) => {
+                    return <RecipesCard recipe={recipe} key={recipe?._id} />;
                   })}
               </div>
             )}
