@@ -5,9 +5,8 @@ const userSlice = createSlice({
   initialState: {
     loading: false,
     allUsers: [],
-    allFollowing: [],
-    allFollowers: [],
     allNotifications: [],
+    selfCommunity: [],
     selfPosts: [],
     selfRecipes: [],
     singleUser: null,
@@ -20,14 +19,11 @@ const userSlice = createSlice({
     setAllUsers: (state, action) => {
       state.allUsers = action.payload;
     },
-    setAllFollowing: (state, action) => {
-      state.allFollowing = action.payload;
-    },
-    setAllFollowers: (state, action) => {
-      state.allFollowers = action.payload;
-    },
     setAllNotifications: (state, action) => {
       state.allNotifications = action.payload;
+    },
+    setSelfCommunity: (state, action) => {
+      state.selfCommunity = action.payload;
     },
     setSelfPosts: (state, action) => {
       state.selfPosts = action.payload;
@@ -47,6 +43,7 @@ export const {
   setAllFollowing,
   setAllFollowers,
   setAllNotifications,
+  setSelfCommunity,
   setSelfPosts,
   setSelfRecipes,
   setSingleUser,

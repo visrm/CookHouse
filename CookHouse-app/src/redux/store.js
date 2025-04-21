@@ -4,12 +4,14 @@ import authSlice from "./slices/auth.slice.js";
 import userSlice from "./slices/user.slice.js";
 import postSlice from "./slices/post.slice.js";
 import recipeSlice from "./slices/recipe.slice.js";
+import communitySlice from "./slices/community.slice.js";
 
 const rootReducer = combineReducers({
   auth: authSlice,
   users: userSlice,
   posts: postSlice,
   recipes: recipeSlice,
+  communities: communitySlice,
 });
 
 const store = configureStore({

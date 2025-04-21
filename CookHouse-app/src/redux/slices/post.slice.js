@@ -6,9 +6,9 @@ const postSlice = createSlice({
     loading: false,
     fetching: false,
     allPosts: [],
+    communityPosts: [],
     likedPosts: [],
     followingPosts: [],
-    searchedQuery: "",
   },
   reducers: {
     // actions
@@ -18,17 +18,17 @@ const postSlice = createSlice({
     setFetching: (state, action) => {
       state.fetching = action.payload;
     },
-    setLikedPosts: (state, action) => {
-      state.likedPosts = action.payload;
+    setCommunityPosts: (state, action) => {
+      state.communityPosts = action.payload;
     },
     setAllPosts: (state, action) => {
       state.allPosts = action.payload;
     },
+    setLikedPosts: (state, action) => {
+      state.likedPosts = action.payload;
+    },
     setFollowingPosts: (state, action) => {
       state.followingPosts = action.payload;
-    },
-    setSearchedQuery: (state, action) => {
-      state.searchedQuery = action.payload;
     },
   },
 });
@@ -37,8 +37,8 @@ export const {
   setLoading,
   setFetching,
   setAllPosts,
+  setCommunityPosts,
   setLikedPosts,
   setFollowingPosts,
-  setSearchedQuery
 } = postSlice.actions;
 export default postSlice.reducer;
