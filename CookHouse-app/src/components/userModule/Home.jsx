@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 import CreatePostAndRecipe from "../CreatePostAndRecipe.jsx";
 import Posts from "../Posts";
 import LoadingSpinner from "../LoadingSpinner";
-import PostsCard from "../PostsCard";
+import PostsCard from "../PostCard.jsx";
 import Recipes from "../Recipes.jsx";
 import { useGetAllFollowingPosts } from "../Hooks/useGetAllFollowingPosts.jsx";
-import { useGetLikedPosts } from "../Hooks/useGetLikedPosts.jsx";
+import useGetLikedPosts from "../Hooks/useGetLikedPosts.jsx";
 
 const Home = () => {
   const [feedType, setFeedType] = useState("posts");
@@ -19,13 +19,17 @@ const Home = () => {
 
   return (
     <>
-      <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto bg-[#ffffff]">
-        <CreatePostAndRecipe />
+      <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto">
+        <div className="bg-[#ffffff]">
+          <CreatePostAndRecipe />
+        </div>
+
         <section>
           <div className="sticky top-12 md:top-15 flex w-full font-semibold bg-[#ffffff] z-50 shadow-md">
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
-              onClick={() => setFeedType("posts")}>
+              onClick={() => setFeedType("posts")}
+            >
               For you
               {feedType === "posts" && (
                 <div className="absolute bottom-0 w-10 h-1 rounded-full bg-indigo-600" />
@@ -33,7 +37,8 @@ const Home = () => {
             </div>
             <div
               className="flex justify-center flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
-              onClick={() => setFeedType("recipes")}>
+              onClick={() => setFeedType("recipes")}
+            >
               Recipes
               {feedType === "recipes" && (
                 <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />
@@ -41,7 +46,8 @@ const Home = () => {
             </div>
             <div
               className="flex justify-center flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
-              onClick={() => setFeedType("following")}>
+              onClick={() => setFeedType("following")}
+            >
               Following
               {feedType === "following" && (
                 <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />

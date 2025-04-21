@@ -11,8 +11,8 @@ import { useGetUserPosts } from "../Hooks/useGetUserPosts.jsx";
 import { useGetUserRecipes } from "../Hooks/useGetUserRecipes.jsx";
 
 import ProfileSkeleton from "../Skeleton/ProfileSkeleton.jsx";
-import PostsCard from "../PostsCard.jsx";
-import RecipesCard from "../RecipesCard.jsx";
+import PostsCard from "../PostCard.jsx";
+import RecipesCard from "../RecipeCard.jsx";
 import LoadingSpinner from "../LoadingSpinner.jsx";
 import toast from "react-hot-toast";
 import { setLoading, setSingleUser } from "../../redux/slices/user.slice.js";
@@ -79,12 +79,14 @@ const EditProfileModal = () => {
   return (
     <>
       {/* You can open the modal using document.getElementById('ID').showModal() method */}
+
       <button
-        className="btn btn-sm bg-indigo-600 text-[#fdfdfd] border-0"
+        className="btn btn-sm bg-indigo-600 text-[#fdfdfd] border-0 w-fit ml-auto"
         onClick={() => document.getElementById("editModal").showModal()}
       >
         Edit Profile
       </button>
+
       <dialog id="editModal" className="modal">
         <div className="modal-box w-102">
           <form method="dialog" id="handleClose">
@@ -349,7 +351,7 @@ const Profile = () => {
   // console.log(user?._id);
   return (
     <>
-      <main className="w-full max-w-6xl md:max-w-full min-h-[90svh] md:min-h-screen bg-[#ffffff]">
+      <main className="w-full max-w-6xl md:max-w-full min-h-[90svh] md:min-h-screen">
         {/* User Profile Details*/}
         {loading && <ProfileSkeleton />}
         {!loading && singleUser && (
@@ -387,8 +389,8 @@ const Profile = () => {
                 onChange={(e) => handleImgChange(e, "profileImg")}
               />
               {/* User Avatar */}
-              <div className="avatar avatar-online absolute block left-4 -bottom-16 z-0">
-                <div className="relative w-28 sm:w-28 md:w-36 ring-green-500  rounded-full ring-2 ring-offset-2">
+              <div className="avatar absolute block left-4 -bottom-16 z-0">
+                <div className="relative w-28 sm:w-28 md:w-36 ring-slate-400 rounded-full ring-2 ring-offset-2">
                   <img
                     src={
                       profileImg ||
@@ -450,24 +452,26 @@ const Profile = () => {
           </section>
         )}
 
-        <article className="flex ml-auto mr-1 p-1 gap-1 w-fit">
-          {isMyProfile && <EditProfileModal />}
+        <article className="flex mr-1 px-1 gap-x-1 w-full bg-[#fffff]">
+          {isMyProfile && (
+            <div className="w-full flex flex-end bg-[#ffffff]">
+              <EditProfileModal />
+            </div>
+          )}
           {!isMyProfile && (
-            <span className="grid gap-1">
-              <button
-                type="button"
-                className="btn btn-sm bg-indigo-600 text-[#fdfdfd] border-0"
-                onClick={() => {
-                  handleFollows(singleUser?._id);
-                }}
-              >
-                {isFollowing ? "Unfollow" : "Follow"}
-              </button>
-            </span>
+            <button
+              type="button"
+              className="btn btn-sm bg-indigo-600 text-[#fdfdfd] border-0 ml-auto w-fit"
+              onClick={() => {
+                handleFollows(singleUser?._id);
+              }}
+            >
+              {isFollowing ? "Unfollow" : "Follow"}
+            </button>
           )}
           {(coverImg || profileImg) && (
             <button
-              className="btn bg-indigo-600 text-[#fdfdfd] border-0 btn-sm  px-4 ml-2"
+              className="btn bg-indigo-600 text-[#fdfdfd] border-0 btn-sm px-4 w-fit"
               onClick={handleImgSubmit}
             >
               Update

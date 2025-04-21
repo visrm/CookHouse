@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import LoadingSpinner from "./LoadingSpinner";
-import RecipesCard from "./RecipesCard";
+import RecipesCard from "./RecipeCard";
 import useGetAllRecipes from "../components/Hooks/useGetAllRecipes";
 
 const Recipes = () => {

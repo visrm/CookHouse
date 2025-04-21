@@ -41,14 +41,16 @@ const SideBar = () => {
       {user && (
         <div
           className="sticky top-14 md:top-16 md:flex-[4_4_0] flex-col flex-nowrap w-18 md:w-42 min-h-screen max-w-42 min-w-fit text-black z-[100]"
-          id="side-bar">
+          id="side-bar"
+        >
           <div className="flex flex-col justify-start bg-amber-200 w-full h-full">
             <ul className="flex flex-col gap-2 sm:gap-3 h-full">
               <li className="flex justify-center md:justify-start">
                 <Link
                   to="/home"
                   className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
-                  replace>
+                  replace
+                >
                   <MdOutlineHome className="w-8 h-8" />
                   <span className="text-base hidden font-semibold md:block">
                     Home
@@ -59,31 +61,36 @@ const SideBar = () => {
                 <Link
                   to="/notifications"
                   className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
-                  replace>
+                  replace
+                >
                   <MdNotificationsNone className="w-8 h-8" />
                   <span className="text-base hidden font-semibold md:block">
                     Notifications
                   </span>
                 </Link>
               </li>
-              <li className="flex justify-center md:justify-start">
-                <Link
-                  to="/community"
-                  className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
-                  replace>
-                  <MdOutlinePeople className="w-8 h-8" />
-                  <span className="text-base hidden font-semibold md:block">
-                    Community
-                  </span>
-                </Link>
-              </li>
+              {user?.profile?.communities.length !== 0 && (
+                <li className="flex justify-center md:justify-start">
+                  <Link
+                    to="/community"
+                    className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
+                    replace
+                  >
+                    <MdOutlinePeople className="w-8 h-8" />
+                    <span className="text-base hidden font-semibold md:block">
+                      Community
+                    </span>
+                  </Link>
+                </li>
+              )}
 
               {user && (
                 <li className="flex justify-center md:justify-start">
                   <Link
-                   to={`/profile/${user?.username}`}
+                    to={`/profile/${user?.username}`}
                     className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
-                    replace>
+                    replace
+                  >
                     <LuUserRound className="h-8 w-8" />
                     <span className="text-base hidden font-semibold md:block">
                       Profile
@@ -97,8 +104,8 @@ const SideBar = () => {
               <Link
                 to={`/profile/${user?.username}`}
                 className="flex gap-2 item-start"
-                >
-                <div className="avatar hidden md:inline-flex">
+              >
+                <div className="avatar h-10 hidden md:inline-flex">
                   <div className="w-10 rounded-full border border-slate-900">
                     <img
                       src={

@@ -6,7 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
-const RecipesCard = ({ recipe }) => {
+const RecipeCard = ({ recipe }) => {
   const [comment, setComment] = useState("");
   const recipeMaker = recipe?.user;
   const isLiked = false;
@@ -303,4 +303,4 @@ const RecipesCard = ({ recipe }) => {
   );
 };
 
-export default RecipesCard;
+export default RecipeCard;

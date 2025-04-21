@@ -1,6 +1,6 @@
-import PostsCard from "./PostsCard";
+import PostsCard from "./PostCard";
 import { useSelector } from "react-redux";
-import { useGetAllPosts } from "./Hooks/useGetAllPosts";
+import  useGetAllPosts  from "./Hooks/useGetAllPosts";
 import LoadingSpinner from "./LoadingSpinner";
 
 const Posts = () => {
