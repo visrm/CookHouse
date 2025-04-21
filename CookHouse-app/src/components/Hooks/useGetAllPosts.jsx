@@ -11,7 +11,7 @@ import {
 } from "../../redux/slices/post.slice.js";
 import toast from "react-hot-toast";
 
-export const useGetAllPosts = () => {
+const useGetAllPosts = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,3 +34,5 @@ export const useGetAllPosts = () => {
     })();
   }, []);
 };
+
+export default useGetAllPosts;
