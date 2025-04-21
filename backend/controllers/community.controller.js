@@ -163,7 +163,7 @@ export const updateCommunity = async (req, res) => {
         );
 
       const uploadedResponse = await cloudinary.uploader.upload(profileImg);
-      profileImg = uploadedResponse.secure_url;
+      community.profileImg = uploadedResponse.secure_url;
     }
     // update coverImg
     if (coverImg) {
@@ -173,7 +173,7 @@ export const updateCommunity = async (req, res) => {
         );
 
       const uploadedResponse = await cloudinary.uploader.upload(coverImg);
-      coverImg = uploadedResponse.secure_url;
+      community.coverImg = uploadedResponse.secure_url;
     }
 
     community.name = name || community.name;
@@ -264,6 +264,115 @@ export const getCommunityById = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in getCommunityById: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};
+
+export const getOwnerCommunities = async (req, res) => {
+  try {
+    const userId = req.id;
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
+    const communities = await Community.find({ owner: userId })
+      .sort({ createdAt: -1 })
+      .populate({ path: "posts", select: "-community" })
+      .populate({ path: "recipes", select: "-community" })
+      .populate({
+        path: "owner",
+        select: "-password -profile.communities",
+      })
+      .populate({
+        path: "members",
+        select: "-password -profile.communities",
+      });
+
+    if (!communities)
+      return res.status(404).json({
+        message: "Communities not found.",
+        success: false,
+      });
+
+    return res.status(200).json({
+      message: "Communities fetched successfully!",
+      communities,
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error in getOwnerCommunities: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};
+
+export const joinUnjoinCommunityById = async (req, res) => {
+  try {
+    const { communityId } = req.params;
+    const userId = req.id;
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
+    const community = await Community.findById(communityId)
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "owner",
+        select: "-password -profile.communities",
+      })
+      .populate({
+        path: "members",
+        select: "-password -profile.communities",
+      });
+
+    if (!community)
+      return res.status(404).json({
+        message: "Communities not found.",
+        success: false,
+      });
+
+    if (community.owner._id.toString() === userId.toString())
+      return res.status(400).json({
+        message: "You own the community.",
+        success: false,
+      });
+
+    var isMemberArray = user.profile.communities.map((item) =>
+      JSON.stringify(item).includes(communityId)
+    );
+
+    if (isMemberArray.includes(true)) {
+      // If the user is already a member
+      user.profile.communities.pull({ community: communityId, role: "member" });
+      await user.save();
+      return res.status(200).json({
+        message: "Community left successfully!",
+        success: true,
+      });
+    } else {
+      // If user isn't a member
+      user.profile.communities.push({ community, role: "member" });
+      await user.save();
+      return res.status(200).json({
+        message: "Community joined successfully!",
+        success: true,
+      });
+    }
+  } catch (error) {
+    console.log("Error in joinCommunityById: ", error.message);
     res.status(500).json({
       message: "Internal Server Error.",
       success: false,
