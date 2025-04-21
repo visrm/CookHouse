@@ -21,7 +21,7 @@ router.post("/comment/:id", isAuthenticated, commentOnPost);
 router.get("/all", isAuthenticated, getAllPosts);
 router.get("/likes/:id", isAuthenticated, getLikedPosts);
 router.get("/user/:username", isAuthenticated, getUserPosts);
-router.get("/community/:communityName", isAuthenticated, getCommunityPosts);
+router.get("/community/:communityId", isAuthenticated, getCommunityPosts);
 router.get("/following", isAuthenticated, getFollowingPosts);
 router.delete("/delete/:id", isAuthenticated, deletePost);
 

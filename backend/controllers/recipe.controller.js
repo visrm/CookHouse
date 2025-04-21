@@ -435,16 +435,16 @@ export const getUserRecipes = async (req, res) => {
 
 export const getCommunityRecipes = async (req, res) => {
   try {
-    const { communityName } = req.params;
+    const { communityId } = req.params;
 
-    const community = await Community.findOne({ name: communityName });
+    const community = await Community.findById(communityId);
     if (!community)
       return res.status(404).json({
         message: "Community not found.",
         success: false,
       });
 
-    const recipes = await Recipe.find({ community: community._id })
+    const recipes = await Recipe.find({ community: communityId })
       .sort({ createdAt: -1 })
       .populate({
         path: "user",
