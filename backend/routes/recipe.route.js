@@ -9,6 +9,7 @@ import {
   getCommunityRecipes,
   getFollowingRecipes,
   getLikedRecipes,
+  getUserCommunitiesRecipes,
   getUserRecipes,
   likeUnlikeRecipe,
 } from "../controllers/recipe.controller.js";
@@ -22,6 +23,7 @@ router.get("/all", isAuthenticated, getAllRecipes);
 router.get("/likes/:id", isAuthenticated, getLikedRecipes);
 router.get("/user/:username", isAuthenticated, getUserRecipes);
 router.get("/community/:communityId", isAuthenticated, getCommunityRecipes);
+router.get("/communities/user", isAuthenticated, getUserCommunitiesRecipes);
 router.get("/following", isAuthenticated, getFollowingRecipes);
 router.delete("/delete/:id", isAuthenticated, deleteRecipe);
 

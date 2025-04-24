@@ -10,6 +10,7 @@ import {
   getUserPosts,
   createCommunityPost,
   getCommunityPosts,
+  getUserCommunitiesPosts,
 } from "../controllers/post.controller.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 
@@ -22,6 +23,7 @@ router.get("/all", isAuthenticated, getAllPosts);
 router.get("/likes/:id", isAuthenticated, getLikedPosts);
 router.get("/user/:username", isAuthenticated, getUserPosts);
 router.get("/community/:communityId", isAuthenticated, getCommunityPosts);
+router.get("/communities/user", isAuthenticated, getUserCommunitiesPosts);
 router.get("/following", isAuthenticated, getFollowingPosts);
 router.delete("/delete/:id", isAuthenticated, deletePost);
 

@@ -11,7 +11,11 @@ import Notifications from "./components/userModule/Notifications";
 import Communities from "./components/Communities";
 import CreateCommunity from "./components/CreateCommunity";
 import CommunityProfile from "./components/CommunityProfile";
+import CommunityHome from "./components/userModule/CommunityHome";
+
 import { Toaster } from "react-hot-toast";
+import ManageCommunity from "./components/ManageCommunity";
+import ChatsHome from "./components/userModule/ChatsHome";
 
 function App() {
   return (
@@ -29,12 +33,12 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/profile/:userName" element={<Profile />} />
           <Route path="/notifications" element={<Notifications />} />
-          <Route path="/community/explore" element={<Communities />} />
-          <Route path="/community/create" element={<CreateCommunity />} />
-          <Route
-            path="/community/:communityId"
-            element={<CommunityProfile />}
-          />
+          <Route path="/community" element={<CommunityHome />} />
+          <Route path="/explore-community" element={<Communities />} />
+          <Route path="/create-community" element={<CreateCommunity />} />
+          <Route path="/manage-community" element={<ManageCommunity />} />
+          <Route path="community/:communityId" element={<CommunityProfile />} />
+          <Route path="/conversations" element={<ChatsHome />} />
         </Routes>
       </div>
     </>

@@ -10,11 +10,11 @@ const PostCard = ({ post }) => {
   const [comment, setComment] = useState("");
   const postOwner = post?.user;
 
-  const isLiked = false;
+  let isLiked = false;
   let isMyPost = true;
 
   const { user } = useSelector((store) => store.auth);
-  if (postOwner?._id.toString() === user?._id.toString()) {
+  if (postOwner?._id?.toString() === user?._id?.toString()) {
     isMyPost = true;
   } else {
     isMyPost = false;
@@ -22,7 +22,7 @@ const PostCard = ({ post }) => {
 
   const formattedDate = "1h";
 
-  const isCommenting = false;
+  let isCommenting = false;
 
   const handleDeletePost = async () => {
     try {
@@ -92,21 +92,19 @@ const PostCard = ({ post }) => {
     <>
       <article className="w-[90%] sm:w-[80%] mx-auto">
         <div className="flex gap-2 items-start p-4 border-b-2 border-gray-300 bg-[#fdfdfd]">
-      
-            <div className="avatar h-8">
-              <Link
-                to={`/profile/${postOwner?.username}`}
-                className="w-8 rounded-full overflow-hidden"
-              >
-                <img
-                  src={
-                    postOwner?.profile?.profileImg ||
-                    "/assets/avatar-placeholder.png"
-                  }
-                />
-              </Link>
-            </div>
-       
+          <div className="avatar h-8">
+            <Link
+              to={`/profile/${postOwner?.username}`}
+              className="w-8 rounded-full overflow-hidden"
+            >
+              <img
+                src={
+                  postOwner?.profile?.profileImg ||
+                  "/assets/avatar-placeholder.png"
+                }
+              />
+            </Link>
+          </div>
 
           <div className="flex flex-col flex-1">
             <div className="flex gap-2 items-center">

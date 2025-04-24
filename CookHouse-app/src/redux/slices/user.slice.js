@@ -10,6 +10,7 @@ const userSlice = createSlice({
     selfPosts: [],
     selfRecipes: [],
     singleUser: null,
+    excludingAuthUser: [],
   },
   reducers: {
     // actions
@@ -28,11 +29,14 @@ const userSlice = createSlice({
     setSelfPosts: (state, action) => {
       state.selfPosts = action.payload;
     },
-    setSelfRecipes: (state, action)=> {
+    setSelfRecipes: (state, action) => {
       state.selfRecipes = action.payload;
     },
     setSingleUser: (state, action) => {
       state.singleUser = action.payload;
+    },
+    setExcludingAuthUser: (state, action) => {
+      state.excludingAuthUser = action.payload;
     },
   },
 });
@@ -47,5 +51,6 @@ export const {
   setSelfPosts,
   setSelfRecipes,
   setSingleUser,
+  setExcludingAuthUser,
 } = userSlice.actions;
 export default userSlice.reducer;

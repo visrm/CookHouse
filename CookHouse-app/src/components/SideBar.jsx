@@ -1,10 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
-import {
-  MdOutlineHome,
-  MdNotificationsNone,
-  MdOutlinePeople,
-} from "react-icons/md";
+import { MdOutlineHome, MdNotificationsNone } from "react-icons/md";
 import { LuUserRound } from "react-icons/lu";
+import { RiCommunityLine, RiWechatLine } from "react-icons/ri";
 import { TbLogout } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setUser } from "../redux/slices/auth.slice.js";
@@ -44,7 +41,7 @@ const SideBar = () => {
           id="side-bar"
         >
           <div className="flex flex-col justify-start bg-amber-200 w-full h-full">
-            <ul className="flex flex-col gap-2 sm:gap-3 h-full">
+            <ul className="flex flex-col gap-2 h-full">
               <li className="flex justify-center md:justify-start">
                 <Link
                   to="/home"
@@ -69,21 +66,18 @@ const SideBar = () => {
                   </span>
                 </Link>
               </li>
-              {user?.profile?.communities.length !== 0 && (
-                <li className="flex justify-center md:justify-start">
-                  <Link
-                    to="/community"
-                    className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
-                    replace
-                  >
-                    <MdOutlinePeople className="w-8 h-8" />
-                    <span className="text-base hidden font-semibold md:block">
-                      Community
-                    </span>
-                  </Link>
-                </li>
-              )}
-
+              <li className="flex justify-center md:justify-start">
+                <Link
+                  to="/conversations"
+                  className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
+                  replace
+                >
+                  <RiWechatLine className="w-8 h-8" />
+                  <span className="text-base hidden font-semibold md:block">
+                    Chats
+                  </span>
+                </Link>
+              </li>
               {user && (
                 <li className="flex justify-center md:justify-start">
                   <Link
@@ -91,9 +85,23 @@ const SideBar = () => {
                     className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
                     replace
                   >
-                    <LuUserRound className="h-8 w-8" />
+                    <LuUserRound className="w-8 h-8" />
                     <span className="text-base hidden font-semibold md:block">
                       Profile
+                    </span>
+                  </Link>
+                </li>
+              )}
+              {user?.profile?.communities.length !== 0 && (
+                <li className="flex justify-center md:justify-start">
+                  <Link
+                    to="/community"
+                    className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
+                    replace
+                  >
+                    <RiCommunityLine className="w-8 h-8" />
+                    <span className="text-base hidden font-semibold md:block">
+                      Community
                     </span>
                   </Link>
                 </li>

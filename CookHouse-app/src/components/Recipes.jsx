@@ -23,7 +23,7 @@ const Recipes = () => {
         </div>
       )}
       {!fetching &&
-        allRecipes.length !== 0 &&
+        allRecipes.length > 0 &&
         allRecipes.map((recipe) => {
           return <RecipesCard recipe={recipe} key={recipe?._id} />;
         })}

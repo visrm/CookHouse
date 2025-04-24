@@ -9,6 +9,7 @@ const postSlice = createSlice({
     communityPosts: [],
     likedPosts: [],
     followingPosts: [],
+    usersCommunitiesPosts: [],
   },
   reducers: {
     // actions
@@ -30,6 +31,9 @@ const postSlice = createSlice({
     setFollowingPosts: (state, action) => {
       state.followingPosts = action.payload;
     },
+    setUsersCommunitiesPosts: (state, action) => {
+      state.usersCommunitiesPosts = action.payload;
+    },
   },
 });
 
@@ -40,5 +44,6 @@ export const {
   setCommunityPosts,
   setLikedPosts,
   setFollowingPosts,
+  setUsersCommunitiesPosts,
 } = postSlice.actions;
 export default postSlice.reducer;

@@ -23,7 +23,7 @@ const Posts = () => {
         </div>
       )}
       {!fetching &&
-        allPosts.length !== 0 &&
+        allPosts.length > 0 &&
         allPosts.map((post) => {
           return <PostsCard post={post} key={post?._id} />;
         })}

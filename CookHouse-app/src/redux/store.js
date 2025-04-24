@@ -1,10 +1,28 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import {
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
 // Slice imports
 import authSlice from "./slices/auth.slice.js";
 import userSlice from "./slices/user.slice.js";
 import postSlice from "./slices/post.slice.js";
 import recipeSlice from "./slices/recipe.slice.js";
 import communitySlice from "./slices/community.slice.js";
+import chatSlice from "./slices/chat.slice.js";
+
+const persistConfig = {
+  key: "root",
+  version: 1,
+  storage,
+};
 
 const rootReducer = combineReducers({
   auth: authSlice,
@@ -12,13 +30,18 @@ const rootReducer = combineReducers({
   posts: postSlice,
   recipes: recipeSlice,
   communities: communitySlice,
+  chats: chatSlice,
 });
 
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false,
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
     }),
 });
 

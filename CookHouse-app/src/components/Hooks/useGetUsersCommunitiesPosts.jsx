@@ -1,33 +1,40 @@
 import axios from "axios";
 import { useEffect } from "react";
+import { POSTS_API_END_POINT } from "../../utils/constants.js";
+// redux features import
 import { useDispatch } from "react-redux";
-import { setSelfRecipes } from "../../redux/slices/user.slice.js";
-import { setFetching } from "../../redux/slices/post.slice.js";
-import { RECIPES_API_END_POINT } from "../../utils/constants.js";
+import {
+  setLoading,
+  setFetching,
+  setUsersCommunitiesPosts,
+} from "../../redux/slices/post.slice.js";
 import toast from "react-hot-toast";
 
-const useGetUserRecipes = async (username) => {
+const useGetUsersCommunitiesPosts = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
-    (async function FetchUserRecipes() {
+    (async function FetchUsersCommunitiesPosts() {
       try {
+        dispatch(setLoading(true));
         dispatch(setFetching(true));
         const response = await axios.get(
-          `${RECIPES_API_END_POINT}/user/${username}`,
+          `${POSTS_API_END_POINT}/communities/user`,
           {
             withCredentials: true,
           }
         );
         if (response.data.success) {
-          dispatch(setSelfRecipes(response.data.recipes));
+          dispatch(setUsersCommunitiesPosts(response.data.posts));
         }
       } catch (error) {
         toast.error(error.response.data.message);
       } finally {
+        dispatch(setLoading(false));
         dispatch(setFetching(false));
       }
     })();
   }, []);
 };
 
-export default useGetUserRecipes
+export default useGetUsersCommunitiesPosts;

@@ -8,6 +8,7 @@ import {
   getCommunityById,
   joinUnjoinCommunityById,
   getOwnerCommunities,
+  getUserCommunities,
 } from "../controllers/community.controller.js";
 
 const router = Router();
@@ -17,6 +18,7 @@ router.delete("/delete/:communityId", isAuthenticated, deleteCommunityById);
 router.get("/all", isAuthenticated, getCommunities);
 router.get("/get/:communityId", isAuthenticated, getCommunityById);
 router.get("/own", isAuthenticated, getOwnerCommunities);
+router.get("/user/communities", isAuthenticated, getUserCommunities);
 router.get("/join/:communityId", isAuthenticated, joinUnjoinCommunityById);
 router.patch("/update/:communityId", isAuthenticated, updateCommunity);
 

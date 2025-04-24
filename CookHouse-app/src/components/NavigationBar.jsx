@@ -33,20 +33,23 @@ const NavigationBar = () => {
                 className="menu dropdown-content bg-amber-200 rounded-box z-1 mt-4 md:mt-6 w-56 px-2 shadow-sm"
               >
                 <li>
-                  <Link to="/community/create">
+                  <Link to="/create-community">
                     <TbCirclePlus className="h-5 w-5" />
                     Create Community
                   </Link>
                 </li>
+                
+                {user?.profile.communities.length > 0 && (
+                  <li>
+                    <Link to="/manage-community">
+                      <TbSettings className="h-5 w-5" />
+                      Manage Community
+                    </Link>
+                  </li>
+                )}
 
                 <li>
-                  <Link to="/community/manage">
-                    <TbSettings className="h-5 w-5" />
-                    Manage Community
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/community/explore">
+                  <Link to="/explore-community">
                     <TbEye className="h-5 w-5" />
                     Explore Communities
                   </Link>

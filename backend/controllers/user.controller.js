@@ -47,22 +47,34 @@ export const followUnfollowUser = async (req, res) => {
 
     if (isFollowing) {
       // then unfollow user
-      await User.findByIdAndUpdate(id, { $pull: { followers: req.id } });
-      await User.findByIdAndUpdate(req.id, { $pull: { following: id } });
+      const removeFollower = await User.findByIdAndUpdate(id, {
+        $pull: { followers: req.id },
+      });
+      const removeFollowing = await User.findByIdAndUpdate(req.id, {
+        $pull: { following: id },
+      });
+
+      await Promise.all([removeFollower, removeFollowing]);
+
       return res.status(200).json({
         message: "User unfollowed successfully!",
         success: true,
       });
     } else {
       // then follow user
-      await User.findByIdAndUpdate(id, { $push: { followers: req.id } });
-      await User.findByIdAndUpdate(req.id, { $push: { following: id } });
+      const addFollower = await User.findByIdAndUpdate(id, {
+        $push: { followers: req.id },
+      });
+      const addFollowing = await User.findByIdAndUpdate(req.id, {
+        $push: { following: id },
+      });
       const newNotification = new Notification({
         type: "follow",
         from: req.id,
-        to: userById.id,
+        to: userById._id,
       });
-      await newNotification.save();
+      
+      await Promise.all([newNotification.save(), addFollower, addFollowing]);
 
       // TODO return the id of the user as a response
       return res.status(200).json({
@@ -112,6 +124,84 @@ export const getSuggestedUsers = async (req, res) => {
   }
 };
 
+export const getFollowingUsersById = async (req, res) => {
+  try {
+    const userId = req.params;
+
+    const user = await User.findById(userId).sort({ createdAt: 1 }).populate({
+      path: "following",
+      select: "-password",
+    });
+
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
+    const users = [];
+    user.following.map((user) => users.push(user));
+
+    if (users.length === 0)
+      return res.status(200).json({
+        message: "No following users.",
+        users: [],
+        success: true,
+      });
+
+    return res.status(200).json({
+      message: "Following users fetched successfully.",
+      users,
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error in getFollowingUsersById: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};
+
+export const getFollowerUsersById = async (req, res) => {
+  try {
+    const userId = req.params;
+
+    const user = await User.findById(userId).sort({ createdAt: 1 }).populate({
+      path: "followers",
+      select: "-password",
+    });
+
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
+    const users = [];
+    user.followers.map((user) => users.push(user));
+
+    if (users.length === 0)
+      return res.status(200).json({
+        message: "No follower users.",
+        users: [],
+        success: true,
+      });
+
+    return res.status(200).json({
+      message: "Follower users fetched successfully.",
+      users,
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error in getFollowerUsersById: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};
+
 export const updateUser = async (req, res) => {
   const { username, fullname, email, currentPassword, newPassword } = req.body;
   let { profile, phoneNumber } = req.body;
@@ -140,34 +230,37 @@ export const updateUser = async (req, res) => {
       user.password = await bcrypt.hash(newPassword, 10);
     }
 
-    // update profileImg
-    if (profile.profileImg) {
-      if (user.profile.profileImg)
-        await cloudinary.uploader.destroy(
-          user.profile.profileImg.split("/").pop().split(".")[0]
-        );
+    if (profile) {
+      // update profileImg
+      if (profile.profileImg) {
+        if (user.profile.profileImg)
+          await cloudinary.uploader.destroy(
+            user.profile.profileImg.split("/").pop().split(".")[0]
+          );
 
-      const uploadedResponse = await cloudinary.uploader.upload(
-        profile.profileImg
-      );
-      user.profile.profileImg = uploadedResponse.secure_url;
-    }
-    // update coverImg
-    if (profile.coverImg) {
-      if (user.profile.coverImg)
-        await cloudinary.uploader.destroy(
-          user.profile.coverImg.split("/").pop().split(".")[0]
+        const uploadedResponse = await cloudinary.uploader.upload(
+          profile.profileImg
         );
+        user.profile.profileImg = uploadedResponse.secure_url;
+      }
+      // update coverImg
+      if (profile.coverImg) {
+        if (user.profile.coverImg)
+          await cloudinary.uploader.destroy(
+            user.profile.coverImg.split("/").pop().split(".")[0]
+          );
 
-      const uploadedResponse = await cloudinary.uploader.upload(
-        profile.coverImg
-      );
-      user.profile.coverImg = uploadedResponse.secure_url;
+        const uploadedResponse = await cloudinary.uploader.upload(
+          profile.coverImg
+        );
+        user.profile.coverImg = uploadedResponse.secure_url;
+      }
+
+      if (profile.bio) user.profile.bio = profile.bio;
+      if (profile.diet_preference)
+        user.profile.diet_preference = profile.diet_preference;
+      if (profile.location) user.profile.location = profile.location;
     }
-    if (profile.bio) user.profile.bio = profile.bio;
-    if (profile.diet_preference)
-      user.profile.diet_preference = profile.diet_preference;
-    if (profile.location) user.profile.location = profile.location;
 
     if (phoneNumber) user.phoneNumber = phoneNumber;
 
@@ -186,6 +279,31 @@ export const updateUser = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in updateUser: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};
+
+export const excludingLoggedUser = async (req, res) => {
+  try {
+    const userId = req.id;
+    const users = await User.find({ _id: { $ne: userId } }).select("-password");
+
+    if (!users)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
+    return res.status(200).json({
+      message: "User updated successfully.",
+      users,
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error in excludingLoggedUser: ", error.message);
     res.status(500).json({
       message: "Internal Server Error.",
       success: false,

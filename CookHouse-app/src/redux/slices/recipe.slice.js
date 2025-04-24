@@ -9,6 +9,7 @@ const recipeSlice = createSlice({
     communityRecipes: [],
     likedRecipes: [],
     followingRecipes: [],
+    usersCommunitiesRecipes: [],
   },
   reducers: {
     // actions
@@ -30,6 +31,9 @@ const recipeSlice = createSlice({
     setFollowingRecipes: (state, action) => {
       state.followingRecipes = action.payload;
     },
+    setUsersCommunitiesRecipes: (state, action) => {
+      state.usersCommunitiesRecipes = action.payload;
+    },
   },
 });
 
@@ -40,5 +44,6 @@ export const {
   setCommunityRecipes,
   setLikedRecipes,
   setFollowingRecipes,
+  setUsersCommunitiesRecipes,
 } = recipeSlice.actions;
 export default recipeSlice.reducer;

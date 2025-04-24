@@ -136,7 +136,17 @@ export const updateCommunity = async (req, res) => {
     const { communityId } = req.params;
     const userId = req.id;
 
-    var community = await Community.findById(communityId);
+    var community = await Community.findById(communityId)
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "owner",
+        select: "-password -profile.communities",
+      })
+      .populate({
+        path: "members",
+        select: "-password -profile.communities",
+      });
+
     if (!community)
       return res.status(404).json({
         message: "Community not found.",
@@ -149,7 +159,7 @@ export const updateCommunity = async (req, res) => {
         success: false,
       });
 
-    if (user._id.toString() !== community.owner.toString())
+    if (user._id.toString() !== community.owner._id.toString())
       return res.status(401).json({
         message: "Unauthorised Community Updation.",
         success: false,
@@ -212,7 +222,7 @@ export const getCommunities = async (req, res) => {
       })
       .populate({
         path: "members",
-        select: "profile _id username",
+        select: "-password -profile.communities",
       });
     if (!communities) {
       return res.status(404).json({
@@ -271,6 +281,7 @@ export const getCommunityById = async (req, res) => {
   }
 };
 
+// for community owner
 export const getOwnerCommunities = async (req, res) => {
   try {
     const userId = req.id;
@@ -308,6 +319,54 @@ export const getOwnerCommunities = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in getOwnerCommunities: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};
+
+export const getUserCommunities = async (req, res) => {
+  try {
+    const userId = req.id;
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
+    const query = {
+      $or: [{ members: { $in: userId } }, { owner: userId }],
+    };
+
+    const communities = await Community.find(query)
+      .sort({ createdAt: -1 })
+      .populate({ path: "posts", select: "-community" })
+      .populate({ path: "recipes", select: "-community" })
+      .populate({
+        path: "owner",
+        select: "-password -profile.communities",
+      })
+      .populate({
+        path: "members",
+        select: "-password -profile.communities",
+      });
+
+    if (communities.length === 0)
+      return res.status(200).json({
+        message: "Communities fetched successfully.",
+        communities: [],
+        success: true,
+      });
+
+    return res.status(200).json({
+      message: "Your communities fetched successfully!",
+      communities,
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error in getUserCommunities: ", error.message);
     res.status(500).json({
       message: "Internal Server Error.",
       success: false,
@@ -357,15 +416,23 @@ export const joinUnjoinCommunityById = async (req, res) => {
     if (isMemberArray.includes(true)) {
       // If the user is already a member
       user.profile.communities.pull({ community: communityId, role: "member" });
+      community.members.pull(userId);
+
       await user.save();
+      await community.save();
+
       return res.status(200).json({
         message: "Community left successfully!",
         success: true,
       });
     } else {
-      // If user isn't a member
+      // If user isn't a member yet
       user.profile.communities.push({ community, role: "member" });
+      community.members.push(userId);
+
       await user.save();
+      await community.save();
+
       return res.status(200).json({
         message: "Community joined successfully!",
         success: true,

@@ -24,10 +24,13 @@ const CreateRecipe = () => {
   const isError = false;
 
   const { user } = useSelector((store) => store.auth);
+  const { singleCommunity } = useSelector((store) => store.communities);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      let communityId = singleCommunity._id;
+
       let recipeData = {
         user: user?._id,
         title: recipe.title,
@@ -39,7 +42,7 @@ const CreateRecipe = () => {
         media_url: img,
       };
       const response = await axios.post(
-        `${RECIPES_API_END_POINT}/create`,
+        `${RECIPES_API_END_POINT}/${communityId}/create`,
         recipeData,
         {
           headers: {
@@ -207,7 +210,7 @@ const CreateRecipe = () => {
   );
 };
 
-const CreatePostAndRecipe = () => {
+const CreateCommunityPostAndRecipe = () => {
   const [text, setText] = useState("");
   const [img, setImg] = useState(null);
 
@@ -217,17 +220,19 @@ const CreatePostAndRecipe = () => {
   const isError = false;
 
   const { user } = useSelector((store) => store.auth);
+  const { singleCommunity } = useSelector((store) => store.communities);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      let communityId = singleCommunity._id;
       let postData = {
         user: user?._id,
         text: text,
         media_url: img,
       };
       const response = await axios.post(
-        `${POSTS_API_END_POINT}/create`,
+        `${POSTS_API_END_POINT}/${communityId}/create`,
         postData,
         {
           headers: {
@@ -261,7 +266,7 @@ const CreatePostAndRecipe = () => {
 
   return (
     <>
-      <article className="flex flex-col min-w-fit w-[75%] md:w-[50%] max-w-[90%] mx-auto">
+      <article className="flex flex-col min-w-fit w-[75%] md:w-[66%] mx-auto py-2">
         <div className="flex flex-col flex-nowrap my-2 sm:my-3 md:my-6 lg:my-8 w-full rounded-xl bg-amber-200 p-4 items-start gap-4 border-b border-gray-100">
           <div className="avatar">
             <div className="w-8 rounded-full">
@@ -335,4 +340,4 @@ const CreatePostAndRecipe = () => {
     </>
   );
 };
-export default CreatePostAndRecipe;
+export default CreateCommunityPostAndRecipe;

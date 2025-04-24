@@ -4,13 +4,15 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { v2 as cloudinary } from "cloudinary";
 import dbConnect from "./utils/dbConnect.js";
+
 // api-routes
 import authRoute from "./routes/auth.route.js";
 import userRoute from "./routes/user.route.js";
 import postRoute from "./routes/post.route.js";
 import recipeRoute from "./routes/recipe.route.js";
 import notificationRoute from "./routes/notification.route.js";
-import  communityRoute from "./routes/community.route.js"
+import communityRoute from "./routes/community.route.js";
+import chatRoute from "./routes/chat.route.js";
 
 dotenv.config({});
 cloudinary.config({
@@ -40,6 +42,7 @@ app.use("/api/v0/posts", postRoute);
 app.use("/api/v0/recipes", recipeRoute);
 app.use("/api/v0/notifications", notificationRoute);
 app.use("/api/v0/communities", communityRoute);
+app.use("/api/v0/chats", chatRoute);
 
 app.listen(PORT, async () => {
   console.log(`Server is running on port: ${PORT}`);

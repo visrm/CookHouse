@@ -47,6 +47,9 @@ const CreateCommunity = () => {
       if (response.data.success) {
         toast.success(response.data.message);
         dispatch(setSelfCommunity(response.data.community));
+        setTimeout(() => {
+          navigate(-1);
+        }, 1000);
       }
     } catch (err) {
       toast.error(err.response.data.message);
@@ -68,7 +71,9 @@ const CreateCommunity = () => {
             className="block min-w-72 w-full md:min-h-74 h-full text-base"
             onSubmit={handleSubmit}
           >
-            <h2 className="block font-bold text-xl my-1 sm:my-2 mx-auto">Add Community</h2>
+            <h2 className="block font-bold text-xl my-1 sm:my-2 mx-auto">
+              Add Community
+            </h2>
             <label htmlFor="name" className="block font-semibold text-sm">
               Name :
             </label>

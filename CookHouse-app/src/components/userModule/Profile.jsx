@@ -7,8 +7,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 // import { useGetLikedPosts } from "../Hooks/useGetLikedPosts.jsx";
-import { useGetUserPosts } from "../Hooks/useGetUserPosts.jsx";
-import { useGetUserRecipes } from "../Hooks/useGetUserRecipes.jsx";
+import useGetUserPosts from "../Hooks/useGetUserPosts.jsx";
+import useGetUserRecipes from "../Hooks/useGetUserRecipes.jsx";
 
 import ProfileSkeleton from "../Skeleton/ProfileSkeleton.jsx";
 import PostsCard from "../PostCard.jsx";
@@ -17,203 +17,24 @@ import LoadingSpinner from "../LoadingSpinner.jsx";
 import toast from "react-hot-toast";
 import { setLoading, setSingleUser } from "../../redux/slices/user.slice.js";
 import { setUser } from "../../redux/slices/auth.slice.js";
-
-const EditProfileModal = () => {
-  const { user } = useSelector((store) => store.auth);
-
-  const dispatch = useDispatch();
-
-  const [userData, setUserData] = useState({
-    username: user?.username || "",
-    fullname: user?.fullname || "",
-    email: user?.email || "",
-    currentPassword: "",
-    newPassword: "",
-  });
-
-  const handleChange = async (e) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    let updateInfo = {
-      username: userData.username,
-      fullname: userData.fullname,
-      email: userData.email,
-      currentPassword: userData.currentPassword,
-      newPassword: userData.newPassword,
-    };
-    try {
-      dispatch(setLoading(true));
-      const response = await axios.patch(
-        `${USERS_API_END_POINT}/update`,
-        updateInfo,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-
-      if (response.data.success) {
-        dispatch(setUser(response.data.user));
-        toast.success(response.data.message);
-      }
-    } catch (error) {
-      toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoading(false));
-      setUserData({
-        username: user?.username || "",
-        fullname: user?.fullname || "",
-        email: user?.email || "",
-        currentPassword: "",
-        newPassword: "",
-      });
-      document.getElementById("editModal").close();
-    }
-  };
-
-  return (
-    <>
-      {/* You can open the modal using document.getElementById('ID').showModal() method */}
-
-      <button
-        className="btn btn-sm bg-indigo-600 text-[#fdfdfd] border-0 w-fit ml-auto"
-        onClick={() => document.getElementById("editModal").showModal()}
-      >
-        Edit Profile
-      </button>
-
-      <dialog id="editModal" className="modal">
-        <div className="modal-box w-102">
-          <form method="dialog" id="handleClose">
-            {/* if there is a button in form, it will close the modal */}
-            <button
-              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-              onClick={() => {
-                setUserData({
-                  username: user?.username || "",
-                  fullname: user?.fullname || "",
-                  email: user?.email || "",
-                  currentPassword: "",
-                  newPassword: "",
-                });
-              }}
-            >
-              ✕
-            </button>
-          </form>
-          <h3 className="font-bold text-lg md:text-xl">Edit Profile</h3>
-          <form
-            method="PATCH"
-            className="flex flex-col flex-[2_2_0] flex-wrap gap-1"
-            id="handlePatch"
-            onSubmit={handleSubmit}
-          >
-            <div>
-              <label className="w-fit font-base text-sm" htmlFor="fullname">
-                Fullname:
-              </label>
-              <input
-                type="text"
-                className="input font-medium"
-                placeholder="Fullname"
-                id="fullname"
-                name="fullname"
-                value={userData.fullname}
-                pattern="[A-Za-z]*"
-                maxLength={30}
-                title="Only letters"
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label className="w-fit font-base text-sm" htmlFor="username">
-                Username:
-              </label>
-              <input
-                type="input"
-                className="input font-medium"
-                placeholder="Username"
-                id="username"
-                name="username"
-                value={userData.username}
-                pattern="[A-Za-z][A-Za-z0-9\-]*"
-                minLength={3}
-                maxLength={30}
-                title="Only letters, numbers or dash"
-                autoComplete="username"
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label className="w-fit font-base text-sm" htmlFor="email">
-                Email:
-              </label>
-              <input
-                type="email"
-                className="input font-medium"
-                placeholder="Email Address"
-                id="email"
-                name="email"
-                value={userData.email}
-                autoComplete="username"
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label className="w-fit font-base text-sm" htmlFor="CrPassword">
-                Current Password:
-              </label>
-              <input
-                type="password"
-                className="input font-medium"
-                id="CrPassword"
-                name="currentPassword"
-                value={userData.currentPassword}
-                maxLength={20}
-                autoComplete="new-password"
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label className="w-fit font-base text-sm" htmlFor="NwPassword">
-                New Password:
-              </label>
-              <input
-                type="password"
-                className="input font-medium"
-                id="NwPassword"
-                name="newPassword"
-                value={userData.newPassword}
-                maxLength={20}
-                autoComplete="new-password"
-                onChange={handleChange}
-              />
-            </div>
-            <button className="btn max-w-fit" type="submit">
-              Update
-            </button>
-          </form>
-        </div>
-      </dialog>
-    </>
-  );
-};
+import getMonth from "../../utils/getMonth.js";
+import EditProfileModal from "../EditProfileModal.jsx";
 
 const Profile = () => {
   const [coverImg, setCoverImg] = useState(null);
   const [profileImg, setProfileImg] = useState(null);
   const [feedType, setFeedType] = useState("posts");
+  const [count, setCount] = useState({
+    followingCount: 0,
+    followersCount: 0,
+  });
   const [isFollowing, setIsFollowing] = useState(false);
 
   const coverImgRef = useRef(null);
   const profileImgRef = useRef(null);
 
-  const { userName } = useParams();
+  const params = useParams();
+  var userName = params.userName;
 
   const { user } = useSelector((store) => store.auth);
   const { fetching, likedPosts } = useSelector((store) => store.posts);
@@ -224,6 +45,7 @@ const Profile = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    userName = params.userName;
     (async function FetchUserInfo() {
       try {
         dispatch(setLoading(true));
@@ -240,6 +62,10 @@ const Profile = () => {
         toast.error(error.response.data.message);
       } finally {
         dispatch(setLoading(false));
+        setCount({
+          followingCount: singleUser?.following.length,
+          followersCount: singleUser?.followers.length,
+        });
       }
     })();
   }, []);
@@ -319,35 +145,6 @@ const Profile = () => {
       toast.error(error.response.data.message);
     }
   };
-
-  const getMonth = (str) => {
-    switch (str) {
-      case "01":
-        return "January";
-      case "02":
-        return "February";
-      case "03":
-        return "March";
-      case "04":
-        return "April";
-      case "05":
-        return "May";
-      case "06":
-        return "June";
-      case "07":
-        return "July";
-      case "08":
-        return "August";
-      case "09":
-        return "September";
-      case "10":
-        return "October";
-      case "11":
-        return "November";
-      case "12":
-        return "December";
-    }
-  };
   // console.log(user?._id);
   return (
     <>
@@ -418,7 +215,7 @@ const Profile = () => {
                   </span>
                 </h1>
                 <div className="flex pr-1 mb-2 text-sm">
-                  {singleUser?.profile?.bio || "Add bio section."}
+                  {singleUser?.profile?.bio}
                 </div>
                 <div className="flex gap-2 items-center mb-2">
                   <IoCalendarOutline className="w-4 h-4 text-slate-500" />
@@ -436,13 +233,13 @@ const Profile = () => {
                 <ul className="flex mt-1 sm:mt-2 md:mt-3 list-none gap-2 md:gap-3 text-sm md:text-xs text-slate-400">
                   <li>
                     <span className="px-0.5 font-sans font-semibold text-slate-800">
-                      {singleUser?.following?.length}
+                      {count.followingCount}
                     </span>{" "}
                     following{" "}
                   </li>
                   <li>
                     <span className="px-0.5 font-sans font-semibold text-slate-800">
-                      {singleUser?.followers?.length}
+                      {count.followersCount}
                     </span>{" "}
                     followers{" "}
                   </li>
@@ -452,32 +249,36 @@ const Profile = () => {
           </section>
         )}
 
-        <article className="flex mr-1 px-1 gap-x-1 w-full bg-[#fffff]">
-          {isMyProfile && (
-            <div className="w-full flex flex-end bg-[#ffffff]">
-              <EditProfileModal />
-            </div>
-          )}
-          {!isMyProfile && (
-            <button
-              type="button"
-              className="btn btn-sm bg-indigo-600 text-[#fdfdfd] border-0 ml-auto w-fit"
-              onClick={() => {
-                handleFollows(singleUser?._id);
-              }}
-            >
-              {isFollowing ? "Unfollow" : "Follow"}
-            </button>
-          )}
-          {(coverImg || profileImg) && (
-            <button
-              className="btn bg-indigo-600 text-[#fdfdfd] border-0 btn-sm px-4 w-fit"
-              onClick={handleImgSubmit}
-            >
-              Update
-            </button>
-          )}
-        </article>
+        <div className="block py-2 bg-[#fff]">
+          <div className="flex mr-1 px-1 gap-x-1 w-full">
+            {isMyProfile && (
+              <div className="w-full flex flex-end bg-[#ffffff]">
+                <EditProfileModal />
+              </div>
+            )}
+            {!isMyProfile && (
+              <button
+                type="button"
+                className="btn btn-sm bg-indigo-600 text-[#fff] border-0 w-fit ml-auto"
+                onClick={() => {
+                  handleFollows(singleUser?._id);
+                }}
+              >
+                {isFollowing ? "Unfollow" : "Follow"}
+              </button>
+            )}
+            {(coverImg || profileImg) && (
+              <div className="bg-[#ffffff]">
+                <button
+                  className="btn bg-indigo-600 text-[#fff] border-0 btn-sm px-4 w-fit"
+                  onClick={handleImgSubmit}
+                >
+                  Update
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
 
         <section>
           <div className="sticky top-12 md:top-15 flex w-full font-semibold shadow-md z-50 bg-[#ffffff]">

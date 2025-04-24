@@ -12,6 +12,7 @@ body {
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   background-color: #f0f0f0;
   color: #000;
+  scroll-behavior: smooth;
 }
 
 section {

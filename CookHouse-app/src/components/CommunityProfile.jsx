@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   setLoadingCommunity,
   setSingleCommunity,
@@ -13,6 +13,10 @@ import CommunityPosts from "./CommunityPosts.jsx";
 import toast from "react-hot-toast";
 import { COMMUNITIES_API_END_POINT } from "../utils/constants.js";
 import CommunityRecipes from "./CommunityRecipes.jsx";
+import CreateCommunityPostAndRecipe from "./CreateCommunityPostAndRecipe.jsx";
+import LoadingSpinner from "./LoadingSpinner.jsx";
+import EditCommunityModal from "./EditCommunityModal"
+
 
 const CommunityProfile = () => {
   const [feedType, setFeedType] = useState("posts");
@@ -23,6 +27,7 @@ const CommunityProfile = () => {
   const profileImgRef = useRef(null);
 
   const params = useParams();
+  const navigate = useNavigate();
   var communityId = params.communityId;
 
   const { user } = useSelector((store) => store.auth);
@@ -46,15 +51,17 @@ const CommunityProfile = () => {
           dispatch(setSingleCommunity(response.data.community));
         }
       } catch (error) {
-        toast.error(error.response.data.message);
+        console.error(error.response.data.message);
       } finally {
         dispatch(setLoadingCommunity(false));
       }
     })();
+
+    
   }, []);
 
   let isMyCommunity = false;
-  if (user?._id.toString() === singleCommunity?.owner?._id.toString()) {
+  if (singleCommunity?.owner?._id.toString() === user?._id.toString()) {
     isMyCommunity = true;
   }
 
@@ -70,8 +77,7 @@ const CommunityProfile = () => {
     }
   };
 
-  const handleImgSubmit = async (e) => {
-    e.preventDefault();
+  const handleImgSubmit = async (communityId) => {
     let updateInfo = {
       profileImg,
       coverImg,
@@ -96,6 +102,41 @@ const CommunityProfile = () => {
     } finally {
       setCoverImg(null);
       setProfileImg(null);
+    }
+  };
+
+  const handleJoins = async (communityId) => {
+    try {
+      const response = await axios.get(
+        `${COMMUNITIES_API_END_POINT}/join/${communityId}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const handleDeletion = async (communityId) => {
+    try {
+      const response = await axios.delete(
+        `${COMMUNITIES_API_END_POINT}/delete/${communityId}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        navigate(-1);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
   };
 
@@ -134,97 +175,136 @@ const CommunityProfile = () => {
         {/* User Profile Details*/}
         {loadingCommunity && <ProfileSkeleton />}
         {!loadingCommunity && singleCommunity && (
-          <section className="flex flex-col flex-nowrap flex-[4_4_0] gap-1 w-full max-w-full transition-all duration-300">
-            <div className="relative block h-fit">
-              <img
-                src={
-                  coverImg || singleCommunity?.coverImg || "/assets/cover.png"
-                }
-                className="object-cover w-full max-h-56 z-0"
-              />
-              {isMyCommunity && (
-                <span className="absolute bottom-1 right-1 rounded-full truncate flex place-items-center h-7.5 w-8 hover:scale-105 border-slate-500 bg-slate-200">
-                  <MdOutlineModeEdit
-                    className="h-6 w-6 mx-auto cursor-pointer text-slate-800"
-                    onClick={() => coverImgRef.current.click()}
-                  />
-                </span>
-              )}
-              {/* User Inputs for profileImg & coverImg */}
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                ref={coverImgRef}
-                onChange={(e) => handleImgChange(e, "coverImg")}
-              />
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                ref={profileImgRef}
-                onChange={(e) => handleImgChange(e, "profileImg")}
-              />
-              {/* User Avatar */}
-              <div className="avatar absolute block left-4 -bottom-16 z-0">
-                <div className="relative w-28 sm:w-28 md:w-36 ring-slate-400 rounded-full ring-2 ring-offset-2">
-                  <img
-                    src={
-                      profileImg ||
-                      singleCommunity?.profileImg ||
-                      "/assets/avatar-placeholder.png"
-                    }
-                  />
-                </div>
+          <>
+            <section className="flex flex-col flex-nowrap flex-[4_4_0] gap-1 w-full max-w-full transition-all duration-300">
+              <div className="relative block h-fit">
+                <img
+                  src={
+                    coverImg || singleCommunity?.coverImg || "/assets/cover.png"
+                  }
+                  className="object-cover w-full max-h-56 z-0"
+                />
                 {isMyCommunity && (
-                  <span
-                    className="absolute bottom-0 left-[75%] rounded-full truncate flex place-items-center h-7.5 w-8 hover:scale-105 bg-slate-600 border-2 border-slate-600 hover:bg-slate-300 hover:border-slate-300"
-                    onClick={() => profileImgRef.current.click()}
-                  >
-                    <MdOutlineModeEdit className="h-6 w-6 mx-auto cursor-pointer text-white hover:text-slate-800" />
+                  <span className="absolute bottom-1 right-1 rounded-full truncate flex place-items-center h-7.5 w-8 hover:scale-105 border-slate-500 bg-slate-200">
+                    <MdOutlineModeEdit
+                      className="h-6 w-6 mx-auto cursor-pointer text-slate-800"
+                      onClick={() => coverImgRef.current.click()}
+                    />
                   </span>
                 )}
-              </div>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full bg-[#ffffff]">
-              <span className="grid col-start-2 sm:col-start-2 col-span-2 py-1 text-left w-fit">
-                <h1 className="flex flex-col flex-nowrap mb-2 gap-0 text-xl md:text-3xl font-semibold">
-                  {singleCommunity?.name}
-                  <span className="text-sm text-slate-800 font-medium">
-                    {singleCommunity?.description}
-                  </span>
-                  <span className="text-xs text-slate-500 font-normal">
-                    creator:@{singleCommunity?.owner?.username}
-                  </span>
-                </h1>
-                <div className="flex gap-2 items-center mb-2">
-                  <IoCalendarOutline className="w-4 h-4 text-slate-500" />
-                  <span className="text-xs text-slate-500">
-                    Created{" "}
-                    {getMonth(
-                      singleCommunity?.createdAt
-                        ?.split("T")[0]
-                        ?.split("-")[1]
-                        .toString()
-                    )}{" "}
-                    {singleCommunity?.createdAt?.split("T")[0]?.split("-")[0]}
-                  </span>
+                {/* User Inputs for profileImg & coverImg */}
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  ref={coverImgRef}
+                  onChange={(e) => handleImgChange(e, "coverImg")}
+                />
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  ref={profileImgRef}
+                  onChange={(e) => handleImgChange(e, "profileImg")}
+                />
+                {/* User Avatar */}
+                <div className="avatar absolute block left-4 -bottom-16 z-0">
+                  <div className="relative w-28 sm:w-28 md:w-36 ring-slate-400 rounded-full ring-2 ring-offset-2">
+                    <img
+                      src={
+                        profileImg ||
+                        singleCommunity?.profileImg ||
+                        "/assets/avatar-placeholder.png"
+                      }
+                    />
+                  </div>
+                  {isMyCommunity && (
+                    <span
+                      className="absolute bottom-0 left-[75%] rounded-full truncate flex place-items-center h-7.5 w-8 hover:scale-105 bg-slate-600 border-2 border-slate-600 hover:bg-slate-300 hover:border-slate-300"
+                      onClick={() => profileImgRef.current.click()}
+                    >
+                      <MdOutlineModeEdit className="h-6 w-6 mx-auto cursor-pointer text-white hover:text-slate-800" />
+                    </span>
+                  )}
                 </div>
-              </span>
-            </div>{" "}
-          </section>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full bg-[#ffffff]">
+                <span className="grid col-start-2 sm:col-start-2 col-span-2 py-1 text-left w-fit">
+                  <h1 className="flex flex-col flex-nowrap mb-2 gap-0 text-xl md:text-3xl font-semibold">
+                    {singleCommunity?.name}
+                    <span className="text-sm text-slate-800 font-medium">
+                      {singleCommunity?.description}
+                    </span>
+                    <span className="text-xs text-slate-500 font-normal">
+                      creator:@{singleCommunity?.owner?.username}
+                    </span>
+                  </h1>
+                  <div className="flex gap-2 items-center mb-2">
+                    <IoCalendarOutline className="w-4 h-4 text-slate-500" />
+                    <span className="text-xs text-slate-500">
+                      Created{" "}
+                      {getMonth(
+                        singleCommunity?.createdAt
+                          ?.split("T")[0]
+                          ?.split("-")[1]
+                          .toString()
+                      )}{" "}
+                      {singleCommunity?.createdAt?.split("T")[0]?.split("-")[0]}
+                    </span>
+                  </div>
+                </span>
+              </div>{" "}
+            </section>
+
+            <article className="flex w-full bg-[#fffff] transition-all duration-100">
+              {isMyCommunity && (
+                <div className="w-full flex flex-end px-2 gap-2 bg-[#ffffff]">
+                  <EditCommunityModal />
+                  <button
+                    className="btn bg-red-400 text-[#fdfdfd] border rounded-full btn-sm w-fit"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleDeletion(singleCommunity?._id);
+                    }}
+                  >
+                    Delete Community
+                  </button>
+                </div>
+              )}
+              {!isMyCommunity && (
+                <div className="w-full flex flex-end px-2 bg-[#ffffff]">
+                  <button
+                    type="button"
+                    className="btn btn-sm bg-indigo-500 text-[#fdfdfd] border rounded-full ml-auto w-fit"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleJoins(singleCommunity?._id);
+                    }}
+                  >
+                    Join Community
+                  </button>
+                </div>
+              )}
+              {(coverImg || profileImg) && (
+                <div className="pr-2 w-fit bg-[#ffffff]">
+                  <button
+                    className="btn bg-indigo-500 text-[#fdfdfd] border rounded-full btn-sm w-fit"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleImgSubmit(singleCommunity?._id);
+                    }}
+                  >
+                    Update
+                  </button>
+                </div>
+              )}
+            </article>
+            <div className="block w-full bg-[#ffffff]">
+              <CreateCommunityPostAndRecipe />
+            </div>
+          </>
         )}{" "}
-        {(coverImg || profileImg) && (
-          <article className="flex mr-1 p-1 gap-1 w-full bg-[#ffffff]">
-            <button
-              className="btn bg-indigo-600 text-[#fdfdfd] border-0 btn-sm px-4 ml-auto w-fit"
-              onClick={handleImgSubmit}
-            >
-              Update
-            </button>
-          </article>
-        )}
-        <section>
+        <section className="transition-all duration-200">
           <div className="sticky top-12 md:top-15 flex w-full font-semibold bg-[#ffffff] z-50 shadow-md">
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
@@ -245,16 +325,37 @@ const CommunityProfile = () => {
               )}
             </div>
           </div>
-          {!loadingCommunity && singleCommunity && (
+          {loadingCommunity && (
             <div className="flex w-full mt-2 justify-center">
-              {feedType === "recipes" && (
-                <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                  <CommunityRecipes communityId={singleCommunity?._id} />
-                </div>
-              )}
+              <div className="block text-center">
+                <LoadingSpinner size="lg" />
+              </div>
+            </div>
+          )}
+          {!loadingCommunity && (
+            <div className="flex w-full mt-2 justify-center">
               {feedType === "posts" && (
                 <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                  <CommunityPosts communityId={singleCommunity?._id} />
+                  {singleCommunity?.posts.length === 0 && (
+                    <div className="block text-center text-sm p-2 sm:p-4 bg-[#fdfdfd]">
+                      No communities posts found.
+                    </div>
+                  )}
+                  {singleCommunity?.posts.length > 0 && (
+                    <CommunityPosts communityId={singleCommunity?._id} />
+                  )}
+                </div>
+              )}
+              {feedType === "recipes" && (
+                <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+                  {singleCommunity?.recipes.length === 0 && (
+                    <div className="block text-center text-sm p-2 sm:p-4 bg-[#fdfdfd]">
+                      No communities recipes found.
+                    </div>
+                  )}
+                  {singleCommunity?.recipes.length > 0 && (
+                    <CommunityRecipes communityId={singleCommunity?._id} />
+                  )}
                 </div>
               )}
             </div>

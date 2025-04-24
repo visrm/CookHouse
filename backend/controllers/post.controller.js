@@ -453,3 +453,70 @@ export const getCommunityPosts = async (req, res) => {
     });
   }
 };
+
+export const getUserCommunitiesPosts = async (req, res) => {
+  try {
+    const userId = req.id;
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
+    const query = {
+      $or: [{ members: { $in: user._id } }, { owner: user._id }],
+    };
+    const communities = await Community.find(query).populate("posts");
+
+    if (communities.length === 0)
+      return res.status(404).json({
+        message: "Communities not found.",
+        success: false,
+      });
+
+    var Arr = [];
+
+    communities.map((community) => Arr.push(...community.posts));
+
+    const communityPosts = Arr.map(async (post) => {
+      const postId = post._id;
+      const posts = await Post.findById(postId)
+        .sort({ createdAt: -1 })
+        .populate({
+          path: "user",
+          select: "-password",
+        });
+
+      if (!posts)
+        return res.status(404).json({
+          message: "Post not found.",
+          success: false,
+        });
+
+      return posts;
+    });
+
+    const posts = await Promise.all(communityPosts);
+
+    if (posts.length === 0)
+      return res.status(200).json({
+        message: "Posts fetched successfully",
+        posts: [],
+        success: true,
+      });
+
+    return res.status(200).json({
+      message: "Posts fetched successfully",
+      posts,
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error in getUserCommunitiesPosts: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};

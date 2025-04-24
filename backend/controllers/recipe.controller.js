@@ -469,3 +469,71 @@ export const getCommunityRecipes = async (req, res) => {
     });
   }
 };
+
+export const getUserCommunitiesRecipes = async (req, res) => {
+  try {
+    const userId = req.id;
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
+    const query = {
+      $or: [{ members: { $in: user._id } }, { owner: user._id }],
+    };
+    const communities = await Community.find(query).populate("recipes");
+
+    if (communities.length === 0)
+      return res.status(404).json({
+        message: "Communities not found.",
+        success: false,
+      });
+
+    var Arr = [];
+
+    communities.map((community) => Arr.push(...community.recipes));
+
+    const communityRecipes = Arr.map(async (recipe) => {
+      const recipeId = recipe._id;
+      const recipes = await recipe
+        .findById(recipeId)
+        .sort({ createdAt: -1 })
+        .populate({
+          path: "user",
+          select: "-password",
+        });
+
+      if (!recipes)
+        return res.status(404).json({
+          message: "recipe not found.",
+          success: false,
+        });
+
+      return recipes;
+    });
+
+    const recipes = await Promise.all(communityRecipes);
+
+    if (recipes.length === 0)
+      return res.status(200).json({
+        message: "Recipes fetched successfully",
+        recipes: [],
+        success: true,
+      });
+
+    return res.status(200).json({
+      message: "Recipes fetched successfully",
+      recipes,
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error in getUserCommunitiesRecipes: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};
