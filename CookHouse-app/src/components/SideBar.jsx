@@ -1,5 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import { MdOutlineHome, MdNotificationsNone } from "react-icons/md";
+import {
+  MdOutlineHome,
+  MdNotificationsNone,
+  MdOutlineAdminPanelSettings,
+} from "react-icons/md";
 import { LuUserRound } from "react-icons/lu";
 import { RiCommunityLine, RiWechatLine } from "react-icons/ri";
 import { TbLogout } from "react-icons/tb";
@@ -67,7 +71,7 @@ const SideBar = () => {
                   </span>
                 </Link>
               </li>
-              
+
               <li className="flex justify-center md:justify-start">
                 <Link
                   to="/conversations"
@@ -85,7 +89,6 @@ const SideBar = () => {
                 <Link
                   to={`/profile/${user?.username}`}
                   className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
-                  replace
                 >
                   <LuUserRound className="w-8 h-8" />
                   <span className="text-base hidden font-semibold md:block">
@@ -94,7 +97,7 @@ const SideBar = () => {
                 </Link>
               </li>
 
-              {user?.profile?.communities.length !== 0 && (
+              {user?.profile?.communities.length > 0 && (
                 <li className="flex justify-center md:justify-start">
                   <Link
                     to="/community"
@@ -104,6 +107,20 @@ const SideBar = () => {
                     <RiCommunityLine className="w-8 h-8" />
                     <span className="text-base hidden font-semibold md:block">
                       Community
+                    </span>
+                  </Link>
+                </li>
+              )}
+              {user?.role !== "admin" && (
+                <li className="flex justify-center md:justify-start">
+                  <Link
+                    to="/admin"
+                    className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
+                    replace
+                  >
+                    <MdOutlineAdminPanelSettings className="w-8 h-8" />
+                    <span className="text-base hidden font-semibold md:block">
+                      Settings
                     </span>
                   </Link>
                 </li>

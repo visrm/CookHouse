@@ -247,6 +247,14 @@ export const commentOnRecipe = async (req, res) => {
 export const deleteRecipe = async (req, res) => {
   try {
     const { id } = req.params;
+    const userId = req.id;
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
 
     if (!id)
       return res.status(400).json({
@@ -261,7 +269,9 @@ export const deleteRecipe = async (req, res) => {
         success: false,
       });
 
-    if (recipe.user.toString() !== req.id.toString())
+    let cantDeleteRecipe =
+      recipe.user.toString() !== userId.toString() || user.role !== "admin";
+    if (cantDeleteRecipe)
       return res.status(400).json({
         message: "Unauthorized to delete recipe.",
         success: false,

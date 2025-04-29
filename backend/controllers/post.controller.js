@@ -230,6 +230,14 @@ export const commentOnPost = async (req, res) => {
 export const deletePost = async (req, res) => {
   try {
     const { id } = req.params;
+    const userId = req.id;
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
 
     if (!id)
       return res.status(400).json({
@@ -244,7 +252,9 @@ export const deletePost = async (req, res) => {
         success: false,
       });
 
-    if (post.user.toString() !== req.id.toString())
+    let cantDeletePost =
+      post.user.toString() !== userId.toString() || user.role !== "admin";
+    if (cantDeletePost)
       return res.status(401).json({
         message: "Unauthorized to delete post.",
         success: false,

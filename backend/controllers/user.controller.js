@@ -73,7 +73,7 @@ export const followUnfollowUser = async (req, res) => {
         from: req.id,
         to: userById._id,
       });
-      
+
       await Promise.all([newNotification.save(), addFollower, addFollowing]);
 
       // TODO return the id of the user as a response
@@ -304,6 +304,44 @@ export const excludingLoggedUser = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in excludingLoggedUser: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};
+
+export const banUserById = async (req, res) => {
+  try {
+    const { id } = await req.params;
+    const userId = req.id;
+
+    const user = await User.findById(id).select("-password");
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
+    const admin = await User.findById(userId);
+    if (!admin)
+      return res.status(404).json({
+        message: "Admin not found.",
+        success: false,
+      });
+
+    if (admin.role !== "admin")
+      return res.status(400).json({
+        message: "User doesn't have admin permissions. ",
+        success: false,
+      });
+
+    // remove all user posts, recipes, owned communities
+    // delete user profileImg & coverImg
+    // delete user
+    
+  } catch (error) {
+    console.log("Error in banUserById: ", error.message);
     res.status(500).json({
       message: "Internal Server Error.",
       success: false,

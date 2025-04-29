@@ -16,6 +16,7 @@ import CommunityHome from "./components/userModule/CommunityHome";
 import { Toaster } from "react-hot-toast";
 import ManageCommunity from "./components/ManageCommunity";
 import ChatsHome from "./components/userModule/ChatsHome";
+import AdminHome from "./components/adminModule/AdminHome";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
         <Toaster />
       </div>
       <NavigationBar />
-      <div className="flex p-0 m-0 max-w-full h-full mx-auto scroll-auto">
+      <div className="flex p-0 m-0 max-w-full h-full mx-auto scroll-smooth">
         <SideBar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -39,6 +40,7 @@ function App() {
           <Route path="/manage-community" element={<ManageCommunity />} />
           <Route path="community/:communityId" element={<CommunityProfile />} />
           <Route path="/conversations" element={<ChatsHome />} />
+          <Route path="/admin" element={<AdminHome />} />
         </Routes>
       </div>
     </>
