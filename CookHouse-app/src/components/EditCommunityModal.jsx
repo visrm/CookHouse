@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoadingCommunity, setSingleCommunity } from "../redux/slices/community.slice.js";
+import {
+  setLoadingCommunity,
+  setSingleCommunity,
+} from "../redux/slices/community.slice.js";
 import { COMMUNITIES_API_END_POINT } from "../utils/constants.js";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -57,14 +60,13 @@ const EditCommunityModal = () => {
       {/* You can open the modal using document.getElementById('ID').showModal() method */}
 
       <button
-        className="ml-auto btn btn-sm bg-indigo-500 text-[#fdfdfd] border rounded-full"
+        className="btn btn-sm hover:text-indigo-500 border"
         onClick={() => document.getElementById("editModal").showModal()}
       >
         Edit Community
       </button>
-
-      <dialog id="editModal" className="modal">
-        <div className="modal-box w-102">
+      <dialog id="editModal" className="modal block mx-auto">
+        <div className="modal-box w-full mt-8">
           <form method="dialog" id="handleCloseCommunity">
             {/* if there is a button in form, it will close the modal */}
             <button
@@ -134,4 +136,4 @@ const EditCommunityModal = () => {
   );
 };
 
-export default EditCommunityModal
+export default EditCommunityModal;

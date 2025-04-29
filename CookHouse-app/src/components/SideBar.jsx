@@ -54,6 +54,7 @@ const SideBar = () => {
                   </span>
                 </Link>
               </li>
+
               <li className="flex justify-center md:justify-start">
                 <Link
                   to="/notifications"
@@ -66,6 +67,7 @@ const SideBar = () => {
                   </span>
                 </Link>
               </li>
+              
               <li className="flex justify-center md:justify-start">
                 <Link
                   to="/conversations"
@@ -78,20 +80,20 @@ const SideBar = () => {
                   </span>
                 </Link>
               </li>
-              {user && (
-                <li className="flex justify-center md:justify-start">
-                  <Link
-                    to={`/profile/${user?.username}`}
-                    className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
-                    replace
-                  >
-                    <LuUserRound className="w-8 h-8" />
-                    <span className="text-base hidden font-semibold md:block">
-                      Profile
-                    </span>
-                  </Link>
-                </li>
-              )}
+
+              <li className="flex justify-center md:justify-start">
+                <Link
+                  to={`/profile/${user?.username}`}
+                  className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
+                  replace
+                >
+                  <LuUserRound className="w-8 h-8" />
+                  <span className="text-base hidden font-semibold md:block">
+                    Profile
+                  </span>
+                </Link>
+              </li>
+
               {user?.profile?.communities.length !== 0 && (
                 <li className="flex justify-center md:justify-start">
                   <Link

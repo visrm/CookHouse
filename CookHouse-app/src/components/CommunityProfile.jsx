@@ -7,7 +7,7 @@ import {
 } from "../redux/slices/community.slice.js";
 import axios from "axios";
 import { IoCalendarOutline } from "react-icons/io5";
-import { MdOutlineModeEdit } from "react-icons/md";
+import { MdMoreVert, MdOutlineModeEdit } from "react-icons/md";
 import ProfileSkeleton from "./Skeleton/ProfileSkeleton.jsx";
 import CommunityPosts from "./CommunityPosts.jsx";
 import toast from "react-hot-toast";
@@ -15,8 +15,7 @@ import { COMMUNITIES_API_END_POINT } from "../utils/constants.js";
 import CommunityRecipes from "./CommunityRecipes.jsx";
 import CreateCommunityPostAndRecipe from "./CreateCommunityPostAndRecipe.jsx";
 import LoadingSpinner from "./LoadingSpinner.jsx";
-import EditCommunityModal from "./EditCommunityModal"
-
+import EditCommunityModal from "./EditCommunityModal";
 
 const CommunityProfile = () => {
   const [feedType, setFeedType] = useState("posts");
@@ -56,8 +55,6 @@ const CommunityProfile = () => {
         dispatch(setLoadingCommunity(false));
       }
     })();
-
-    
   }, []);
 
   let isMyCommunity = false;
@@ -256,48 +253,65 @@ const CommunityProfile = () => {
               </div>{" "}
             </section>
 
-            <article className="flex w-full bg-[#fffff] transition-all duration-100">
-              {isMyCommunity && (
-                <div className="w-full flex flex-end px-2 gap-2 bg-[#ffffff]">
-                  <EditCommunityModal />
-                  <button
-                    className="btn bg-red-400 text-[#fdfdfd] border rounded-full btn-sm w-fit"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleDeletion(singleCommunity?._id);
-                    }}
-                  >
-                    Delete Community
-                  </button>
-                </div>
-              )}
-              {!isMyCommunity && (
-                <div className="w-full flex flex-end px-2 bg-[#ffffff]">
-                  <button
-                    type="button"
-                    className="btn btn-sm bg-indigo-500 text-[#fdfdfd] border rounded-full ml-auto w-fit"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleJoins(singleCommunity?._id);
-                    }}
-                  >
-                    Join Community
-                  </button>
-                </div>
-              )}
+            <article className="w-full flex justify-end bg-[#fff] transition-all duration-300">
               {(coverImg || profileImg) && (
-                <div className="pr-2 w-fit bg-[#ffffff]">
-                  <button
-                    className="btn bg-indigo-500 text-[#fdfdfd] border rounded-full btn-sm w-fit"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleImgSubmit(singleCommunity?._id);
-                    }}
-                  >
-                    Update
-                  </button>
-                </div>
+                <button
+                  className="btn bg-indigo-500 text-[#fdfdfd] border rounded-full btn-sm w-fit"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleImgSubmit(singleCommunity?._id);
+                  }}
+                >
+                  Update
+                </button>
               )}
+              <div className="flex justify-end dropdown dropdown-start dropdown-hover mx-2">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn btn-sm border-0 rounded-full"
+                >
+                  <MdMoreVert className="w-fit" />
+                </div>
+                <ul
+                  tabIndex={0}
+                  className="menu dropdown-content border-1 border-slate-200 bg-slate-50 rounded-box z-1 mt-10 w-40 p-1 shadow-sm font-semibold"
+                >
+                  {isMyCommunity && (
+                    <li>
+                      <EditCommunityModal />
+                    </li>
+                  )}
+                  {isMyCommunity && (
+                    <li>
+                      <button
+                        className="btn hover:text-red-400 border btn-sm"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleDeletion(singleCommunity?._id);
+                        }}
+                      >
+                        Delete Community
+                      </button>
+                    </li>
+                  )}
+
+                  {!isMyCommunity && (
+                    <li>
+                      <button
+                        type="button"
+                        className="btn btn-sm hover:text-indigo-500 border"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleJoins(singleCommunity?._id);
+                        }}
+                      >
+                        Join Community
+                      </button>
+                    </li>
+                  )}
+                </ul>
+              </div>
             </article>
             <div className="block w-full bg-[#ffffff]">
               <CreateCommunityPostAndRecipe />

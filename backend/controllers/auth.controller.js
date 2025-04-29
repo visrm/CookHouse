@@ -5,6 +5,7 @@ import User from "../models/user.model.js";
 export const register = async (req, res) => {
   try {
     const { username, fullname, email, password } = await req.body;
+    let { role } = await req.body;
 
     // To check if any required fields are missing
     if (!username || !fullname || !email || !password)
@@ -48,6 +49,7 @@ export const register = async (req, res) => {
       fullname,
       email,
       password: hashedPassword,
+      role,
     });
 
     return res.status(201).json({
@@ -99,6 +101,7 @@ export const login = async (req, res) => {
       followers: user.followers,
       following: user.following,
       profile: user.profile,
+      role: user.role,
     };
 
     return res
@@ -130,6 +133,7 @@ export const getMe = async (req, res) => {
         message: "User not found.",
         success: false,
       });
+      
     return res.status(200).json({
       message: "User info fetched successfully.",
       user,

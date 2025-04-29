@@ -5,6 +5,7 @@ import { POSTS_API_END_POINT } from "../utils/constants.js";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { MdMoreVert } from "react-icons/md";
 
 const PostCard = ({ post }) => {
   const [comment, setComment] = useState("");
@@ -122,12 +123,29 @@ const PostCard = ({ post }) => {
                 <span>{formattedDate}</span>
               </span>
               {isMyPost && (
-                <span className="flex justify-end flex-1">
-                  <FaTrash
-                    className="cursor-pointer hover:text-red-500"
-                    onClick={handleDeletePost}
-                  />
-                </span>
+                <div className=" flex justify-end flex-1 dropdown dropdown-start">
+                  <div
+                    tabIndex={0}
+                    role="button"
+                    className="btn btn-sm border-0"
+                  >
+                    <MdMoreVert className="h-5 w-4 rounded" />
+                  </div>
+                  <ul
+                    tabIndex={0}
+                    className="menu dropdown-content border-1 border-slate-200 rounded-box z-1 mt-10 w-40 p-1 shadow-sm"
+                  >
+                    <li>
+                      <span className="flex place-items-center gap-1 hover:text-red-500 cursor-pointer font-semibold">
+                        <FaTrash
+                          className="h-3 w-3"
+                          onClick={handleDeletePost}
+                        />
+                        Delete
+                      </span>
+                    </li>
+                  </ul>
+                </div>
               )}
             </div>
             <div className="flex flex-col gap-3 w-fit overflow-hidden transition-all duration-300">
