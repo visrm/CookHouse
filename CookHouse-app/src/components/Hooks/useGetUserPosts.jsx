@@ -30,4 +30,4 @@ const useGetUserPosts = async (username) => {
   }, []);
 };
 
-export default useGetUserPosts
+export default useGetUserPosts;

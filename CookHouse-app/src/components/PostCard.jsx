@@ -12,13 +12,11 @@ const PostCard = ({ post }) => {
   const postOwner = post?.user;
 
   let isLiked = false;
-  let isMyPost = true;
+  let isMyPost = false;
 
   const { user } = useSelector((store) => store.auth);
   if (postOwner?._id?.toString() === user?._id?.toString()) {
     isMyPost = true;
-  } else {
-    isMyPost = false;
   }
 
   const formattedDate = "1h";
@@ -36,6 +34,7 @@ const PostCard = ({ post }) => {
 
       if (response.data.success) {
         toast.success(response.data.message);
+        window.location.reload()
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -62,6 +61,7 @@ const PostCard = ({ post }) => {
       if (response.data.success) {
         toast.success(response.data.message);
         setComment("");
+        window.location.reload()
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -79,6 +79,7 @@ const PostCard = ({ post }) => {
 
       if (response.data.success) {
         toast.success(response.data.message);
+        window.location.reload()
         // let myRegex = /unlike/g;
         // if(!myRegex.test(response.data.message)){
         //   setPostState({isLiked: true})

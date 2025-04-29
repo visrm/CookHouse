@@ -45,7 +45,6 @@ const Profile = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    userName = params.userName;
     (async function FetchUserInfo() {
       try {
         dispatch(setLoading(true));
@@ -208,14 +207,17 @@ const Profile = () => {
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full bg-[#ffffff]">
               <span className="grid col-start-2 sm:col-start-2 col-span-2 py-1 text-left w-fit">
-                <h1 className="flex gap-1 items-baseline text-lg font-semibold">
+                <h1 className="flex gap-1 items-baseline text-xl font-semibold">
                   {singleUser?.fullname}
-                  <span className="text-base text-slate-800 font-medium">
+                  <span className="text-lg text-slate-800 font-medium">
                     @{singleUser?.username}
                   </span>
                 </h1>
-                <div className="flex pr-1 mb-2 text-sm">
-                  {singleUser?.profile?.bio}
+                <div className="flex flex-col flex-nowrap gap-0 pr-1 mb-2 text-sm">
+                  <span className="font-semibold">
+                    About me :
+                  </span>
+                  <p>{singleUser?.profile?.bio}</p>
                 </div>
                 <div className="flex gap-2 items-center mb-2">
                   <IoCalendarOutline className="w-4 h-4 text-slate-500" />

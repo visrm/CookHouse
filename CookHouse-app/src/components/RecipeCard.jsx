@@ -5,19 +5,18 @@ import { RECIPES_API_END_POINT } from "../utils/constants";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { MdMoreVert } from "react-icons/md";
 
 const RecipeCard = ({ recipe }) => {
   const [comment, setComment] = useState("");
   const recipeMaker = recipe?.user;
   const isLiked = false;
 
-  let isMyPost = true;
+  let isMyPost = false;
 
   const { user } = useSelector((store) => store.auth);
   if (recipeMaker?._id.toString() === user?._id.toString()) {
     isMyPost = true;
-  } else {
-    isMyPost = false;
   }
 
   const formattedDate = "1h";
@@ -35,6 +34,7 @@ const RecipeCard = ({ recipe }) => {
 
       if (response.data.success) {
         toast.success(response.data.message);
+        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -61,6 +61,7 @@ const RecipeCard = ({ recipe }) => {
       if (response.data.success) {
         toast.success(response.data.message);
         setComment("");
+        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -82,6 +83,7 @@ const RecipeCard = ({ recipe }) => {
 
       if (response.data.success) {
         toast.success(response.data.message);
+        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -96,7 +98,8 @@ const RecipeCard = ({ recipe }) => {
           <div className="avatar h-8">
             <Link
               to={`/profile/${recipeMaker?.username}`}
-              className="w-8 rounded-full overflow-hidden">
+              className="w-8 rounded-full overflow-hidden"
+            >
               <img
                 src={
                   recipeMaker?.profile?.profileImg ||
@@ -109,7 +112,8 @@ const RecipeCard = ({ recipe }) => {
             <div className="flex gap-2 items-center">
               <Link
                 to={`/profile/${recipeMaker?.username}`}
-                className="font-bold">
+                className="font-bold"
+              >
                 {recipeMaker?.fullname}
               </Link>
               <span className="text-gray-700 flex gap-1 text-sm">
@@ -120,12 +124,29 @@ const RecipeCard = ({ recipe }) => {
                 <span>{formattedDate}</span>
               </span>
               {isMyPost && (
-                <span className="flex justify-end flex-1">
-                  <FaTrash
-                    className="cursor-pointer hover:text-red-500"
-                    onClick={handleDeleteRecipe}
-                  />
-                </span>
+                <div className=" flex justify-end flex-1 dropdown dropdown-start">
+                  <div
+                    tabIndex={0}
+                    role="button"
+                    className="btn btn-sm border-0"
+                  >
+                    <MdMoreVert className="h-5 w-4 rounded" />
+                  </div>
+                  <ul
+                    tabIndex={0}
+                    className="menu dropdown-content border-1 border-slate-200 rounded-box z-1 mt-10 w-40 p-1 shadow-sm"
+                  >
+                    <li>
+                      <span className="flex place-items-center gap-1 hover:text-red-500 cursor-pointer font-semibold">
+                        <FaTrash
+                          className="h-3 w-3"
+                          onClick={handleDeleteRecipe}
+                        />
+                        Delete
+                      </span>
+                    </li>
+                  </ul>
+                </div>
               )}
             </div>
 
@@ -158,7 +179,8 @@ const RecipeCard = ({ recipe }) => {
                         return (
                           <span
                             className="px-2 rounded-lg text-slate-700 font-medium capitalize"
-                            key={i}>
+                            key={i}
+                          >
                             {ingredient.trim()}
                           </span>
                         );
@@ -182,7 +204,8 @@ const RecipeCard = ({ recipe }) => {
                           return (
                             <li
                               className="list-item first-letter:capitalize"
-                              key={i}>
+                              key={i}
+                            >
                               {instruction + "."}
                             </li>
                           );
@@ -202,7 +225,8 @@ const RecipeCard = ({ recipe }) => {
                     document
                       .getElementById("comments_modal" + recipe?._id)
                       .showModal()
-                  }>
+                  }
+                >
                   <FaRegComment className="w-4 h-4 text-slate-500 group-hover:text-sky-400" />
                   <span className="text-sm text-slate-500 group-hover:text-sky-400">
                     {recipe?.comments?.length}
@@ -211,7 +235,8 @@ const RecipeCard = ({ recipe }) => {
                 {/* We're using Modal Component from DaisyUI */}
                 <dialog
                   id={`comments_modal${recipe?._id}`}
-                  className="modal border-none outline-none">
+                  className="modal border-none outline-none"
+                >
                   <div className="modal-box rounded border-0">
                     <form method="dialog">
                       {/* if there is a button in form, it will close the modal */}
@@ -229,7 +254,8 @@ const RecipeCard = ({ recipe }) => {
                       {recipe?.comments.map((comment) => (
                         <div
                           key={comment._id}
-                          className="flex gap-2 items-start">
+                          className="flex gap-2 items-start"
+                        >
                           <div className="avatar h-8">
                             <div className="w-8 rounded-full">
                               <img
@@ -256,7 +282,8 @@ const RecipeCard = ({ recipe }) => {
                     </div>
                     <form
                       className="flex flex-col gap-2 items-center mt-4 border-t border-gray-600 pt-2"
-                      onSubmit={handleRecipeComment}>
+                      onSubmit={handleRecipeComment}
+                    >
                       <textarea
                         className="textarea sm:textarea-md w-full p-1 sm:px-2 rounded text-base resize-none border focus:outline-none  border-gray-800"
                         placeholder="Add a comment..."
@@ -279,7 +306,8 @@ const RecipeCard = ({ recipe }) => {
 
                 <div
                   className="flex gap-1 items-center group cursor-pointer"
-                  onClick={handleLikeRecipe}>
+                  onClick={handleLikeRecipe}
+                >
                   {!isLiked && (
                     <FaRegHeart className="w-4 h-4 cursor-pointer text-slate-500 group-hover:text-pink-500" />
                   )}
@@ -290,7 +318,8 @@ const RecipeCard = ({ recipe }) => {
                   <span
                     className={`text-sm text-slate-500 group-hover:text-pink-500 ${
                       isLiked ? "text-pink-500" : ""
-                    }`}>
+                    }`}
+                  >
                     {recipe?.likes?.length}
                   </span>
                 </div>

@@ -14,6 +14,7 @@ const EditProfileModal = () => {
   const [userData, setUserData] = useState({
     username: user?.username || "",
     fullname: user?.fullname || "",
+    bio: user?.profile?.bio || "",
     email: user?.email || "",
     currentPassword: "",
     newPassword: "",
@@ -28,6 +29,9 @@ const EditProfileModal = () => {
     let updateInfo = {
       username: userData.username,
       fullname: userData.fullname,
+      profile: {
+        bio: userData.bio,
+      },
       email: userData.email,
       currentPassword: userData.currentPassword,
       newPassword: userData.newPassword,
@@ -48,6 +52,7 @@ const EditProfileModal = () => {
       if (response.data.success) {
         dispatch(setUser(response.data.user));
         toast.success(response.data.message);
+        window.location.reload()
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -56,6 +61,7 @@ const EditProfileModal = () => {
       setUserData({
         username: user?.username || "",
         fullname: user?.fullname || "",
+        bio: user?.bio || "",
         email: user?.email || "",
         currentPassword: "",
         newPassword: "",
@@ -86,6 +92,7 @@ const EditProfileModal = () => {
                   username: user?.username || "",
                   fullname: user?.fullname || "",
                   email: user?.email || "",
+                  bio: user?.bio || "",
                   currentPassword: "",
                   newPassword: "",
                 });
@@ -133,6 +140,22 @@ const EditProfileModal = () => {
                 minLength={3}
                 maxLength={30}
                 title="Only letters, numbers or dash"
+                autoComplete="username"
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label className="w-fit font-base text-sm" htmlFor="bio">
+                About me:
+              </label>
+              <input
+                type="input"
+                className="input font-medium"
+                placeholder="About me"
+                id="bio"
+                name="bio"
+                value={userData.bio}
+                maxLength={500}
                 autoComplete="username"
                 onChange={handleChange}
               />
@@ -194,4 +217,4 @@ const EditProfileModal = () => {
   );
 };
 
-export default EditProfileModal
+export default EditProfileModal;

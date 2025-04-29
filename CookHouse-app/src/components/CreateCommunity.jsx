@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +13,6 @@ const CreateCommunity = () => {
   });
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.auth);
-  const navigate = useNavigate();
 
   const handleChange = (event) => {
     // console.log({ ...input, [event.target.name]: event.target.value });
@@ -47,9 +45,7 @@ const CreateCommunity = () => {
       if (response.data.success) {
         toast.success(response.data.message);
         dispatch(setSelfCommunity(response.data.community));
-        setTimeout(() => {
-          navigate(-1);
-        }, 1000);
+        window.location.reload();
       }
     } catch (err) {
       toast.error(err.response.data.message);
