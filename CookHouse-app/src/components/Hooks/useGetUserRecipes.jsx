@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setSelfRecipes } from "../../redux/slices/user.slice.js";
-import { setFetching } from "../../redux/slices/post.slice.js";
+import { setLoading, setSelfRecipes } from "../../redux/slices/user.slice.js";
 import { RECIPES_API_END_POINT } from "../../utils/constants.js";
 import toast from "react-hot-toast";
 
@@ -11,7 +10,7 @@ const useGetUserRecipes = async (username) => {
   useEffect(() => {
     (async function FetchUserRecipes() {
       try {
-        dispatch(setFetching(true));
+        dispatch(setLoading(true));
         const response = await axios.get(
           `${RECIPES_API_END_POINT}/user/${username}`,
           {
@@ -24,10 +23,10 @@ const useGetUserRecipes = async (username) => {
       } catch (error) {
         toast.error(error.response.data.message);
       } finally {
-        dispatch(setFetching(false));
+        dispatch(setLoading(false));
       }
     })();
-  }, []);
+  }, [username]);
 };
 
-export default useGetUserRecipes
+export default useGetUserRecipes;

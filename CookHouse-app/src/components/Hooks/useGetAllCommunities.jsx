@@ -10,16 +10,19 @@ import {
 } from "../../redux/slices/community.slice.js";
 import toast from "react-hot-toast";
 
-const useGetAllCommunities = () => {
+const useGetAllCommunities = (keyword) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     (async function FetchAllCommunities() {
       try {
         dispatch(setLoadingCommunity(true));
-        const response = await axios.get(`${COMMUNITIES_API_END_POINT}/all`, {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${COMMUNITIES_API_END_POINT}/all?keyword=${keyword}`,
+          {
+            withCredentials: true,
+          }
+        );
         if (response.data.success) {
           dispatch(setAllCommunities(response.data.communities));
         }
@@ -29,7 +32,7 @@ const useGetAllCommunities = () => {
         dispatch(setLoadingCommunity(false));
       }
     })();
-  }, []);
+  }, [keyword]);
 };
 
 export default useGetAllCommunities;

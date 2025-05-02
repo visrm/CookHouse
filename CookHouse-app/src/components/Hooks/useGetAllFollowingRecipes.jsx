@@ -1,28 +1,25 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { RECIPES_API_END_POINT } from "../../utils/constants.js";
-// redux features import
 import { useDispatch } from "react-redux";
 import {
+  setFollowingRecipes,
   setLoadingRecipe,
-  setUsersCommunitiesRecipes,
 } from "../../redux/slices/recipe.slice.js";
+import { RECIPES_API_END_POINT } from "../../utils/constants.js";
 
-const useGetUsersCommunitiesRecipes = () => {
+
+const useGetAllFollowingRecipes = async () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    (async function FetchUsersCommunitiesRecipes() {
+    (async function FetchAllFollowingRecipes() {
       try {
         dispatch(setLoadingRecipe(true));
-        const response = await axios.get(
-          `${RECIPES_API_END_POINT}/communities/user`,
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axios.get(`${RECIPES_API_END_POINT}/following`, {
+          withCredentials: true,
+        });
         if (response.data.success) {
-          dispatch(setUsersCommunitiesRecipes(response.data.recipes));
+          dispatch(setFollowingRecipes(response.data.feedRecipes));
         }
       } catch (error) {
         console.error(error.response.data.message);
@@ -33,4 +30,4 @@ const useGetUsersCommunitiesRecipes = () => {
   }, []);
 };
 
-export default useGetUsersCommunitiesRecipes;
+export default useGetAllFollowingRecipes
