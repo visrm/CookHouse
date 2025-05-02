@@ -3,15 +3,12 @@ import useGetAllCommunities from "./Hooks/useGetAllCommunities";
 import CommunityCard from "./CommunityCard";
 import LoadingSpinner from "./LoadingSpinner";
 import { LuSearch } from "react-icons/lu";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const Communities = () => {
   const [keyword, setKeyword] = useState("");
 
   useGetAllCommunities(keyword);
-
-  const navigate = useNavigate();
 
   const { loadingCommunity, allCommunities } = useSelector(
     (store) => store.communities
@@ -26,8 +23,6 @@ const Communities = () => {
     e.preventDefault();
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set("keyword", keyword);
-    const searchQuery = urlParams.toString();
-    navigate(`/explore-community/${searchQuery}`);
   };
 
   return (

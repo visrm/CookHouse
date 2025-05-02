@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useGetAllCommunities from "../Hooks/useGetAllCommunities";
 import LoadingSpinner from "../LoadingSpinner";
 import { MdMoreVert } from "react-icons/md";
@@ -6,19 +6,38 @@ import { COMMUNITIES_API_END_POINT } from "../../utils/constants.js";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { LuSearch } from "react-icons/lu";
+import { setLoadingCommunity } from "../../redux/slices/community.slice.js";
 
 const CommunitiesTable = () => {
-  useGetAllCommunities("");
+  const [keyword, setKeyword] = useState("");
 
+  useGetAllCommunities(keyword);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { loadingCommunity, allCommunities } = useSelector(
     (store) => store.communities
   );
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const keywordFromUrl = urlParams.get("keyword");
+    if (keywordFromUrl) setKeyword(keywordFromUrl);
+  }, [location.search]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("keyword", keyword);
+  };
+
   let i = 0;
 
   const handleDeletion = async (communityId) => {
     try {
+      dispatch(setLoadingCommunity(true));
       const response = await axios.delete(
         `${COMMUNITIES_API_END_POINT}/delete/${communityId}`,
         {
@@ -31,20 +50,59 @@ const CommunitiesTable = () => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoadingCommunity(false));
     }
   };
 
   return (
     <>
       <section className="px-2 py-1 h-full">
-        <div className="rounded-box border border-base-content/5 bg-base-200 h-full">
+        <article className="block my-2 md:mt-3">
+          <div>
+            <form
+              onSubmit={handleSearch}
+              className="flex flex-row flex-nowrap gap-1 items-center justify-center w-full"
+              id="comm-search-bar-form"
+            >
+              <input
+                type="text"
+                name="q"
+                value={keyword}
+                onChange={(e) => {
+                  setKeyword(e.target.value);
+                }}
+                placeholder="Search"
+                className="input input-sm bg-[#fdfdfd] focus:outline-none rounded-full"
+              />
+              <button
+                className="btn btn-sm bg-slate-300 border-none rounded-full"
+                type="submit"
+              >
+                <LuSearch className="h-5 w-4" />
+              </button>
+            </form>
+          </div>
+          <div>
+            {!loadingCommunity && (
+              <span className="block w-full p-2 sm:px-3 font-bold font-mono text-xs text-left">
+                {`Search results ( ${allCommunities.length} )`}
+              </span>
+            )}
+          </div>
+        </article>
+        <div className="rounded-box border border-base-content/5 bg-base-200 h-full max-w-full">
           <table className="table table-xs">
             <thead>
-              <tr>
+              <tr className="text-center">
                 <th></th>
                 <th>ID</th>
                 <th>OwnerID</th>
                 <th>Name</th>
+                <th>email</th>
+                <th>Posts</th>
+                <th>Recipes</th>
+                <th>Events</th>
                 <th>Members</th>
                 <th>Created At</th>
                 <th>Updated At</th>
@@ -69,12 +127,16 @@ const CommunitiesTable = () => {
                 allCommunities.map((community) => {
                   i++;
                   return (
-                    <tr key={community?._id}>
+                    <tr key={community?._id} className="text-center">
                       <th>{i}</th>
                       <td>{community?._id}</td>
                       <td>{community?.owner?._id}</td>
                       <td>{community?.name}</td>
-                      <td>{community?.members.length}</td>
+                      <td>{community?.owner?.email}</td>
+                      <td>{community?.posts?.length || 0}</td>
+                      <td>{community?.recipes?.length || 0}</td>
+                      <td>{community?.events?.length || 0}</td>
+                      <td>{community?.members?.length || 0}</td>
                       <td>{community?.createdAt.split("T")[0].trim()}</td>
                       <td>{community?.updatedAt.split("T")[0].trim()}</td>
                       <td>

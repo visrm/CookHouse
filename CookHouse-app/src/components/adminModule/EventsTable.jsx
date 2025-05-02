@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import useGetAllEvents from "../Hooks/useGetAllEvents";
 import axios from "axios";
 import { EVENTS_API_END_POINT } from "../../utils/constants.js";
@@ -7,12 +8,27 @@ import { MdMoreVert } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { extractTime, getMonth } from "../../utils/extractTime.js";
 import { setLoadingEvent } from "../../redux/slices/event.slice.js";
+import { LuSearch } from "react-icons/lu";
 
 const EventsTable = () => {
-  useGetAllEvents();
+  const [keyword, setKeyword] = useState("");
+
+  useGetAllEvents(keyword);
 
   const { loadingEvent, allEvents } = useSelector((store) => store.events);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const keywordFromUrl = urlParams.get("keyword");
+    if (keywordFromUrl) setKeyword(keywordFromUrl);
+  }, [location.search]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("keyword", keyword);
+  };
 
   const formattedDate = (string) => {
     var dateString = ` ${string.split("T")[0].split("-")[2]} ${getMonth(
@@ -47,16 +63,49 @@ const EventsTable = () => {
   return (
     <>
       <section className="px-2 py-1 h-full">
-        <div className="rounded-box border border-base-content/5 bg-base-200 h-full">
+        <article className="block my-2 md:mt-3">
+          <div>
+            <form
+              onSubmit={handleSearch}
+              className="flex flex-row flex-nowrap gap-1 items-center justify-center w-full"
+              id="evnt-search-bar-form"
+            >
+              <input
+                type="text"
+                name="q"
+                value={keyword}
+                onChange={(e) => {
+                  setKeyword(e.target.value);
+                }}
+                placeholder="Search"
+                className="input input-sm bg-[#fdfdfd] focus:outline-none rounded-full"
+              />
+              <button
+                className="btn btn-sm bg-slate-300 border-none rounded-full"
+                type="submit"
+              >
+                <LuSearch className="h-5 w-4" />
+              </button>
+            </form>
+          </div>
+          <div>
+            {!loadingEvent && (
+              <span className="block w-full p-2 sm:px-3 font-bold font-mono text-xs text-left">
+                {`Search results ( ${allEvents.length} )`}
+              </span>
+            )}
+          </div>
+        </article>
+        <div className="rounded-box border border-base-content/5 bg-base-200 h-full max-w-full">
           <table className="table table-xs">
             <thead>
-              <tr>
+              <tr className="text-center">
                 <th></th>
                 <th>ID</th>
                 <th>CommunityID</th>
-                <th>OrganiserID</th>
-                <th>StartDate</th>
-                <th>EndDate</th>
+                <th>Title</th>
+                <th>Organiser</th>
+                <th>Date/Time</th>
                 <th>Attendees</th>
                 <th>Created At</th>
                 <th>Updated At</th>
@@ -81,13 +130,16 @@ const EventsTable = () => {
                 allEvents.map((event) => {
                   i++;
                   return (
-                    <tr key={event?._id}>
+                    <tr key={event?._id} className="text-center">
                       <th>{i}</th>
                       <td>{event?._id}</td>
                       <td>{event?.community?._id}</td>
-                      <td>{event?.organiser?._id}</td>
-                      <td>{formattedDate(event?.startDate)}</td>
-                      <td>{formattedDate(event?.endDate)}</td>
+                      <td>{event?.title}</td>
+                      <td>{event?.organiser?.username}</td>
+                      <td>
+                        <span>{formattedDate(event?.startDate)}</span> -
+                        <span>{formattedDate(event?.endDate)}</span>
+                      </td>
                       <td>{event?.attendees.length}</td>
                       <td>{event?.createdAt.split("T")[0].trim()}</td>
                       <td>{event?.updatedAt.split("T")[0].trim()}</td>

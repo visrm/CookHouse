@@ -323,6 +323,12 @@ export const banUserById = async (req, res) => {
     const { id } = await req.params;
     const userId = req.id;
 
+    if (id.toString() === userId.toString())
+      return res.status(400).json({
+        message: "You can't ban your own account",
+        success: false,
+      });
+
     const user = await User.findById(id).select("-password");
     if (!user)
       return res.status(404).json({
@@ -373,6 +379,55 @@ export const banUserById = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in banUserById: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};
+
+//get all users - for admin
+export const getUsers = async (req, res) => {
+  try {
+    const userId = req.id;
+
+    const keyword = req.query.keyword || "";
+    const query = {
+      $or: [
+        { username: { $regex: keyword, $options: "i" } },
+        { fullname: { $regex: keyword, $options: "i" } },
+        { email: { $regex: keyword, $options: "i" } },
+        { role: { $regex: keyword, $options: "i" } },
+      ],
+    };
+    const users = await User.find(query).select("-password");
+
+    const admin = await User.findById(userId);
+    if (!admin)
+      return res.status(404).json({
+        message: "Admin not found.",
+        success: false,
+      });
+
+    if (admin.role !== "admin")
+      return res.status(400).json({
+        message: "User doesn't have admin permissions. ",
+        success: false,
+      });
+
+    if (!users)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
+    return res.status(200).json({
+      message: "User updated successfully.",
+      users,
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error in getUsers: ", error.message);
     res.status(500).json({
       message: "Internal Server Error.",
       success: false,

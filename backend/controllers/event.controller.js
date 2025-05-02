@@ -171,7 +171,11 @@ export const getAllEvents = async (req, res) => {
         success: false,
       });
 
-    const events = await Event.find()
+    const keyword = req.query.keyword || "";
+
+    const events = await Event.find({
+      title: { $regex: keyword, $options: "i" },
+    })
       .sort({ createdAt: -1 })
       .populate({
         path: "organiser",

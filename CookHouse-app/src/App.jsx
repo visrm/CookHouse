@@ -33,13 +33,11 @@ function App() {
           <Route path="/register" element={<SignUp />} />
           <Route path="/home" element={<Home />} />
           <Route path="/recipes" element={<ExplorePage />} />
-          <Route path="/recipes/:keyword" element={<ExplorePage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:userName" element={<Profile />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/community" element={<CommunityHome />} />
           <Route path="/explore-community" element={<Communities />} />
-          <Route path="/explore-community/:keyword" element={<Communities />} />
           <Route path="/create-community" element={<CreateCommunity />} />
           <Route path="/manage-community" element={<ManageCommunity />} />
           <Route path="community/:communityId" element={<CommunityProfile />} />

@@ -1,24 +1,19 @@
 import { useSelector } from "react-redux";
 import RecipeCard from "../RecipeCard";
-
 import useGetAllRecipes from "../Hooks/useGetAllRecipes";
 import LoadingSpinner from "../LoadingSpinner";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { LuSearch } from "react-icons/lu";
 
 const ExplorePage = () => {
   const [keyword, setKeyword] = useState("");
 
-  const navigate = useNavigate();
   useGetAllRecipes(keyword);
 
   const handleSearch = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set("keyword", keyword);
-    const searchQuery = urlParams.toString();
-    navigate(`/search/${searchQuery}`);
   };
 
   useEffect(() => {
