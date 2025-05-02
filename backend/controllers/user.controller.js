@@ -2,13 +2,17 @@ import bcrypt from "bcryptjs";
 import { v2 as cloudinary } from "cloudinary";
 import Notification from "../models/notification.model.js";
 import User from "../models/user.model.js";
+import Post from "../models/post.model.js";
+import Recipe from "../models/recipe.model.js";
+import Community from "../models/community.model.js";
 
 export const getProfile = async (req, res) => {
   const { username } = req.params;
+
   try {
     const user = await User.findOne({ username: username }).select("-password");
     if (!user)
-      res.status(404).json({
+      return res.status(404).json({
         message: "User not found.",
         success: false,
       });
@@ -79,6 +83,8 @@ export const followUnfollowUser = async (req, res) => {
       // TODO return the id of the user as a response
       return res.status(200).json({
         message: "User followed successfully!",
+        currentUser,
+        userById,
         success: true,
       });
     }
@@ -267,7 +273,6 @@ export const updateUser = async (req, res) => {
     user.username = username || user.username;
     user.fullname = fullname || user.fullname;
     user.email = email || user.email;
-    user.phoneNumber = phoneNumber || user.phoneNumber;
 
     user = await user.save();
     user.password = null;
@@ -289,7 +294,9 @@ export const updateUser = async (req, res) => {
 export const excludingLoggedUser = async (req, res) => {
   try {
     const userId = req.id;
-    const users = await User.find({ _id: { $ne: userId } }).select("-password");
+    const users = await User.find({
+      $and: [{ _id: { $ne: userId } }, { role: "user" }],
+    }).select("-password");
 
     if (!users)
       return res.status(404).json({
@@ -336,10 +343,34 @@ export const banUserById = async (req, res) => {
         success: false,
       });
 
-    // remove all user posts, recipes, owned communities
-    // delete user profileImg & coverImg
-    // delete user
-    
+    if (admin.role === "admin") {
+      // remove all user posts, recipes, owned communities
+      await Post.deleteMany({ user: id });
+      await Recipe.deleteMany({ user: id });
+      await Community.deleteMany({ owner: id });
+
+      //remove user from others following & followers list
+      await User.updateMany({ role: "user" }, { $pull: { followers: id } });
+      await User.updateMany({ role: "user" }, { $pull: { following: id } });
+
+      // delete user profileImg & coverImg
+      if (user.profile.profileImg)
+        await cloudinary.uploader.destroy(
+          user.profile.profileImg.split("/").pop().split(".")[0]
+        );
+      if (user.profile.coverImg)
+        await cloudinary.uploader.destroy(
+          user.profile.coverImg.split("/").pop().split(".")[0]
+        );
+
+      // delete user
+      await User.findByIdAndDelete(id);
+    }
+
+    return res.status(200).json({
+      message: "Account deleted successfully",
+      success: true,
+    });
   } catch (error) {
     console.log("Error in banUserById: ", error.message);
     res.status(500).json({

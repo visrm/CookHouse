@@ -88,9 +88,9 @@ export const deleteCommunityById = async (req, res) => {
         message: "User not found.",
         success: false,
       });
-      
+
     let cantDeleteCommunity =
-      user._id.toString() !== community.owner._id.toString() ||
+      user._id.toString() !== community.owner._id.toString() &&
       user.role !== "admin";
     if (cantDeleteCommunity)
       return res.status(401).json({

@@ -32,12 +32,14 @@ export const createRecipe = async (req, res) => {
       user: userId,
       title,
       description,
-      ingredients: ingredients.split(","),
-      instructions: instructions.split("."),
+      ingredients,
+      instructions,
       media_url,
       cuisine_type,
-      dietary_tags: dietary_tags.split(","),
+      dietary_tags,
     });
+
+    await newRecipe.save();
 
     if (!newRecipe) {
       return res.status(400).json({
@@ -244,6 +246,56 @@ export const commentOnRecipe = async (req, res) => {
   }
 };
 
+export const deleteComment = async (req, res) => {
+  try {
+    const { recipeId, id } = req.params;
+    const userId = req.id;
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
+    if (!id)
+      return res.status(400).json({
+        message: "Provide a valid Recipe Id.",
+        success: false,
+      });
+
+    const recipe = await Recipe.findById(recipeId);
+    if (!recipe)
+      return res.status(404).json({
+        message: "Recipe not found.",
+        success: false,
+      });
+
+    let cantDeleteComment =
+      recipe.user.toString() !== userId.toString() && user.role !== "admin";
+    if (cantDeleteComment)
+      return res.status(401).json({
+        message: "Unauthorized to delete recipe.",
+        success: false,
+      });
+
+    recipe.comments.pull(id);
+    await recipe.save();
+
+    return res.status(200).json({
+      message: "Comment deleted successfully!",
+      recipe,
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error in deleteComment: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};
+
 export const deleteRecipe = async (req, res) => {
   try {
     const { id } = req.params;
@@ -270,7 +322,7 @@ export const deleteRecipe = async (req, res) => {
       });
 
     let cantDeleteRecipe =
-      recipe.user.toString() !== userId.toString() || user.role !== "admin";
+      recipe.user.toString() !== userId.toString() && user.role !== "admin";
     if (cantDeleteRecipe)
       return res.status(400).json({
         message: "Unauthorized to delete recipe.",
@@ -303,7 +355,24 @@ export const deleteRecipe = async (req, res) => {
 
 export const getAllRecipes = async (req, res) => {
   try {
-    const recipes = await Recipe.find()
+    const userId = req.id;
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
+    const keyword = req.query.keyword || "";
+    const query = {
+      $or: [
+        { title: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } },
+        { ingredients: { $regex: keyword, $options: "i" } },
+      ],
+    };
+    const recipes = await Recipe.find(query)
       .sort({ createdAt: -1 })
       .populate({
         path: "user",
@@ -381,7 +450,7 @@ export const getFollowingRecipes = async (req, res) => {
         success: false,
       });
 
-    const feedRecipes = await Recipe.find({ _id: { $in: user.following } })
+    const feedRecipes = await Recipe.find({ user: { $in: user.following } })
       .sort({ createdAt: -1 })
       .populate({
         path: "user",
@@ -495,12 +564,6 @@ export const getUserCommunitiesRecipes = async (req, res) => {
       $or: [{ members: { $in: user._id } }, { owner: user._id }],
     };
     const communities = await Community.find(query).populate("recipes");
-
-    if (communities.length === 0)
-      return res.status(404).json({
-        message: "Communities not found.",
-        success: false,
-      });
 
     var Arr = [];
 

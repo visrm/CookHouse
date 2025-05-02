@@ -8,6 +8,7 @@ import {
   getFollowingUsersById,
   getFollowerUsersById,
   excludingLoggedUser,
+  banUserById,
 } from "../controllers/user.controller.js";
 
 const router = Router();
@@ -18,5 +19,6 @@ router.get("/followings/:userId", isAuthenticated, getFollowingUsersById);
 router.get("/followers/:userId", isAuthenticated, getFollowerUsersById);
 router.get("/explore", isAuthenticated, excludingLoggedUser);
 router.patch("/update", isAuthenticated, updateUser);
+router.delete("/:id", isAuthenticated, banUserById);
 
 export default router;
