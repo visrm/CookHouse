@@ -13,6 +13,7 @@ import recipeRoute from "./routes/recipe.route.js";
 import notificationRoute from "./routes/notification.route.js";
 import communityRoute from "./routes/community.route.js";
 import chatRoute from "./routes/chat.route.js";
+import eventRoute from "./routes/event.route.js";
 
 dotenv.config({});
 cloudinary.config({
@@ -43,6 +44,7 @@ app.use("/api/v0/recipes", recipeRoute);
 app.use("/api/v0/notifications", notificationRoute);
 app.use("/api/v0/communities", communityRoute);
 app.use("/api/v0/chats", chatRoute);
+app.use("/api/v0/events", eventRoute);
 
 app.listen(PORT, async () => {
   console.log(`Server is running on port: ${PORT}`);

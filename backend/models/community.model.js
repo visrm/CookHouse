@@ -44,6 +44,12 @@ const communitySchema = new mongoose.Schema(
         ref: "Recipe",
       },
     ],
+    events: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Event",
+      },
+    ],
   },
   { timestamps: true }
 );
