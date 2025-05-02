@@ -3,8 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const postSlice = createSlice({
   name: "post",
   initialState: {
-    loading: false,
-    fetching: false,
+    loadingPost: false,
     allPosts: [],
     communityPosts: [],
     likedPosts: [],
@@ -13,11 +12,8 @@ const postSlice = createSlice({
   },
   reducers: {
     // actions
-    setLoading: (state, action) => {
-      state.loading = action.payload;
-    },
-    setFetching: (state, action) => {
-      state.fetching = action.payload;
+    setLoadingPost: (state, action) => {
+      state.loadingPost = action.payload;
     },
     setCommunityPosts: (state, action) => {
       state.communityPosts = action.payload;
@@ -38,8 +34,7 @@ const postSlice = createSlice({
 });
 
 export const {
-  setLoading,
-  setFetching,
+  setLoadingPost,
   setAllPosts,
   setCommunityPosts,
   setLikedPosts,

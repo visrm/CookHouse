@@ -3,21 +3,19 @@ import { createSlice } from "@reduxjs/toolkit";
 const recipeSlice = createSlice({
   name: "recipe",
   initialState: {
-    loading: false,
+    loadingRecipe: false,
     fetching: false,
     allRecipes: [],
     communityRecipes: [],
     likedRecipes: [],
     followingRecipes: [],
     usersCommunitiesRecipes: [],
+    searchedRecipeQuery: "",
   },
   reducers: {
     // actions
-    setLoading: (state, action) => {
-      state.loading = action.payload;
-    },
-    setFetching: (state, action) => {
-      state.fetching = action.payload;
+    setLoadingRecipe: (state, action) => {
+      state.loadingRecipe = action.payload;
     },
     setLikedRecipes: (state, action) => {
       state.likedRecipes = action.payload;
@@ -34,16 +32,19 @@ const recipeSlice = createSlice({
     setUsersCommunitiesRecipes: (state, action) => {
       state.usersCommunitiesRecipes = action.payload;
     },
+    setSearchedRecipeQuery: (state, action) => {
+      state.searchedRecipeQuery = action.payload;
+    },
   },
 });
 
 export const {
-  setLoading,
-  setFetching,
+  setLoadingRecipe,
   setAllRecipes,
   setCommunityRecipes,
   setLikedRecipes,
   setFollowingRecipes,
   setUsersCommunitiesRecipes,
+  setSearchedRecipeQuery
 } = recipeSlice.actions;
 export default recipeSlice.reducer;

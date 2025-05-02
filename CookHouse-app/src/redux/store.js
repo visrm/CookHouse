@@ -17,6 +17,7 @@ import postSlice from "./slices/post.slice.js";
 import recipeSlice from "./slices/recipe.slice.js";
 import communitySlice from "./slices/community.slice.js";
 import chatSlice from "./slices/chat.slice.js";
+import eventSlice from "./slices/event.slice.js";
 
 const persistConfig = {
   key: "root",
@@ -24,14 +25,27 @@ const persistConfig = {
   storage,
 };
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   auth: authSlice,
   users: userSlice,
   posts: postSlice,
   recipes: recipeSlice,
   communities: communitySlice,
   chats: chatSlice,
+  events: eventSlice,
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === "LOGOUT") {
+    // for all keys defined in your persistConfig(s)
+    storage.removeItem("persist:root");
+    // storage.removeItem('persist:otherKey')
+
+    return appReducer(undefined, action);
+  }
+
+  return appReducer(state, action);
+};
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

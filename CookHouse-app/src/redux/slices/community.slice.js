@@ -7,7 +7,7 @@ const communitySlice = createSlice({
     allCommunities: [],
     allUserCommunities: [],
     singleCommunity: null,
-    searchedQuery: "",
+    searchedCommunityQuery: "",
   },
   reducers: {
     // actions
@@ -23,8 +23,8 @@ const communitySlice = createSlice({
     setSingleCommunity: (state, action) => {
       state.singleCommunity = action.payload;
     },
-    setSearchedQuery: (state, action) => {
-      state.searchedQuery = action.payload;
+    setSearchedCommunityQuery: (state, action) => {
+      state.searchedCommunityQuery = action.payload;
     },
   },
 });
@@ -34,6 +34,6 @@ export const {
   setAllCommunities,
   setAllUserCommunities,
   setSingleCommunity,
-  setSearchedQuery,
+  setSearchedCommunityQuery,
 } = communitySlice.actions;
 export default communitySlice.reducer;
