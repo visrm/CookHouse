@@ -17,17 +17,13 @@ import LoadingSpinner from "../LoadingSpinner.jsx";
 import toast from "react-hot-toast";
 import { setLoading, setSingleUser } from "../../redux/slices/user.slice.js";
 import { setUser } from "../../redux/slices/auth.slice.js";
-import getMonth from "../../utils/getMonth.js";
+import { getMonth } from "../../utils/extractTime.js";
 import EditProfileModal from "../EditProfileModal.jsx";
 
 const Profile = () => {
   const [coverImg, setCoverImg] = useState(null);
   const [profileImg, setProfileImg] = useState(null);
   const [feedType, setFeedType] = useState("posts");
-  const [count, setCount] = useState({
-    followingCount: 0,
-    followersCount: 0,
-  });
   const [isFollowing, setIsFollowing] = useState(false);
 
   const coverImgRef = useRef(null);
@@ -37,7 +33,7 @@ const Profile = () => {
   var userName = params.userName;
 
   const { user } = useSelector((store) => store.auth);
-  const { fetching, likedPosts } = useSelector((store) => store.posts);
+  const { loadingPost, likedPosts } = useSelector((store) => store.posts);
   const { loading, singleUser, selfPosts, selfRecipes } = useSelector(
     (store) => store.users
   );
@@ -45,6 +41,7 @@ const Profile = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    userName = params.userName;
     (async function FetchUserInfo() {
       try {
         dispatch(setLoading(true));
@@ -58,16 +55,12 @@ const Profile = () => {
           dispatch(setSingleUser(response.data.user));
         }
       } catch (error) {
-        toast.error(error.response.data.message);
+        console.error(error.response.data.message);
       } finally {
         dispatch(setLoading(false));
-        setCount({
-          followingCount: singleUser?.following.length,
-          followersCount: singleUser?.followers.length,
-        });
       }
     })();
-  }, []);
+  }, [userName]);
 
   // console.log(singleUser);
   useGetUserPosts(userName);
@@ -126,6 +119,7 @@ const Profile = () => {
 
   const handleFollows = async (userId) => {
     try {
+      dispatch(setLoading(true));
       const response = await axios.post(
         `${USERS_API_END_POINT}/follow/${userId}`,
         {},
@@ -139,11 +133,15 @@ const Profile = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
+        dispatch(setUser(response.data.currentUser))
+        dispatch(setSingleUser(response.data.userById))
       }
     } catch (error) {
       toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoading(false));
     }
-  };
+  }; 
   // console.log(user?._id);
   return (
     <>
@@ -214,9 +212,7 @@ const Profile = () => {
                   </span>
                 </h1>
                 <div className="flex flex-col flex-nowrap gap-0 pr-1 mb-2 text-sm">
-                  <span className="font-semibold">
-                    About me :
-                  </span>
+                  <span className="font-semibold">About me :</span>
                   <p>{singleUser?.profile?.bio}</p>
                 </div>
                 <div className="flex gap-2 items-center mb-2">
@@ -235,13 +231,13 @@ const Profile = () => {
                 <ul className="flex mt-1 sm:mt-2 md:mt-3 list-none gap-2 md:gap-3 text-sm md:text-xs text-slate-400">
                   <li>
                     <span className="px-0.5 font-sans font-semibold text-slate-800">
-                      {count.followingCount}
+                      {singleUser?.following.length}
                     </span>{" "}
                     following{" "}
                   </li>
                   <li>
                     <span className="px-0.5 font-sans font-semibold text-slate-800">
-                      {count.followersCount}
+                      {singleUser?.followers.length}
                     </span>{" "}
                     followers{" "}
                   </li>
@@ -317,17 +313,17 @@ const Profile = () => {
           <div className="flex w-full mt-2 justify-center">
             {feedType === "posts" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                {fetching && (
+                {loading && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
                   </div>
                 )}
-                {!fetching && selfPosts.length === 0 && (
+                {!loading && selfPosts.length === 0 && (
                   <div className="block text-center text-sm p-2 sm:p-4">
                     No Posts found.
                   </div>
                 )}
-                {!fetching &&
+                {!loading &&
                   selfPosts.map((feed) => {
                     return <PostsCard post={feed} key={feed?._id} />;
                   })}
@@ -335,17 +331,17 @@ const Profile = () => {
             )}
             {feedType === "recipes" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                {fetching && (
+                {loading && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
                   </div>
                 )}
-                {!fetching && selfRecipes.length === 0 && (
+                {!loading && selfRecipes.length === 0 && (
                   <div className="block text-center text-sm p-2 sm:p-4">
                     No Recipes found.
                   </div>
                 )}
-                {!fetching &&
+                {!loading &&
                   selfRecipes.map((recipe) => {
                     return <RecipesCard recipe={recipe} key={recipe?._id} />;
                   })}
@@ -353,18 +349,18 @@ const Profile = () => {
             )}
             {feedType === "liked" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                {fetching && (
+                {loadingPost && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
                   </div>
                 )}
-                {!fetching && likedPosts.length === 0 && (
+                {!loadingPost && likedPosts.length === 0 && (
                   <div className="block text-center text-sm p-2 sm:p-4">
                     No Liked Feeds found.
                   </div>
                 )}
 
-                {!fetching &&
+                {!loadingPost &&
                   likedPosts.map((feed) => {
                     return <PostsCard post={feed} key={feed?._id} />;
                   })}

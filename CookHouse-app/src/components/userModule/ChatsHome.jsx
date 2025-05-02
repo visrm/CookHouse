@@ -1,40 +1,13 @@
-import { useEffect} from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setExcludingAuthUser,
-  setLoading,
-} from "../../redux/slices/user.slice.js";
-import { USERS_API_END_POINT } from "../../utils/constants.js";
-import axios from "axios";
-import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 import LoadingSpinner from "../LoadingSpinner";
 import Conversations from "../Conversations.jsx";
 import MessageContainer from "../MessageContainer.jsx";
+import useGetExcludingAuthUsers from "../Hooks/useGetExcludingAuthUsers.jsx";
 
 const ChatsHome = () => {
-  const dispatch = useDispatch();
+  useGetExcludingAuthUsers();
   const { loading, excludingAuthUser } = useSelector((store) => store.users);
-  const { LoadingMessages, selectedConversation } = useSelector(
-    (store) => store.users
-  );
-
-  useEffect(() => {
-    (async function FetchAllExcludingAuthUser() {
-      try {
-        dispatch(setLoading(true));
-        const response = await axios.get(`${USERS_API_END_POINT}/explore`, {
-          withCredentials: true,
-        });
-        if (response.data.success) {
-          dispatch(setExcludingAuthUser(response.data.users));
-        }
-      } catch (error) {
-        toast.error(error.response.data.message);
-      } finally {
-        dispatch(setLoading(false));
-      }
-    })();
-  }, []);
+  const { LoadingMessages } = useSelector((store) => store.users);
 
   return (
     <>

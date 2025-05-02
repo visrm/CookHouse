@@ -1,48 +1,44 @@
 import { useSelector } from "react-redux";
-import useGetAllCommunities from "./Hooks/useGetAllCommunities";
-import CommunityCard from "./CommunityCard";
-import LoadingSpinner from "./LoadingSpinner";
-import { LuSearch } from "react-icons/lu";
+import RecipeCard from "../RecipeCard";
+
+import useGetAllRecipes from "../Hooks/useGetAllRecipes";
+import LoadingSpinner from "../LoadingSpinner";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { LuSearch } from "react-icons/lu";
 
-const Communities = () => {
+const ExplorePage = () => {
   const [keyword, setKeyword] = useState("");
 
-  useGetAllCommunities(keyword);
-
   const navigate = useNavigate();
-
-  const { loadingCommunity, allCommunities } = useSelector(
-    (store) => store.communities
-  );
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const keywordFromUrl = urlParams.get("keyword");
-    if (keywordFromUrl) setKeyword(keywordFromUrl);
-  }, [location.search]);
+  useGetAllRecipes(keyword);
 
   const handleSearch = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set("keyword", keyword);
     const searchQuery = urlParams.toString();
-    navigate(`/explore-community/${searchQuery}`);
+    navigate(`/search/${searchQuery}`);
   };
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const keywordFromUrl = urlParams.get("keyword");
+    if (keywordFromUrl) setKeyword(keywordFromUrl);
+  }, [location.search]);
+
+  const { loadingRecipe, allRecipes } = useSelector((store) => store.recipes);
 
   return (
     <>
-      <main className="h-full w-full max-w-full min-h-[90svh] md:min-h-screen overflow-hidden">
-        <div className="flex justify-between items-center p-4 bg-[#ffffff] border-b border-gray-700 z-20">
-          <p className="font-bold">Communities</p>
-        </div>
-        <section>
+      <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto">
+        <section className="flex flex-col flex-nowrap gap-2 w-full h-full">
           <article className="block mt-2 md:mt-3">
             <div>
               <form
                 onSubmit={handleSearch}
                 className="flex flex-row flex-nowrap gap-1 items-center justify-center w-full"
-                id="search-bar-form2"
+                id="search-bar-form1"
               >
                 <input
                   type="text"
@@ -63,36 +59,34 @@ const Communities = () => {
               </form>
             </div>
             <div>
-              {!loadingCommunity && (
+              {!loadingRecipe && (
                 <span className="block w-full p-2 sm:px-3 font-bold font-mono text-xs text-left">
-                  {`Search results ( ${allCommunities.length} )`}
+                  {`Search results ( ${allRecipes.length} )`}
                 </span>
               )}
             </div>
           </article>
-          <div className="flex flex-col flex-nowrap gap-1 p-2 min-h-full w-full max-w-full">
-            {loadingCommunity && (
-              <div className="block text-center p-2 h-52">
+          <article id="search-results" className="block">
+            {loadingRecipe && (
+              <div className="block text-center">
                 <LoadingSpinner size="lg" />
               </div>
             )}
-            {!loadingCommunity && allCommunities.length === 0 && (
+            {!loadingRecipe && allRecipes.length === 0 && (
               <div className="block text-center text-sm p-2 sm:p-4">
-                No Communities found.
+                No recipes found.
               </div>
             )}
-            {!loadingCommunity &&
-              allCommunities.length > 0 &&
-              allCommunities.map((community) => {
-                return (
-                  <CommunityCard community={community} key={community._id} />
-                );
+            {!loadingRecipe &&
+              allRecipes.length > 0 &&
+              allRecipes.map((recipe) => {
+                return <RecipeCard recipe={recipe} key={recipe?._id} />;
               })}
-          </div>
+          </article>
         </section>
       </main>
     </>
   );
 };
 
-export default Communities;
+export default ExplorePage;

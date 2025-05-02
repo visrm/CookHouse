@@ -6,6 +6,7 @@ import axios from "axios";
 import { POSTS_API_END_POINT, RECIPES_API_END_POINT } from "../utils/constants";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import CreateEvent from "./CreateEvent";
 
 const CreateRecipe = () => {
   const [recipe, setRecipe] = useState({
@@ -54,7 +55,7 @@ const CreateRecipe = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        window.location.reload()
+        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -211,7 +212,7 @@ const CreateRecipe = () => {
   );
 };
 
-const CreateCommunityPostAndRecipe = () => {
+const CreateCommunityPostAndRecipe = ({ isOwner = false }) => {
   const [text, setText] = useState("");
   const [img, setImg] = useState(null);
 
@@ -335,7 +336,9 @@ const CreateCommunityPostAndRecipe = () => {
           </form>
           <div className="divider my-1 font-semibold">OR</div>
           <div className="block w-full">
-            <CreateRecipe />
+            <div className="flex gap-2 md:gap-4">
+              <CreateRecipe /> {isOwner && <CreateEvent />}
+            </div>
           </div>
         </div>
       </article>

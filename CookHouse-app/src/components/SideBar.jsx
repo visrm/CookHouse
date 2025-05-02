@@ -6,12 +6,13 @@ import {
 } from "react-icons/md";
 import { LuUserRound } from "react-icons/lu";
 import { RiCommunityLine, RiWechatLine } from "react-icons/ri";
-import { TbLogout } from "react-icons/tb";
+import { TbFileDescription, TbLogout } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setUser } from "../redux/slices/auth.slice.js";
 import { AUTH_API_END_POINT } from "../utils/constants.js";
 import axios from "axios";
 import toast from "react-hot-toast";
+import store from "../redux/store.js";
 
 const SideBar = () => {
   const { user } = useSelector((store) => store.auth);
@@ -27,6 +28,7 @@ const SideBar = () => {
       });
       if (response.data.success) {
         dispatch(setUser(null));
+        store.dispatch({ type: "LOGOUT" });
         toast.success(response.data.message);
         navigate("/");
       }
@@ -58,7 +60,6 @@ const SideBar = () => {
                   </span>
                 </Link>
               </li>
-
               <li className="flex justify-center md:justify-start">
                 <Link
                   to="/notifications"
@@ -71,20 +72,6 @@ const SideBar = () => {
                   </span>
                 </Link>
               </li>
-
-              <li className="flex justify-center md:justify-start">
-                <Link
-                  to="/conversations"
-                  className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
-                  replace
-                >
-                  <RiWechatLine className="w-8 h-8" />
-                  <span className="text-base hidden font-semibold md:block">
-                    Chats
-                  </span>
-                </Link>
-              </li>
-
               <li className="flex justify-center md:justify-start">
                 <Link
                   to={`/profile/${user?.username}`}
@@ -97,7 +84,37 @@ const SideBar = () => {
                 </Link>
               </li>
 
-              {user?.profile?.communities.length > 0 && (
+              {user?.role === "user" && (
+                <li className="flex justify-center md:justify-start">
+                  <Link
+                    to="/recipes"
+                    className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
+                    replace
+                  >
+                    <TbFileDescription className="w-8 h-8" />
+                    <span className="text-base hidden font-semibold md:block">
+                      Recipes
+                    </span>
+                  </Link>
+                </li>
+              )}
+
+              {user?.role === "user" && (
+                <li className="flex justify-center md:justify-start">
+                  <Link
+                    to="/conversations"
+                    className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
+                    replace
+                  >
+                    <RiWechatLine className="w-8 h-8" />
+                    <span className="text-base hidden font-semibold md:block">
+                      Chats
+                    </span>
+                  </Link>
+                </li>
+              )}
+
+              {user?.role === "user" && (
                 <li className="flex justify-center md:justify-start">
                   <Link
                     to="/community"
@@ -111,7 +128,8 @@ const SideBar = () => {
                   </Link>
                 </li>
               )}
-              {user?.role !== "admin" && (
+
+              {user?.role === "admin" && (
                 <li className="flex justify-center md:justify-start">
                   <Link
                     to="/admin"

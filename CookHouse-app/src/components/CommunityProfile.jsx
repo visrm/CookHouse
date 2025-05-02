@@ -16,6 +16,7 @@ import CommunityRecipes from "./CommunityRecipes.jsx";
 import CreateCommunityPostAndRecipe from "./CreateCommunityPostAndRecipe.jsx";
 import LoadingSpinner from "./LoadingSpinner.jsx";
 import EditCommunityModal from "./EditCommunityModal";
+import CommunityEvents from "./CommunityEvents.jsx";
 
 const CommunityProfile = () => {
   const [feedType, setFeedType] = useState("posts");
@@ -57,10 +58,10 @@ const CommunityProfile = () => {
     })();
   }, []);
 
-  let isMyCommunity = false;
-  if (singleCommunity?.owner?._id.toString() === user?._id.toString()) {
-    isMyCommunity = true;
-  }
+  let isMyCommunity =
+    singleCommunity?.owner?._id.toString() === user?._id.toString();
+  let isJoinedCommunity =
+    singleCommunity?.members.includes(user?._id) || isMyCommunity;
 
   const handleImgChange = (e, state) => {
     const file = e.target.files[0];
@@ -80,6 +81,7 @@ const CommunityProfile = () => {
       coverImg,
     };
     try {
+      dispatch(setLoadingCommunity(true))
       const response = await axios.patch(
         `${COMMUNITIES_API_END_POINT}/update/${communityId}`,
         updateInfo,
@@ -93,11 +95,12 @@ const CommunityProfile = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        window.location.reload()
+        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
+      dispatch(setLoadingCommunity(false))
       setCoverImg(null);
       setProfileImg(null);
     }
@@ -105,6 +108,7 @@ const CommunityProfile = () => {
 
   const handleJoins = async (communityId) => {
     try {
+      dispatch(setLoadingCommunity(true))
       const response = await axios.get(
         `${COMMUNITIES_API_END_POINT}/join/${communityId}`,
         {
@@ -114,15 +118,17 @@ const CommunityProfile = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        window.location.reload()
       }
     } catch (error) {
       toast.error(error.response.data.message);
+    }finally {
+      dispatch(setLoadingCommunity(false))
     }
   };
 
   const handleDeletion = async (communityId) => {
     try {
+      dispatch(setLoadingCommunity(true))
       const response = await axios.delete(
         `${COMMUNITIES_API_END_POINT}/delete/${communityId}`,
         {
@@ -136,6 +142,8 @@ const CommunityProfile = () => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
+    }finally {
+      dispatch(setLoadingCommunity(false))
     }
   };
 
@@ -260,7 +268,6 @@ const CommunityProfile = () => {
                 <button
                   className="btn bg-indigo-500 text-[#fdfdfd] border rounded-full btn-sm w-fit"
                   onClick={(e) => {
-                    e.preventDefault();
                     handleImgSubmit(singleCommunity?._id);
                   }}
                 >
@@ -277,7 +284,7 @@ const CommunityProfile = () => {
                 </div>
                 <ul
                   tabIndex={0}
-                  className="menu dropdown-content border-1 border-slate-200 bg-slate-50 rounded-box z-1 mt-10 w-40 p-1 shadow-sm font-semibold"
+                  className="menu dropdown-content border-1 border-slate-200 bg-[#fdfdfd] rounded-box z-1 mt-10 w-40 p-1 shadow-sm font-semibold"
                 >
                   {isMyCommunity && (
                     <li>
@@ -315,11 +322,13 @@ const CommunityProfile = () => {
                 </ul>
               </div>
             </article>
-            <div className="block w-full bg-[#ffffff]">
-              <CreateCommunityPostAndRecipe />
-            </div>
+            {isJoinedCommunity && (
+              <div className="block w-full bg-[#ffffff]">
+                <CreateCommunityPostAndRecipe isOwner={isMyCommunity} />
+              </div>
+            )}
           </>
-        )}{" "}
+        )}
         <section className="transition-all duration-200">
           <div className="sticky top-12 md:top-15 flex w-full font-semibold bg-[#ffffff] z-50 shadow-md">
             <div
@@ -340,6 +349,15 @@ const CommunityProfile = () => {
                 <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />
               )}
             </div>
+            <div
+              className="flex justify-center flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
+              onClick={() => setFeedType("events")}
+            >
+              Events
+              {feedType === "events" && (
+                <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />
+              )}
+            </div>
           </div>
           {loadingCommunity && (
             <div className="flex w-full mt-2 justify-center">
@@ -353,8 +371,8 @@ const CommunityProfile = () => {
               {feedType === "posts" && (
                 <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
                   {singleCommunity?.posts.length === 0 && (
-                    <div className="block text-center text-sm p-2 sm:p-4 bg-[#fdfdfd]">
-                      No communities posts found.
+                    <div className="block text-center text-sm p-2 sm:p-4">
+                      No community posts found.
                     </div>
                   )}
                   {singleCommunity?.posts.length > 0 && (
@@ -365,12 +383,24 @@ const CommunityProfile = () => {
               {feedType === "recipes" && (
                 <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
                   {singleCommunity?.recipes.length === 0 && (
-                    <div className="block text-center text-sm p-2 sm:p-4 bg-[#fdfdfd]">
-                      No communities recipes found.
+                    <div className="block text-center text-sm p-2 sm:p-4">
+                      No community recipes found.
                     </div>
                   )}
                   {singleCommunity?.recipes.length > 0 && (
                     <CommunityRecipes communityId={singleCommunity?._id} />
+                  )}
+                </div>
+              )}
+              {feedType === "events" && (
+                <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+                  {singleCommunity?.events.length === 0 && (
+                    <div className="block text-center text-sm p-2 sm:p-4">
+                      No Community events found.
+                    </div>
+                  )}
+                  {singleCommunity?.events.length > 0 && (
+                    <CommunityEvents communityId={singleCommunity?._id} />
                   )}
                 </div>
               )}

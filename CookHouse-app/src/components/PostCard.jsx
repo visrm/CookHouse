@@ -4,29 +4,29 @@ import { Link } from "react-router-dom";
 import { POSTS_API_END_POINT } from "../utils/constants.js";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { MdMoreVert } from "react-icons/md";
+import { timestampFn } from "../utils/extractTime.js";
+import { setLoadingPost } from "../redux/slices/post.slice.js";
 
 const PostCard = ({ post }) => {
   const [comment, setComment] = useState("");
   const postOwner = post?.user;
-
-  let isLiked = false;
-  let isMyPost = false;
+  var isLiked = false;
 
   const { user } = useSelector((store) => store.auth);
-  if (postOwner?._id?.toString() === user?._id?.toString()) {
-    isMyPost = true;
-  }
+  const { loadingPost } = useSelector((store) => store.posts);
 
-  const formattedDate = "1h";
+  const dispatch = useDispatch();
+  const isMyPost = postOwner?._id === user?._id || user?.role === "admin";
 
-  let isCommenting = false;
+  let isCommenting = loadingPost;
 
   const handleDeletePost = async () => {
     try {
+      dispatch(setLoadingPost(true));
       const response = await axios.delete(
-        `${POSTS_API_END_POINT}/delete/${post?._id}`,
+        `${POSTS_API_END_POINT}/${post?._id}`,
         {
           withCredentials: true,
         }
@@ -34,15 +34,19 @@ const PostCard = ({ post }) => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        window.location.reload()
+        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoadingPost(false));
     }
   };
 
   const handlePostComment = async (e) => {
     e.preventDefault();
+    dispatch(setLoadingPost(true));
+
     try {
       let commentData = {
         text: comment,
@@ -61,15 +65,40 @@ const PostCard = ({ post }) => {
       if (response.data.success) {
         toast.success(response.data.message);
         setComment("");
-        window.location.reload()
+        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoadingPost(false));
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      dispatch(setLoadingPost(true));
+
+      const response = await axios.delete(
+        `${POSTS_API_END_POINT}/${post?._id}/comment/${commentId}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoadingPost(false));
     }
   };
 
   const handleLikePost = async () => {
     try {
+      dispatch(setLoadingPost(true));
+
       const response = await axios.get(
         `${POSTS_API_END_POINT}/like/${post?._id}`,
         {
@@ -79,7 +108,7 @@ const PostCard = ({ post }) => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        window.location.reload()
+        window.location.reload();
         // let myRegex = /unlike/g;
         // if(!myRegex.test(response.data.message)){
         //   setPostState({isLiked: true})
@@ -87,6 +116,8 @@ const PostCard = ({ post }) => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoadingPost(false));
     }
   };
 
@@ -121,7 +152,11 @@ const PostCard = ({ post }) => {
                   @{postOwner?.username}
                 </Link>
                 <span>·</span>
-                <span>{formattedDate}</span>
+                <span>
+                  {timestampFn(post?.createdAt) === 0
+                    ? "Today"
+                    : `${timestampFn(post?.createdAt)} days ago`}
+                </span>
               </span>
               {isMyPost && (
                 <div className=" flex justify-end flex-1 dropdown dropdown-start">
@@ -134,14 +169,14 @@ const PostCard = ({ post }) => {
                   </div>
                   <ul
                     tabIndex={0}
-                    className="menu dropdown-content border-1 border-slate-200 rounded-box z-1 mt-10 w-40 p-1 shadow-sm"
+                    className="menu dropdown-content border-1 border-slate-200 rounded-box z-1 mt-10 w-40 p-1 shadow-sm bg-[#fdfdfd]"
                   >
                     <li>
-                      <span className="flex place-items-center gap-1 hover:text-red-500 cursor-pointer font-semibold">
-                        <FaTrash
-                          className="h-3 w-3"
-                          onClick={handleDeletePost}
-                        />
+                      <span
+                        className="flex place-items-center gap-1 hover:text-red-500 cursor-pointer font-semibold"
+                        onClick={handleDeletePost}
+                      >
+                        <FaTrash className="h-3 w-3" />
                         Delete
                       </span>
                     </li>
@@ -157,6 +192,7 @@ const PostCard = ({ post }) => {
                     src={post?.media_url}
                     className="h-80 object-contain border overflow-hidden rounded-lg border-gray-200"
                     alt=""
+                    loading="lazy"
                   />
                 </figure>
               )}
@@ -176,20 +212,21 @@ const PostCard = ({ post }) => {
                     {post?.comments?.length}
                   </span>
                 </div>
+
                 {/* We're using Modal Component from DaisyUI */}
                 <dialog
                   id={`comments_modal${post?._id}`}
                   className="modal border-none outline-none"
                 >
-                  <div className="modal-box rounded border-0">
-                    <form method="dialog">
+                  <div className="modal-box flex flex-col flex-nowrap flex-between w-full h-[66%] rounded border-0">
+                    <form method="dialog" id="closeCommentModal">
                       {/* if there is a button in form, it will close the modal */}
                       <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
                         ✕
                       </button>
                     </form>
                     <h3 className="font-bold text-lg mb-3">COMMENTS</h3>
-                    <div className="flex flex-col gap-3 max-h-60 overflow-auto">
+                    <div className="flex flex-col gap-3 h-[50%]">
                       {post?.comments?.length === 0 && (
                         <p className="text-sm text-slate-500">
                           No comments yet. Be the first 😉
@@ -200,6 +237,7 @@ const PostCard = ({ post }) => {
                           key={comment._id}
                           className="flex gap-2 items-start"
                         >
+                          {/* Comment header */}
                           <div className="avatar h-8">
                             <div className="w-8 rounded-full">
                               <img
@@ -210,6 +248,7 @@ const PostCard = ({ post }) => {
                               />
                             </div>
                           </div>
+
                           <div className="flex flex-col">
                             <div className="flex items-center gap-1">
                               <span className="font-bold">
@@ -219,7 +258,33 @@ const PostCard = ({ post }) => {
                                 @{comment?.user?.username}
                               </span>
                             </div>
+                            {/* Comment text */}
                             <div className="text-sm">{comment?.text}</div>
+                          </div>
+                          <div className="flex justify-end flex-1 dropdown dropdown-top">
+                            <div
+                              tabIndex={0}
+                              role="button"
+                              className="btn btn-sm border-0 rounded-full"
+                            >
+                              <MdMoreVert className="h-3 w-3 rounded-full" />
+                            </div>
+                            <ul
+                              tabIndex={0}
+                              className="menu dropdown-content border-1 border-slate-200 rounded-box z-1 w-34 p-0.5 mb-2 shadow-sm bg-[#fdfdfd]"
+                            >
+                              <li>
+                                <span
+                                  className="flex place-items-center gap-1 hover:text-red-500 cursor-pointer text-sm font-semibold"
+                                  onClick={() => {
+                                    handleDeleteComment(comment?._id);
+                                  }}
+                                >
+                                  <FaTrash className="h-3 w-3" />
+                                  Delete
+                                </span>
+                              </li>
+                            </ul>
                           </div>
                         </div>
                       ))}
@@ -227,6 +292,7 @@ const PostCard = ({ post }) => {
                     <form
                       className="flex flex-col gap-2 items-center mt-4 border-t border-gray-600 pt-2"
                       onSubmit={handlePostComment}
+                      id="addPostCommentForm"
                     >
                       <textarea
                         className="textarea sm:textarea-md w-full p-1 sm:px-2 rounded text-base resize-none border focus:outline-none  border-gray-800"
@@ -243,7 +309,11 @@ const PostCard = ({ post }) => {
                       </button>
                     </form>
                   </div>
-                  <form method="dialog" className="modal-backdrop">
+                  <form
+                    method="dialog"
+                    className="modal-backdrop"
+                    id="closeCommentModal2"
+                  >
                     <button className="outline-none">close</button>
                   </form>
                 </dialog>

@@ -2,21 +2,28 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { COMMUNITIES_API_END_POINT } from "../utils/constants";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setLoadingCommunity } from "../redux/slices/community.slice.js";
 
 const CommunityCard = ({ community }) => {
+  const dispatch = useDispatch();
+
   const handleJoinUnjoin = async (e) => {
     try {
       e.preventDefault();
+      dispatch(setLoadingCommunity(true));
       const response = await axios.get(
         `${COMMUNITIES_API_END_POINT}/join/${community?._id}`,
         { withCredentials: true }
       );
       if (response.data.success) {
         toast.success(response.data.message);
-        window.location.reload()
+        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoadingCommunity(false));
     }
   };
   return (

@@ -7,6 +7,8 @@ import RecipeCard from "../RecipeCard";
 import useGetUsersCommunitiesPosts from "../Hooks/useGetUsersCommunitiesPosts";
 import useGetUsersCommunitiesRecipes from "../Hooks/useGetUsersCommunitiesRecipes";
 import CommunityCard from "../CommunityCard";
+import useGetUsersCommunitiesEvents from "../Hooks/useGetUsersCommunitiesEvents";
+import EventCard from "../EventCard";
 
 const CommunityHome = () => {
   const [feedType, setFeedType] = useState("posts");
@@ -14,15 +16,19 @@ const CommunityHome = () => {
   useGetAllUserCommunities();
   useGetUsersCommunitiesPosts();
   useGetUsersCommunitiesRecipes();
+  useGetUsersCommunitiesEvents();
 
   const { loadingCommunity, allUserCommunities } = useSelector(
     (store) => store.communities
   );
-  const { fetching, usersCommunitiesPosts } = useSelector(
+  const { loadingPost, usersCommunitiesPosts } = useSelector(
     (store) => store.posts
   );
-  const { loading, usersCommunitiesRecipes } = useSelector(
+  const { loadingRecipe, usersCommunitiesRecipes } = useSelector(
     (store) => store.recipes
+  );
+  const { loadingEvent, usersCommunitiesEvents } = useSelector(
+    (store) => store.events
   );
 
   return (
@@ -50,6 +56,15 @@ const CommunityHome = () => {
             </div>
             <div
               className="flex justify-center flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
+              onClick={() => setFeedType("events")}
+            >
+              Events
+              {feedType === "events" && (
+                <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />
+              )}
+            </div>
+            <div
+              className="flex justify-center flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("communities")}
             >
               Your Communities
@@ -61,17 +76,17 @@ const CommunityHome = () => {
           <div className="flex w-full mt-2 justify-center">
             {feedType === "posts" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                {fetching && (
+                {loadingPost && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
                   </div>
                 )}
-                {!fetching && usersCommunitiesPosts?.length === 0 && (
+                {!loadingPost && usersCommunitiesPosts?.length === 0 && (
                   <div className="block text-center text-sm p-2 sm:p-4 bg-[#fdfdfd]">
                     No community feeds found.
                   </div>
                 )}
-                {!fetching &&
+                {!loadingPost &&
                   usersCommunitiesPosts?.length > 0 &&
                   usersCommunitiesPosts.map((feed) => {
                     return <PostCard post={feed} key={feed._id} />;
@@ -80,20 +95,39 @@ const CommunityHome = () => {
             )}
             {feedType === "recipes" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                {loading && (
+                {loadingRecipe && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
                   </div>
                 )}
-                {!loading && usersCommunitiesRecipes?.length === 0 && (
+                {!loadingRecipe && usersCommunitiesRecipes?.length === 0 && (
                   <div className="block text-center text-sm p-2 sm:p-4 bg-[#fdfdfd]">
                     No community recipes found.
                   </div>
                 )}
-                {!loading &&
+                {!loadingRecipe &&
                   usersCommunitiesRecipes.length > 0 &&
-                  usersCommunitiesPosts.map((recipe) => {
+                  usersCommunitiesRecipes.map((recipe) => {
                     return <RecipeCard recipe={recipe} key={recipe._id} />;
+                  })}
+              </div>
+            )}
+            {feedType === "events" && (
+              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+                {loadingEvent && (
+                  <div className="block text-center">
+                    <LoadingSpinner size="lg" />
+                  </div>
+                )}
+                {!loadingEvent && usersCommunitiesEvents?.length === 0 && (
+                  <div className="block text-center text-sm p-2 sm:p-4 bg-[#fdfdfd]">
+                    No community events found.
+                  </div>
+                )}
+                {!loadingEvent &&
+                  usersCommunitiesEvents.length > 0 &&
+                  usersCommunitiesEvents.map((event) => {
+                    return <EventCard event={event} key={event._id} />;
                   })}
               </div>
             )}

@@ -16,13 +16,13 @@ const Conversation = ({ user, lastIdx }) => {
         onClick={() => dispatch(setSelectedConversation(user))}
       >
         <div className="avatar">
-          <div className="w-12 rounded-full ring-1 ring-offset-1 ring-slate-500">
+          <div className="w-12 rounded-full ring-1 ring-slate-500">
             <img
               src={
-                user?.profile?.profileImg ||
-                "https://cdn0.iconfinder.com/data/icons/communication-line-10/24/account_profile_user_contact_person_avatar_placeholder-512.png"
+                user?.profile?.profileImg || "/assets/avatar-placeholder.png"
               }
               alt="user avatar"
+              className="h-12 rounded-full border border-slate-400"
             />
           </div>
         </div>

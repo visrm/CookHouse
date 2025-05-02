@@ -4,28 +4,29 @@ import  useGetAllPosts  from "./Hooks/useGetAllPosts";
 import LoadingSpinner from "./LoadingSpinner";
 
 const Posts = () => {
-  // using getHook for fetching all posts.
+  // using getHook for loadingPost all posts.
   useGetAllPosts();
 
   //   const dispatch = useDispatch()
-  const { fetching, allPosts } = useSelector((store) => store.posts);
+  const { loadingPost, allPosts } = useSelector((store) => store.posts);
+  const { user } = useSelector((store) => store.auth);
 
   return (
     <>
-      {fetching && (
+      {loadingPost && (
         <div className="block text-center">
           <LoadingSpinner size="lg" />
         </div>
       )}
-      {!fetching && allPosts.length === 0 && (
+      {!loadingPost && allPosts.length === 0 && (
         <div className="block text-center text-sm p-2 sm:p-4">
           No feeds found.
         </div>
       )}
-      {!fetching &&
+      {!loadingPost &&
         allPosts.length > 0 &&
         allPosts.map((post) => {
-          return <PostsCard post={post} key={post?._id} />;
+          return <PostsCard post={post} key={post?._id}/>;
         })}
     </>
   );

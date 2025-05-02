@@ -2,8 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setCommunityRecipes,
-  setFetching,
-  setLoading,
+  setLoadingRecipe,
 } from "../redux/slices/recipe.slice.js";
 import axios from "axios";
 import LoadingSpinner from "./LoadingSpinner";
@@ -18,8 +17,7 @@ const CommunityRecipes = ({ communityId }) => {
   useEffect(() => {
     (async function FetchCommunityRecipes() {
       try {
-        dispatch(setLoading(true));
-        dispatch(setFetching(true));
+        dispatch(setLoadingRecipe(true));
         const response = await axios.get(
           `${RECIPES_API_END_POINT}/community/${communityId}`,
           {
@@ -32,28 +30,27 @@ const CommunityRecipes = ({ communityId }) => {
       } catch (error) {
         toast.error(error.response.data.message);
       } finally {
-        dispatch(setFetching(false));
-        dispatch(setLoading(false));
+        dispatch(setLoadingRecipe(false));
       }
     })();
-  }, []);
+  }, [communityId]);
 
-  const { fetching, communityRecipes } = useSelector((store) => store.recipes);
+  const { loadingRecipe, communityRecipes } = useSelector((store) => store.recipes);
 
   return (
     <>
-      {fetching && (
+      {loadingRecipe && (
         <div className="block text-center">
           <LoadingSpinner size="lg" />
         </div>
       )}
-      {!fetching && communityRecipes.length === 0 && (
+      {!loadingRecipe && communityRecipes.length === 0 && (
         <div className="block text-center text-sm p-2 sm:p-4">
           No community recipes found.
         </div>
       )}
-      {!fetching &&
-        communityRecipes.length !== 0 &&
+      {!loadingRecipe &&
+        communityRecipes.length > 0 &&
         communityRecipes.map((recipe) => {
           return <RecipeCard recipe={recipe} key={recipe?._id} />;
         })}

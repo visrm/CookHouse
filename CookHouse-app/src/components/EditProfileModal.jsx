@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../redux/slices/user.slice.js";
+import { setLoading, setSingleUser } from "../redux/slices/user.slice.js";
 import { setUser } from "../redux/slices/auth.slice.js";
 import { USERS_API_END_POINT } from "../utils/constants.js";
 import axios from "axios";
@@ -15,6 +15,7 @@ const EditProfileModal = () => {
     username: user?.username || "",
     fullname: user?.fullname || "",
     bio: user?.profile?.bio || "",
+    
     email: user?.email || "",
     currentPassword: "",
     newPassword: "",
@@ -119,9 +120,7 @@ const EditProfileModal = () => {
                 id="fullname"
                 name="fullname"
                 value={userData.fullname}
-                pattern="[A-Za-z]*"
                 maxLength={30}
-                title="Only letters"
                 onChange={handleChange}
               />
             </div>

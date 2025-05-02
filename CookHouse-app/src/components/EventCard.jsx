@@ -1,0 +1,101 @@
+import { FaTrash } from "react-icons/fa";
+import { extractTime, getMonth } from "../utils/extractTime.js";
+import { MdMoreVert } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoadingEvent } from "../redux/slices/event.slice.js";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { EVENTS_API_END_POINT } from "../utils/constants";
+
+const EventCard = ({ event }) => {
+  const organiser = event?.organiser;
+  const dispatch = useDispatch();
+  const { user } = useSelector((store) => store.auth);
+
+  const canManageEvent = organiser?._id === user?._id || user?.role === "admin";
+
+  const formattedDate = (string) => {
+    var dateString = ` ${string.split("T")[0].split("-")[2]} ${getMonth(
+      string.split("T")[0].split("-")[1]
+    )} ${string.split("T")[0].split("-")[0]}, ${extractTime(string)}`;
+    return dateString;
+  };
+
+  const handleDeleteEvent = async () => {
+    try {
+      dispatch(setLoadingEvent(true));
+      const response = await axios.delete(
+        `${EVENTS_API_END_POINT}/delete/${event?._id}`,
+        { withCredentials: true }
+      );
+      if (response.data.success) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoadingEvent(false));
+    }
+  };
+
+  return (
+    <>
+      <article className="w-[90%] sm:w-[80%] mx-auto">
+        <div className="relative flex flex-col gap-2 items-start p-4 border-b-2 border-gray-300 bg-[#fdfdfd] rounded">
+          {canManageEvent && (
+            <div className="absolute top-1 right-2 flex justify-end flex-1 dropdown dropdown-bottom">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-sm border-0 rounded-full"
+              >
+                <MdMoreVert className="h-3 w-3 rounded-full" />
+              </div>
+              <ul
+                tabIndex={0}
+                className="menu dropdown-content border-1 border-slate-200 rounded-box z-1 w-34 p-0.5 mt-1 shadow-sm bg-[#fdfdfd]"
+              >
+                <li>
+                  <span
+                    className="flex place-items-center gap-1 hover:text-red-500 cursor-pointer text-sm font-semibold"
+                    onClick={() => {
+                      handleDeleteEvent(event?._id);
+                    }}
+                  >
+                    <FaTrash className="h-3 w-3" />
+                    Delete
+                  </span>
+                </li>
+              </ul>
+            </div>
+          )}
+          {/* Event contents */}
+          <div className="mt-2">
+            <h2 className="text-lg font-bold font-serif underline underline-offset-2">
+              {event?.title}
+            </h2>
+            <p className="text-base font-base font-sans">
+              {event?.description}
+            </p>
+          </div>
+          <div className="flex flex-col bg-slate-200 w-full p-2 border-0 rounded-sm">
+            <span className="flex sm:gap-x-2 items-center">
+              <span className="text-sm font-bold font-mono sm:w-10">Date</span>{" "}
+              :
+              <span className="text-sm font-normal font-sans">
+                {formattedDate(event?.startDate)} -
+                {formattedDate(event?.endDate)}
+              </span>
+            </span>
+            <span className="flex sm:gap-x-2 items-center">
+              <span className="text-sm font-bold font-mono sm:w-10">Venue</span>{" "}
+              :<span>{event?.location}</span>
+            </span>
+          </div>
+        </div>
+      </article>
+    </>
+  );
+};
+
+export default EventCard;

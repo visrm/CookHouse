@@ -66,8 +66,9 @@ const CreateCommunity = () => {
             method="POST"
             className="block min-w-72 w-full md:min-h-74 h-full text-base"
             onSubmit={handleSubmit}
+            id="createCommunityForm"
           >
-            <h2 className="block font-bold text-xl my-1 sm:my-2 mx-auto">
+            <h2 className="block font-bold font-serif text-xl my-1 sm:my-2 mx-auto">
               Add Community
             </h2>
             <label htmlFor="name" className="block font-semibold text-sm">
@@ -82,6 +83,7 @@ const CreateCommunity = () => {
               value={input.name}
               onChange={handleChange}
               maxLength={"40ch"}
+              autoComplete="name"
               required
             />
 

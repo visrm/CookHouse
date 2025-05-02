@@ -2,8 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setCommunityPosts,
-  setFetching,
-  setLoading,
+  setLoadingPost,
 } from "../redux/slices/post.slice.js";
 import axios from "axios";
 import LoadingSpinner from "./LoadingSpinner";
@@ -17,8 +16,7 @@ const CommunityPosts = ({ communityId }) => {
   useEffect(() => {
     (async function FetchCommunityPosts() {
       try {
-        dispatch(setLoading(true));
-        dispatch(setFetching(true));
+        dispatch(setLoadingPost(true));
         const response = await axios.get(
           `${POSTS_API_END_POINT}/community/${communityId}`,
           {
@@ -31,28 +29,27 @@ const CommunityPosts = ({ communityId }) => {
       } catch (error) {
         toast.error(error.response.data.message);
       } finally {
-        dispatch(setFetching(false));
-        dispatch(setLoading(false));
+        dispatch(setLoadingPost(false));
       }
     })();
-  }, []);
+  }, [communityId]);
 
-  const { fetching, communityPosts } = useSelector((store) => store.posts);
+  const { loadingPost, communityPosts } = useSelector((store) => store.posts);
 
   return (
     <>
-      {fetching && (
+      {loadingPost && (
         <div className="block text-center">
           <LoadingSpinner size="lg" />
         </div>
       )}
-      {!fetching && communityPosts.length === 0 && (
+      {!loadingPost && communityPosts.length === 0 && (
         <div className="block text-center text-sm p-2 sm:p-4">
           No community feeds found.
         </div>
       )}
-      {!fetching &&
-        communityPosts.length !== 0 &&
+      {!loadingPost &&
+        communityPosts.length > 0 &&
         communityPosts.map((post) => {
           return <PostCard post={post} key={post?._id} />;
         })}

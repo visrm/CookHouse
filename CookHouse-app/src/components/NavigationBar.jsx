@@ -19,49 +19,50 @@ const NavigationBar = () => {
           </div>
 
           {/* Nav Links (to be aligned to the right) */}
-          <div className="inline-flex justify-evenly self-end">
-            <div className="dropdown dropdown-end dropdown-hover">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-sm text-sm bg-transparent border-0 md:font-semibold"
-              >
-                Community
-              </div>
-              <ul
-                tabIndex={0}
-                className="menu dropdown-content bg-amber-200 rounded-box z-1 mt-4 md:mt-6 w-56 px-2 shadow-sm"
-              >
-                <li>
-                  <Link to="/create-community">
-                    <TbCirclePlus className="h-5 w-5" />
-                    Create Community
-                  </Link>
-                </li>
-                
-                {user?.profile.communities.length > 0 && (
+          <div className="inline-flex items-center justify-end gap-0.5 w-full max-w-full">
+            {user && (
+              <div className="dropdown dropdown-end dropdown-hover">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn btn-sm text-xs sm:text-sm bg-transparent border-0 md:font-semibold"
+                >
+                  Community
+                </div>
+                <ul
+                  tabIndex={0}
+                  className="menu dropdown-content bg-amber-200 rounded-box z-1 mt-4 md:mt-6 w-56 px-2 shadow-sm"
+                >
                   <li>
-                    <Link to="/manage-community">
-                      <TbSettings className="h-5 w-5" />
-                      Manage Community
+                    <Link to="/create-community">
+                      <TbCirclePlus className="h-5 w-5" />
+                      Create Community
                     </Link>
                   </li>
-                )}
 
-                <li>
-                  <Link to="/explore-community">
-                    <TbEye className="h-5 w-5" />
-                    Explore Communities
-                  </Link>
-                </li>
-              </ul>
-            </div>
+                  {user?.profile.communities.length > 0 && (
+                    <li>
+                      <Link to="/manage-community">
+                        <TbSettings className="h-5 w-5" />
+                        Manage Community
+                      </Link>
+                    </li>
+                  )}
 
+                  <li>
+                    <Link to="/explore-community">
+                      <TbEye className="h-5 w-5" />
+                      Explore Communities
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            )}
             <div className="dropdown dropdown-end">
               <div
                 tabIndex={0}
                 role="button"
-                className="btn btn-sm text-sm bg-transparent border-0 md:font-semibold"
+                className="btn btn-sm text-xs sm:text-sm bg-transparent border-0 md:font-semibold"
               >
                 Contacts
               </div>
@@ -74,13 +75,12 @@ const NavigationBar = () => {
                 </li>
               </ul>
             </div>
-
             {!user && (
               <ul className="ml-2 md:ml-4 list-none inline-flex flex-nowrap gap-2 md:gap-4 md:font-semibold">
-                <li className="border border-black/50 rounded-md md:px-3 md:py-1 px-2 bg-slate-200 hover:scale-105">
+                <li className="btn btn-sm border border-black/50 rounded-md bg-slate-200 hover:scale-105">
                   <Link to="/login">Login</Link>
                 </li>
-                <li className="border border-black/50 rounded-md md:px-2.5 md:py-1 px-2 bg-slate-600 text-slate-100 hover:scale-105">
+                <li className="btn btn-sm border border-black/50 rounded-md bg-slate-600 text-slate-100 hover:scale-105">
                   <Link to="/register">Register</Link>
                 </li>
               </ul>

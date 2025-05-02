@@ -13,14 +13,17 @@ const Message = ({ message }) => {
   const profileImg = fromMe
     ? user?.profile?.profileImg
     : selectedConversation?.profile?.profileImg;
-  const bubbleBgColor = fromMe ? "bg-indigo-400" : "";
+  const bubbleBgColor = fromMe ? "bg-indigo-400" : "bg-indigo-500";
 
   return (
     <>
       <div className={`chat ${chatClassName}`}>
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
-            <img alt="Tailwind CSS chat bubble component" src={profileImg} />
+            <img
+              alt="Tailwind CSS chat bubble component"
+              src={profileImg || "/assets/avatar-placeholder.png"}
+            />
           </div>
         </div>
         <div className={`chat-bubble text-white ${bubbleBgColor} pb-2`}>

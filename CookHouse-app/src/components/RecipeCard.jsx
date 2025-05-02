@@ -1,32 +1,33 @@
 import { useState } from "react";
 import { FaRegComment, FaRegHeart, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { RECIPES_API_END_POINT } from "../utils/constants";
+import { RECIPES_API_END_POINT } from "../utils/constants.js";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { MdMoreVert } from "react-icons/md";
+import { timestampFn } from "../utils/extractTime.js";
+import { setLoadingRecipe } from "../redux/slices/recipe.slice.js";
 
 const RecipeCard = ({ recipe }) => {
   const [comment, setComment] = useState("");
   const recipeMaker = recipe?.user;
   const isLiked = false;
 
-  let isMyPost = false;
-
   const { user } = useSelector((store) => store.auth);
-  if (recipeMaker?._id.toString() === user?._id.toString()) {
-    isMyPost = true;
-  }
+  const { loadingRecipe } = useSelector((store) => store.recipes);
 
-  const formattedDate = "1h";
+  const dispatch = useDispatch();
 
-  const isCommenting = false;
+  const isMyRecipe = recipeMaker?._id === user?._id || user?.role === "admin";
+
+  const isCommenting = loadingRecipe;
 
   const handleDeleteRecipe = async () => {
     try {
+      dispatch(setLoadingRecipe(true));
       const response = await axios.delete(
-        `${RECIPES_API_END_POINT}/delete/${recipe?._id}`,
+        `${RECIPES_API_END_POINT}/${recipe?._id}`,
         {
           withCredentials: true,
         }
@@ -38,11 +39,14 @@ const RecipeCard = ({ recipe }) => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoadingRecipe(false));
     }
   };
 
   const handleRecipeComment = async (e) => {
     e.preventDefault();
+    dispatch(setLoadingRecipe(true));
     try {
       let commentData = {
         text: comment,
@@ -61,15 +65,38 @@ const RecipeCard = ({ recipe }) => {
       if (response.data.success) {
         toast.success(response.data.message);
         setComment("");
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoadingRecipe(false));
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      dispatch(setLoadingRecipe(true));
+      const response = await axios.delete(
+        `${RECIPES_API_END_POINT}/${recipe?._id}/comment/${commentId}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.success) {
+        toast.success(response.data.message);
         window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoadingRecipe(false));
     }
   };
 
   const handleLikeRecipe = async () => {
     try {
+      dispatch(setLoadingRecipe(true));
       const response = await axios.post(
         `${RECIPES_API_END_POINT}/like/${recipe?._id}`,
         {},
@@ -87,13 +114,15 @@ const RecipeCard = ({ recipe }) => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoadingRecipe(false));
     }
   };
 
   let i = 1;
   return (
     <>
-      <article className="w-[85%] sm:w-[75%] mx-auto">
+      <article className="w-[90%] sm:w-[80%] mx-auto">
         <div className="flex gap-2 items-start p-4 border-b-2 border-gray-300 bg-[#fdfdfd]">
           <div className="avatar h-8">
             <Link
@@ -121,9 +150,13 @@ const RecipeCard = ({ recipe }) => {
                   @{recipeMaker?.username}
                 </Link>
                 <span>·</span>
-                <span>{formattedDate}</span>
+                <span>
+                  {timestampFn(recipe?.createdAt) === 0
+                    ? "Today"
+                    : `${timestampFn(recipe?.createdAt)} days ago`}
+                </span>
               </span>
-              {isMyPost && (
+              {isMyRecipe && (
                 <div className=" flex justify-end flex-1 dropdown dropdown-start">
                   <div
                     tabIndex={0}
@@ -134,14 +167,14 @@ const RecipeCard = ({ recipe }) => {
                   </div>
                   <ul
                     tabIndex={0}
-                    className="menu dropdown-content border-1 border-slate-200 rounded-box z-1 mt-10 w-40 p-1 shadow-sm"
+                    className="menu dropdown-content border-1 border-slate-200 rounded-box z-1 mt-10 w-40 p-1 shadow-sm bg-[#fdfdfd]"
                   >
                     <li>
-                      <span className="flex place-items-center gap-1 hover:text-red-500 cursor-pointer font-semibold">
-                        <FaTrash
-                          className="h-3 w-3"
-                          onClick={handleDeleteRecipe}
-                        />
+                      <span
+                        className="flex place-items-center gap-1 hover:text-red-500 cursor-pointer font-semibold"
+                        onClick={handleDeleteRecipe}
+                      >
+                        <FaTrash className="h-3 w-3" />
                         Delete
                       </span>
                     </li>
@@ -165,6 +198,7 @@ const RecipeCard = ({ recipe }) => {
                       src={recipe?.media_url}
                       className="h-80 object-contain border overflow-hidden rounded-lg border-gray-200"
                       alt=""
+                      loading="lazy"
                     />
                   </figure>
                 )}
@@ -237,15 +271,15 @@ const RecipeCard = ({ recipe }) => {
                   id={`comments_modal${recipe?._id}`}
                   className="modal border-none outline-none"
                 >
-                  <div className="modal-box rounded border-0">
-                    <form method="dialog">
+                  <div className="modal-box flex flex-col flex-nowrap flex-between w-full h-[66%] rounded border-0">
+                    <form method="dialog" id="closeRecipeCommentModal">
                       {/* if there is a button in form, it will close the modal */}
                       <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
                         ✕
                       </button>
                     </form>
                     <h3 className="font-bold text-lg mb-3">COMMENTS</h3>
-                    <div className="flex flex-col gap-3 max-h-60 overflow-auto">
+                    <div className="flex flex-col gap-3 h-[50%]">
                       {recipe?.comments?.length === 0 && (
                         <p className="text-sm text-slate-500">
                           No comments yet. Be the first 😉
@@ -277,12 +311,38 @@ const RecipeCard = ({ recipe }) => {
                             </div>
                             <div className="text-sm">{comment?.text}</div>
                           </div>
+                          <div className="flex justify-end flex-1 dropdown dropdown-top">
+                            <div
+                              tabIndex={0}
+                              role="button"
+                              className="btn btn-sm border-0 rounded-full"
+                            >
+                              <MdMoreVert className="h-3 w-3 rounded-full" />
+                            </div>
+                            <ul
+                              tabIndex={0}
+                              className="menu dropdown-content border-1 border-slate-200 rounded-box z-1 w-34 p-0.5 mb-2 shadow-sm bg-[#fdfdfd]"
+                            >
+                              <li>
+                                <span
+                                  className="flex place-items-center gap-1 hover:text-red-500 cursor-pointer text-sm font-semibold"
+                                  onClick={() => {
+                                    handleDeleteComment(comment?._id);
+                                  }}
+                                >
+                                  <FaTrash className="h-3 w-3" />
+                                  Delete
+                                </span>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
                       ))}
                     </div>
                     <form
                       className="flex flex-col gap-2 items-center mt-4 border-t border-gray-600 pt-2"
                       onSubmit={handleRecipeComment}
+                      id="addRecipeCommentForm"
                     >
                       <textarea
                         className="textarea sm:textarea-md w-full p-1 sm:px-2 rounded text-base resize-none border focus:outline-none  border-gray-800"
@@ -299,7 +359,11 @@ const RecipeCard = ({ recipe }) => {
                       </button>
                     </form>
                   </div>
-                  <form method="dialog" className="modal-backdrop">
+                  <form
+                    method="dialog"
+                    className="modal-backdrop"
+                    id="closeRecipeCommentModal2"
+                  >
                     <button className="outline-none">close</button>
                   </form>
                 </dialog>

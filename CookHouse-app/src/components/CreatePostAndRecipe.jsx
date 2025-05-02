@@ -3,9 +3,11 @@ import { BsEmojiSmileFill } from "react-icons/bs";
 import { useRef, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import axios from "axios";
-import { POSTS_API_END_POINT, RECIPES_API_END_POINT } from "../utils/constants";
-import { useSelector } from "react-redux";
+import { POSTS_API_END_POINT, RECIPES_API_END_POINT } from "../utils/constants.js";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { setLoadingRecipe } from "../redux/slices/recipe.slice.js";
+import { setLoadingPost } from "../redux/slices/post.slice.js";
 
 const CreateRecipe = () => {
   const [recipe, setRecipe] = useState({
@@ -23,19 +25,21 @@ const CreateRecipe = () => {
   const isPending = false;
   const isError = false;
 
+  const dispatch = useDispatch()
   const { user } = useSelector((store) => store.auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    dispatch(setLoadingRecipe(true))
     try {
       let recipeData = {
         user: user?._id,
         title: recipe.title,
         description: recipe.desc,
-        ingredients: recipe.ingredients,
-        instructions: recipe.instructions,
+        ingredients: recipe.ingredients.split(","),
+        instructions: recipe.instructions.split("."),
         cuisine_type: recipe.cuisine_type,
-        dietary_tags: recipe.dietary_tags,
+        dietary_tags: recipe.dietary_tags.split(","),
         media_url: img,
       };
       const response = await axios.post(
@@ -55,6 +59,7 @@ const CreateRecipe = () => {
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
+    dispatch(setLoadingRecipe(false))
       setRecipe({
         title: "",
         desc: "",
@@ -121,13 +126,21 @@ const CreateRecipe = () => {
             >
               <h3 className="font-bold text-lg md:text-xl">Publish Recipe</h3>
               <textarea
-                className="rounded-md textarea-sm min-h-8 w-full p-1 sm:p-2 text-lg resize-none border-none focus:outline-none bg-amber-50 border-gray-200 overflow-hidden"
+                className="rounded-md textarea-sm h-8 min-h-8 w-full p-1 sm:p-2 text-lg resize-none border-none focus:outline-none bg-amber-50 border-gray-200 overflow-hidden"
                 placeholder="Dish Name"
                 name="title"
                 value={recipe.title}
                 onChange={handleInputChange}
                 maxLength={"40ch"}
                 required
+              />
+                 <textarea
+                className="rounded-md textarea-sm  h-8 min-h-8 w-full p-1 sm:p-2 text-lg resize-none border-none focus:outline-none bg-amber-50 border-gray-200 overflow-hidden"
+                placeholder="Cuisine type (optional)"
+                name="cuisine_type"
+                value={recipe.cuisine_type}
+                onChange={handleInputChange}
+                maxLength={"40ch"}
               />
               <textarea
                 className="rounded-md textarea-sm h-full min-h-15 w-full p-1 sm:p-2 text-base resize-none border-none focus:outline-none bg-amber-50 border-gray-200"
@@ -153,6 +166,13 @@ const CreateRecipe = () => {
                 value={recipe.instructions}
                 onChange={handleInputChange}
                 required
+              />
+              <textarea
+                className="rounded-md textarea textarea-sm h-full min-h-15 w-full p-1 sm:p-2 text-base resize-none border-none focus:outline-none bg-amber-50 border-gray-200"
+                placeholder={`Provide Dietary tags seperated by commas(",").`}
+                name="dietary_tags"
+                value={recipe.dietary_tags}
+                onChange={handleInputChange}
               />
               {img && (
                 <div className="relative w-72 mx-auto">
@@ -216,10 +236,12 @@ const CreatePostAndRecipe = () => {
   const isPending = false;
   const isError = false;
 
+const dispatch = useDispatch()
   const { user } = useSelector((store) => store.auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    dispatch(setLoadingPost(true))
     try {
       let postData = {
         user: user?._id,
@@ -243,6 +265,7 @@ const CreatePostAndRecipe = () => {
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
+    dispatch(setLoadingPost(false))
       setText("");
       setImg(null);
     }

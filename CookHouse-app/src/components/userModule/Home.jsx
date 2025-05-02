@@ -5,14 +5,15 @@ import Posts from "../Posts";
 import LoadingSpinner from "../LoadingSpinner";
 import PostsCard from "../PostCard.jsx";
 import Recipes from "../Recipes.jsx";
-import { useGetAllFollowingPosts } from "../Hooks/useGetAllFollowingPosts.jsx";
+import useGetAllFollowingPosts from "../Hooks/useGetAllFollowingPosts.jsx";
 import useGetLikedPosts from "../Hooks/useGetLikedPosts.jsx";
+import useGetAllFollowingRecipes from "../Hooks/useGetAllFollowingRecipes.jsx";
 
 const Home = () => {
   const [feedType, setFeedType] = useState("posts");
   useGetAllFollowingPosts();
 
-  const { fetching, followingPosts } = useSelector((store) => store.posts);
+  const { loadingPost, followingPosts } = useSelector((store) => store.posts);
   const { user } = useSelector((store) => store.auth);
 
   useGetLikedPosts(user?._id);
@@ -57,17 +58,18 @@ const Home = () => {
           <div className="flex w-full mt-2 justify-center">
             {feedType === "following" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                {fetching && (
+                {loadingPost && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
                   </div>
                 )}
-                {!fetching && followingPosts.length === 0 && (
+                {followingPosts.length === 0 && (
                   <div className="block text-center text-sm p-2 sm:p-4 bg-[#fdfdfd]">
                     No following feeds found.
                   </div>
                 )}
-                {!fetching &&
+                {!loadingPost &&
+                  followingPosts.length > 0 &&
                   followingPosts.map((feed) => {
                     return <PostsCard post={feed} key={feed?._id} />;
                   })}

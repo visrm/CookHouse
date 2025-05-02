@@ -4,9 +4,9 @@ import LoadingSpinner from "./LoadingSpinner";
 
 const Conversations = () => {
   const { loading, excludingAuthUser } = useSelector((store) => store.users);
-  
+
   return (
-    <div className="pb-2 flex flex-col overflow-auto bg-indigo-50">
+    <div className="pb-2 flex flex-col overflow-scroll-y bg-indigo-50">
       {loading && (
         <div className="block text-center">
           <LoadingSpinner size="lg" />
