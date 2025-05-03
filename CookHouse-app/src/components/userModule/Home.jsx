@@ -21,12 +21,12 @@ const Home = () => {
   return (
     <>
       <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto">
-        <div className="bg-[#ffffff]">
+        <div className="bg-[#fafafa]">
           <CreatePostAndRecipe />
         </div>
 
         <section>
-          <div className="sticky top-12 md:top-15 flex w-full font-semibold bg-[#ffffff] z-50 shadow-md">
+          <div className="sticky top-12 md:top-15 flex w-full font-semibold bg-[#fafafa] z-50 shadow-md">
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("posts")}

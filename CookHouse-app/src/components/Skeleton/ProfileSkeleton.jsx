@@ -9,7 +9,7 @@ const ProfileSkeleton = () => {
             <div className="relative w-28 sm:w-28 md:w-36"></div>
           </div>
         </div>
-        <div className="grid grid-cols-3 lg:grid-cols-4 w-full bg-[#ffffff]">
+        <div className="grid grid-cols-3 lg:grid-cols-4 w-full bg-[#fafafa]">
           <span className="grid gap-y-1 mt-1 col-start-2 sm:col-start-2 col-span-2">
             <span className="skeleton w-[50%] md:w-[45%] h-5 rounded-none"></span>
             <h1 className="flex skeleton w-[33%] h-3 rounded-sm"></h1>{" "}

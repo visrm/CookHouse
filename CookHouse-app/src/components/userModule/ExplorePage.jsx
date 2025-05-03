@@ -27,10 +27,10 @@ const ExplorePage = () => {
   return (
     <>
       <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto">
-        <section className="relative flex flex-col flex-nowrap gap-2 w-full h-full backdrop-blur">
+        <section className="relative flex flex-col flex-nowrap w-full h-full backdrop-blur">
           <div className="absolute top-[14%] right-[68%] block h-42 w-42 bg-amber-500 rounded-full blur-2xl"></div>
           <article className="relative flex flex-row flex-wrap lg:flex-nowrap h-full w-full max-w-full backdrop-blur">
-            <figure className="block w-[33%] min-w-[75%] md:min-w-fit md:max-w-[33%] h-auto z-50">
+            <figure className="hidden lg:block w-[33%] min-w-[75%] md:min-w-fit md:max-w-[33%] h-auto z-50">
               <img
                 src={"/assets/strawberry-bowl.png"}
                 alt="bowl img"
@@ -86,13 +86,13 @@ const ExplorePage = () => {
             </div>
             <div>
               {!loadingRecipe && (
-                <span className="block w-full p-2 sm:px-3 font-bold font-mono text-xs text-left">
+                <span className="block w-full p-2 sm:px-3 mt-1 md:mt-2 font-bold font-mono text-xs text-left">
                   {`Search results ( ${allRecipes.length} )`}
                 </span>
               )}
             </div>
           </article>
-          <article id="search-results" className="block">
+          <article id="search-results" className="block h-full">
             {loadingRecipe && (
               <div className="block text-center">
                 <LoadingSpinner size="lg" />

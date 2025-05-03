@@ -36,7 +36,7 @@ const ManageCommunity = () => {
     <>
       <main className="h-full w-full max-w-full min-h-[90svh] md:min-h-screen overflow-hidden">
         <section>
-          <div className="sticky top-0 flex w-full font-semibold bg-[#ffffff] z-50 shadow-md">
+          <div className="sticky top-0 flex w-full font-semibold bg-[#fafafa] z-50 shadow-md">
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("manage")}

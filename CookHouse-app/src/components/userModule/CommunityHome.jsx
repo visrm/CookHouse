@@ -35,9 +35,43 @@ const CommunityHome = () => {
     <>
       <main className="h-full w-full max-w-full min-h-[90svh] md:min-h-screen overflow-hidden">
         <section>
-          <div className="sticky top-0 flex w-full font-semibold bg-[#ffffff] z-50 shadow-md">
+          <article className="relative flex w-full bg-[#fafafa]">
+            <div className="p-1 sm:p-2 text-center w-full h-full lg:my-auto">
+              <div className="z-50 block h-full w-full text-center">
+                <p className="text-xs text-amber-500 font-mono font-bold tracking-wide">
+                  😊
+                </p>
+                <hgroup>
+                  <h1 className="sm:text-6xl text-2xl font-semibold">
+                    Your Kitchen, Our Community.
+                  </h1>
+                  <h4 className="sm:text-4xl text-xl mb-4 font-semibold text-amber-500">
+                    Flavor Shared, Skills Inspired.
+                  </h4>
+                </hgroup>
+                <p className="sm:py-2 text-xs sm:text-sm font-light tracking-wide w-full items-center">
+                  Discover the joy of cooking together. Share your family
+                  favorites, explore global flavors, and build lasting culinary
+                  connections.
+                </p>
+              </div>
+            </div>
+            <div className="hidden md:block w-[50%]">
+              <figure className="block w-full h-auto mx-auto">
+                <img
+                  src={"/assets/community-gathering.png"}
+                  alt="bowl img"
+                  className="h-full w-full"
+                  loading="eager"
+                />
+              </figure>
+            </div>
+          </article>
+        </section>
+        <section>
+          <div className="sticky top-0 flex w-full font-semibold bg-[#fafafa] sm:pt-2 z-50 shadow-md">
             <div
-              className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
+              className="flex justify-center text-center text-xs sm:text-sm flex-1 p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("posts")}
             >
               Posts
@@ -46,7 +80,7 @@ const CommunityHome = () => {
               )}
             </div>
             <div
-              className="flex justify-center flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
+              className="flex justify-center text-center text-xs sm:text-sm flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("recipes")}
             >
               Recipes
@@ -55,7 +89,7 @@ const CommunityHome = () => {
               )}
             </div>
             <div
-              className="flex justify-center flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
+              className="flex justify-center text-center text-xs sm:text-sm flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("events")}
             >
               Events
@@ -64,7 +98,7 @@ const CommunityHome = () => {
               )}
             </div>
             <div
-              className="flex justify-center flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
+              className="flex justify-center text-center text-xs sm:text-sm flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("communities")}
             >
               Your Communities

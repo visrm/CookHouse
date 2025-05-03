@@ -199,7 +199,7 @@ const Profile = () => {
                 )}
               </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full bg-[#ffffff]">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full bg-[#fafafa]">
               <span className="grid col-start-2 sm:col-start-2 col-span-2 py-1 text-left w-fit">
                 <h1 className="flex gap-1 items-baseline text-xl font-semibold">
                   {singleUser?.fullname}
@@ -244,10 +244,10 @@ const Profile = () => {
         )}
 
         {!loading && singleUser && (
-          <div className="block py-2 bg-[#fff]">
+          <div className="block py-2 bg-[#fafafa]">
             <div className="flex mr-1 px-1 gap-x-1 w-full">
               {isMyProfile && (
-                <div className="w-full flex flex-end bg-[#ffffff]">
+                <div className="w-full flex flex-end bg-[#fafafa]">
                   <EditProfileModal />
                 </div>
               )}
@@ -263,7 +263,7 @@ const Profile = () => {
                 </button>
               )}
               {(coverImg || profileImg) && (
-                <div className="bg-[#ffffff]">
+                <div className="bg-[#fafafa]">
                   <button
                     className="btn bg-indigo-600 text-[#fff] border-0 btn-sm px-4 w-fit"
                     onClick={handleImgSubmit}
@@ -277,7 +277,7 @@ const Profile = () => {
         )}
 
         <section>
-          <div className="sticky top-12 md:top-15 flex w-full font-semibold shadow-md z-50 bg-[#ffffff]">
+          <div className="sticky top-12 md:top-15 flex w-full font-semibold shadow-md z-50 bg-[#fafafa]">
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("posts")}

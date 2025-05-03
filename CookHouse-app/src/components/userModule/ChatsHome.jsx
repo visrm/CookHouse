@@ -41,12 +41,12 @@ const ChatsHome = () => {
       <main className="h-full w-full max-w-full min-h-[90svh] md:min-h-screen">
         <section className="grid grid-cols-12 h-screen w-full">
           {loading && (
-            <div className="grid col-span-4 md:col-span-3 lg:col-span-2">
+            <div className="grid col-span-4 md:col-span-3 lg:col-span-2 bg-[#fafafa]">
               <LoadingSpinner size="lg" />
             </div>
           )}
           {!loading && excludingAuthUser && (
-            <div className="grid col-span-4 md:col-span-3 lg:col-span-2">
+            <div className="grid col-span-4 md:col-span-3 lg:col-span-2 bg-[#fafafa]">
               <div>
                 <form
                   onSubmit={handleSubmit}

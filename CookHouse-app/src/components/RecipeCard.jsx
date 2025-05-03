@@ -123,7 +123,7 @@ const RecipeCard = ({ recipe }) => {
   return (
     <>
       <article className="w-[90%] sm:w-[80%] mx-auto">
-        <div className="flex gap-2 items-start p-4 border-b-2 border-gray-300 bg-[#fdfdfd]">
+        <div className="flex gap-2 items-start p-4 border-b-2 border-gray-300 bg-[#fafafa]">
           <div className="avatar h-8">
             <Link
               to={`/profile/${recipeMaker?.username}`}

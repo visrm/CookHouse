@@ -51,7 +51,7 @@ const Notifications = () => {
   return (
     <>
       <div className="relative flex-[4_4_0] border-l border-r border-gray-700 h-full min-h-[90svh] md:min-h-screen">
-        <div className="sticky top-11 md:top-14 flex justify-between items-center p-4 bg-[#ffffff] border-b border-gray-700 z-20">
+        <div className="sticky top-11 md:top-14 flex justify-between items-center p-4 bg-[#fafafa] border-b border-gray-700 z-20">
           <p className="font-bold font-serif">Notifications</p>
           <div className="dropdown dropdown-left">
             <div tabIndex={0} role="button" className="m-1">
