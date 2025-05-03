@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
-import useGetAllEvents from "../Hooks/useGetAllEvents";
+import useGetAllPosts from "../Hooks/useGetAllPosts";
 import axios from "axios";
-import { EVENTS_API_END_POINT } from "../../utils/constants.js";
+import { POSTS_API_END_POINT } from "../../utils/constants.js";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../LoadingSpinner.jsx";
 import { MdMoreVert } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { extractTime, getMonth } from "../../utils/extractTime.js";
-import { setLoadingEvent } from "../../redux/slices/event.slice.js";
+import { setLoadingPost } from "../../redux/slices/post.slice.js";
 import { LuSearch } from "react-icons/lu";
 
-const EventsTable = () => {
+const PostsTable = () => {
   const [keyword, setKeyword] = useState("");
 
-  useGetAllEvents(keyword);
+  useGetAllPosts(keyword);
 
-  const { loadingEvent, allEvents } = useSelector((store) => store.events);
+  const { loadingPost, allPosts } = useSelector((store) => store.posts);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,29 +24,19 @@ const EventsTable = () => {
   }, [location.search]);
 
   const handleSearch = (e) => {
-    e.preventDefault();
+    e.prrecipeDefault();
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set("keyword", keyword);
   };
 
-  const formattedDate = (string) => {
-    var dateString = ` ${string.split("T")[0].split("-")[2]} ${getMonth(
-      string.split("T")[0].split("-")[1]
-    )} ${string.split("T")[0].split("-")[0]}, ${extractTime(string)}`;
-    return dateString;
-  };
-
   let i = 0;
 
-  const handleDeletion = async (eventId) => {
+  const handleDeletion = async (postId) => {
     try {
-      dispatch(setLoadingEvent(true));
-      const response = await axios.delete(
-        `${EVENTS_API_END_POINT}/delete/${eventId}`,
-        {
-          withCredentials: true,
-        }
-      );
+      dispatch(setLoadingPost(true));
+      const response = await axios.delete(`${POSTS_API_END_POINT}/${postId}`, {
+        withCredentials: true,
+      });
 
       if (response.data.success) {
         toast.success(response.data.message);
@@ -56,7 +45,7 @@ const EventsTable = () => {
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
-      dispatch(setLoadingEvent(false));
+      dispatch(setLoadingPost(false));
     }
   };
 
@@ -89,9 +78,9 @@ const EventsTable = () => {
             </form>
           </div>
           <div>
-            {!loadingEvent && (
+            {!loadingPost && (
               <span className="block w-full p-2 sm:px-3 font-bold font-mono text-xs text-left">
-                {`Search results ( ${allEvents.length} )`}
+                {`Search results ( ${allPosts.length} )`}
               </span>
             )}
           </div>
@@ -102,49 +91,40 @@ const EventsTable = () => {
               <tr className="text-center">
                 <th></th>
                 <th>ID</th>
-                <th>CommunityID</th>
-                <th>Title</th>
-                <th>Organiser</th>
-                <th>Date/Time</th>
-                <th>Attendees</th>
+                <th>Community</th>
+                <th>Creator</th>
                 <th>Created At</th>
                 <th>Updated At</th>
                 <th></th>
               </tr>
             </thead>
-            {loadingEvent && (
+            {loadingPost && (
               <tbody className="block text-center">
                 <tr>
                   <LoadingSpinner size="lg" />
                 </tr>
               </tbody>
             )}
-            {!loadingEvent && allEvents.length === 0 && (
+            {!loadingPost && allPosts.length === 0 && (
               <tbody className="flex place-content-center">
                 <tr>
-                  <td>No Events found.</td>
+                  <td>No post found.</td>
                 </tr>
               </tbody>
             )}
             <tbody>
-              {!loadingEvent &&
-                allEvents.length > 0 &&
-                allEvents.map((event) => {
+              {!loadingPost &&
+                allPosts.length > 0 &&
+                allPosts.map((post) => {
                   i++;
                   return (
-                    <tr key={event?._id} className="text-center">
+                    <tr key={post?._id} className="text-center">
                       <th>{i}</th>
-                      <td>{event?._id}</td>
-                      <td>{event?.community?._id}</td>
-                      <td>{event?.title}</td>
-                      <td>{event?.organiser?.username}</td>
-                      <td>
-                        <span>{formattedDate(event?.startDate)}</span> -
-                        <span>{formattedDate(event?.endDate)}</span>
-                      </td>
-                      <td>{event?.attendees.length}</td>
-                      <td>{event?.createdAt.split("T")[0].trim()}</td>
-                      <td>{event?.updatedAt.split("T")[0].trim()}</td>
+                      <td>{post?._id}</td>
+                      <td>{post?.community?._id || "null"}</td>
+                      <td>{post?.user?.username}</td>
+                      <td>{post?.createdAt.split("T")[0].trim()}</td>
+                      <td>{post?.updatedAt.split("T")[0].trim()}</td>
                       <td>
                         <div className="flex justify-end dropdown dropdown-start dropdown-hover mx-2">
                           <div
@@ -163,7 +143,7 @@ const EventsTable = () => {
                                 className="btn hover:text-red-400 border btn-sm"
                                 onClick={(e) => {
                                   e.preventDefault();
-                                  handleDeletion(event?._id);
+                                  handleDeletion(post?._id);
                                 }}
                               >
                                 Delete
@@ -183,4 +163,4 @@ const EventsTable = () => {
   );
 };
 
-export default EventsTable;
+export default PostsTable;

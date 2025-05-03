@@ -1,8 +1,9 @@
 import { useState } from "react";
-import LoadingSpinner from "../LoadingSpinner";
 import CommunitiesTable from "./CommunitiesTable";
 import UsersTable from "./UsersTable";
 import EventsTable from "./EventsTable";
+import RecipesTable from "./RecipesTable";
+import PostsTable from "./PostsTable";
 
 const AdminHome = () => {
   const [feedType, setFeedType] = useState("users");
@@ -18,6 +19,24 @@ const AdminHome = () => {
             >
               Users
               {feedType === "users" && (
+                <div className="absolute bottom-0 w-10 h-1 rounded-full bg-indigo-600" />
+              )}
+            </div>
+            <div
+              className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
+              onClick={() => setFeedType("posts")}
+            >
+              Posts
+              {feedType === "posts" && (
+                <div className="absolute bottom-0 w-10 h-1 rounded-full bg-indigo-600" />
+              )}
+            </div>
+            <div
+              className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
+              onClick={() => setFeedType("recipes")}
+            >
+              Recipes
+              {feedType === "recipes" && (
                 <div className="absolute bottom-0 w-10 h-1 rounded-full bg-indigo-600" />
               )}
             </div>
@@ -45,6 +64,16 @@ const AdminHome = () => {
             {feedType === "users" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
                 <UsersTable />
+              </div>
+            )}
+            {feedType === "posts" && (
+              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+                <PostsTable />
+              </div>
+            )}
+            {feedType === "recipes" && (
+              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+                <RecipesTable />
               </div>
             )}
             {feedType === "events" && (

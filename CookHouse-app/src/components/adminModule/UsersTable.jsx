@@ -110,7 +110,9 @@ const UsersTable = () => {
             )}
             {!loading && allUsers.length === 0 && (
               <tbody className="flex place-content-center">
-                <tr>No Users found.</tr>
+                <tr>
+                  <td>No Users found.</td>
+                </tr>
               </tbody>
             )}
             <tbody>
@@ -145,6 +147,7 @@ const UsersTable = () => {
                               <button
                                 className="btn hover:text-red-400 border btn-sm"
                                 onClick={(e) => {
+                                  e.preventDefault();
                                   handleDeletion(user?._id);
                                 }}
                               >
