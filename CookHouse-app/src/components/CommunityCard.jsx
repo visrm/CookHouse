@@ -2,16 +2,14 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { COMMUNITIES_API_END_POINT } from "../utils/constants";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
-import { setLoadingCommunity } from "../redux/slices/community.slice.js";
+import { useSelector } from "react-redux";
 
 const CommunityCard = ({ community }) => {
-  const dispatch = useDispatch();
+  const { allUserCommunities } = useSelector((store) => store.communities);
 
   const handleJoinUnjoin = async (e) => {
     try {
       e.preventDefault();
-      dispatch(setLoadingCommunity(true));
       const response = await axios.get(
         `${COMMUNITIES_API_END_POINT}/join/${community?._id}`,
         { withCredentials: true }
@@ -22,10 +20,11 @@ const CommunityCard = ({ community }) => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoadingCommunity(false));
     }
   };
+
+  const isJoined = allUserCommunities.includes(community);
+
   return (
     <>
       <div className="flex flex-wrap justify-between items-center p-2 sm:p-3 mx-auto md:p-6 lg:p-8 w-full max-w-[85%] rounded-sm md:rounded-md bg-[#fdfdfd] border border-slate-200">
@@ -57,8 +56,12 @@ const CommunityCard = ({ community }) => {
             </p>
           </div>
         </Link>
-        <div className="btn flex w-fit ml-auto" onClick={handleJoinUnjoin}>
-          JOIN
+        <div
+          className="btn flex w-fit ml-auto"
+          onClick={handleJoinUnjoin}
+          id="join-btn"
+        >
+          {isJoined ? "JOINED" : "JOIN"}
         </div>
       </div>
     </>

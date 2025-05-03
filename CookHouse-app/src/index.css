@@ -27,17 +27,6 @@ label {
   text-align: left;
 }
 
-input {
-  display: block;
-  text-align: left;
-  padding-inline: 0.5rem;
-  padding-block: 0.125rem;
-  width: 18rem;
-  max-width: 20rem;
-  min-width: fit-content;
-  backdrop-filter: blur(8px);
-}
-
 img {
   display: block;
   height: 100%;
@@ -51,14 +40,14 @@ img {
 }
 
 .hero-title {
-  font-size: clamp(3.5rem, 5rem, 6.5rem);
+  font-size: clamp(3.5rem, 5.5rem, 6.5rem);
   font-weight: bold;
   text-align: center;
   line-height: 90%;
 }
 
 .hero-subtitle {
-  font-size: clamp(1.25rem, 1.75rem, 2.25rem);
+  font-size: clamp(1.25rem, 2rem, 2.25rem);
   font-weight: normal;
   text-align: center;
 }

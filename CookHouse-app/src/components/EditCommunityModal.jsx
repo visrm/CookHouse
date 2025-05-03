@@ -81,7 +81,9 @@ const EditCommunityModal = () => {
               ✕
             </button>
           </form>
-          <h3 className="font-bold text-lg md:text-xl">Edit Community</h3>
+          <h3 className="font-bold font-serif text-lg md:text-xl">
+            Edit Community
+          </h3>
           <form
             method="PATCH"
             className="flex flex-col flex-[2_2_0] flex-wrap gap-1"
@@ -98,7 +100,7 @@ const EditCommunityModal = () => {
               </label>
               <input
                 type="text"
-                className="input font-medium"
+                className="input font-medium w-full focus:outline-0 input-sm bg-[#fdfdfd]"
                 placeholder="Community Name"
                 id="name"
                 name="name"
@@ -115,7 +117,7 @@ const EditCommunityModal = () => {
               </label>
               <input
                 type="input"
-                className="input font-medium"
+                className="input font-medium w-full focus:outline-0 input-sm bg-[#fdfdfd]"
                 placeholder="Description"
                 id="description"
                 name="description"
@@ -131,6 +133,13 @@ const EditCommunityModal = () => {
             </button>
           </form>
         </div>
+        <form
+          method="dialog"
+          className="modal-backdrop"
+          id="handleCloseCommunity2"
+        >
+          <button className="outline-none">close</button>
+        </form>
       </dialog>
     </>
   );

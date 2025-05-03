@@ -106,7 +106,7 @@ const CreateEvent = () => {
               id="handleCreateevent"
             >
               <h3 className="font-bold text-lg md:text-xl">Create Event</h3>
-              <div>
+              <div className="w-[90%]">
                 <label className="w-fit font-base text-sm" htmlFor="title">
                   Title :
                 </label>
@@ -121,7 +121,7 @@ const CreateEvent = () => {
                   required
                 />
               </div>
-              <div>
+              <div className="w-[90%]">
                 <label className="w-fit font-base text-sm" htmlFor="desc">
                   Description :
                 </label>
@@ -135,7 +135,7 @@ const CreateEvent = () => {
                   maxLength={"500ch"}
                 />
               </div>
-              <div>
+              <div className="w-[90%]">
                 <label className="w-fit font-base text-sm" htmlFor="location">
                   Location :
                 </label>
@@ -149,43 +149,28 @@ const CreateEvent = () => {
                   required
                 />
               </div>
-              <div>
+              <div className="w-[90%]">
                 <p className="w-fit font-base text-sm">Date & Time :</p>
-                <div className="flex flex-col justify-around items-start gap-0.5 w-full max-w-full">
-                  <div>
-                    <label
-                      className="w-fit font-base text-xs"
-                      htmlFor="startDate"
-                    >
-                      From
-                    </label>
-                    <input
-                      className="rounded-md input w-full border-none focus:outline-none bg-amber-50 border-gray-200"
-                      type="datetime-local"
-                      name="startDate"
-                      id="startDate"
-                      value={event.startDate}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      className="w-fit font-base text-xs"
-                      htmlFor="endDate"
-                    >
-                      To
-                    </label>
-                    <input
-                      className="rounded-md input w-full border-none focus:outline-none bg-amber-50 border-gray-200"
-                      type="datetime-local"
-                      name="endDate"
-                      id="endDate"
-                      value={event.endDate}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
+                <div className="flex flex-row justify-around items-center gap-1.5 w-full max-w-full">
+                  <input
+                    className="rounded-md input w-full border-none focus:outline-none bg-amber-50 border-gray-200"
+                    type="datetime-local"
+                    name="startDate"
+                    id="startDate"
+                    value={event.startDate}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  {" "}To{" "}
+                  <input
+                    className="rounded-md input w-full border-none focus:outline-none bg-amber-50 border-gray-200"
+                    type="datetime-local"
+                    name="endDate"
+                    id="endDate"
+                    value={event.endDate}
+                    onChange={handleInputChange}
+                    required
+                  />
                 </div>
               </div>
 
@@ -201,7 +186,7 @@ const CreateEvent = () => {
                   className="btn border-0 bg-indigo-600 rounded-full btn-sm text-white px-4"
                   type="submit"
                 >
-                  {isPending ? "Publishing..." : "Publish"}
+                  {isPending ? "Creating..." : "Create"}
                 </button>
               </div>
               {isError && (

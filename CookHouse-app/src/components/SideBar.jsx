@@ -145,7 +145,7 @@ const SideBar = () => {
               )}
             </ul>
 
-            <div className="sticky bottom-0 left-0 mt-auto flex gap-1 sm:gap-2  py-2 px-4 w-full min-h-fit bg-[#feb340]/50">
+            <div className="sticky bottom-0 left-0 mt-auto flex gap-1 sm:gap-2 py-2 px-3 w-full min-h-fit bg-[#feb340]/50">
               <Link
                 to={`/profile/${user?.username}`}
                 className="flex gap-2 item-start"

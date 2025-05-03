@@ -63,8 +63,8 @@ const Home = () => {
                     <LoadingSpinner size="lg" />
                   </div>
                 )}
-                {followingPosts.length === 0 && (
-                  <div className="block text-center text-sm p-2 sm:p-4 bg-[#fdfdfd]">
+                {!loadingPost && followingPosts.length === 0 && (
+                  <div className="block text-center text-sm p-2 sm:p-4">
                     No following feeds found.
                   </div>
                 )}

@@ -16,15 +16,14 @@ import RecipesCard from "../RecipeCard.jsx";
 import LoadingSpinner from "../LoadingSpinner.jsx";
 import toast from "react-hot-toast";
 import { setLoading, setSingleUser } from "../../redux/slices/user.slice.js";
-import { setUser } from "../../redux/slices/auth.slice.js";
 import { getMonth } from "../../utils/extractTime.js";
 import EditProfileModal from "../EditProfileModal.jsx";
+import { setUser } from "../../redux/slices/auth.slice.js";
 
 const Profile = () => {
   const [coverImg, setCoverImg] = useState(null);
   const [profileImg, setProfileImg] = useState(null);
   const [feedType, setFeedType] = useState("posts");
-  const [isFollowing, setIsFollowing] = useState(false);
 
   const coverImgRef = useRef(null);
   const profileImgRef = useRef(null);
@@ -62,14 +61,12 @@ const Profile = () => {
     })();
   }, [userName]);
 
-  // console.log(singleUser);
+  // console.log(user);
   useGetUserPosts(userName);
   useGetUserRecipes(userName);
 
-  let isMyProfile = false;
-  if (user?._id.toString() === singleUser?._id.toString()) {
-    isMyProfile = true;
-  }
+  const isMyProfile = user?._id.toString() === singleUser?._id.toString();
+  const isFollowing = user?.following.includes(singleUser?._id);
 
   const handleImgChange = (e, state) => {
     const file = e.target.files[0];
@@ -133,15 +130,14 @@ const Profile = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        dispatch(setUser(response.data.currentUser))
-        dispatch(setSingleUser(response.data.userById))
+        dispatch(setUser(response.data.currentUser));
       }
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
       dispatch(setLoading(false));
     }
-  }; 
+  };
   // console.log(user?._id);
   return (
     <>
@@ -247,36 +243,38 @@ const Profile = () => {
           </section>
         )}
 
-        <div className="block py-2 bg-[#fff]">
-          <div className="flex mr-1 px-1 gap-x-1 w-full">
-            {isMyProfile && (
-              <div className="w-full flex flex-end bg-[#ffffff]">
-                <EditProfileModal />
-              </div>
-            )}
-            {!isMyProfile && (
-              <button
-                type="button"
-                className="btn btn-sm bg-indigo-600 text-[#fff] border-0 w-fit ml-auto"
-                onClick={() => {
-                  handleFollows(singleUser?._id);
-                }}
-              >
-                {isFollowing ? "Unfollow" : "Follow"}
-              </button>
-            )}
-            {(coverImg || profileImg) && (
-              <div className="bg-[#ffffff]">
+        {!loading && singleUser && (
+          <div className="block py-2 bg-[#fff]">
+            <div className="flex mr-1 px-1 gap-x-1 w-full">
+              {isMyProfile && (
+                <div className="w-full flex flex-end bg-[#ffffff]">
+                  <EditProfileModal />
+                </div>
+              )}
+              {!isMyProfile && (
                 <button
-                  className="btn bg-indigo-600 text-[#fff] border-0 btn-sm px-4 w-fit"
-                  onClick={handleImgSubmit}
+                  type="button"
+                  className="btn btn-sm bg-indigo-600 text-[#fff] border-0 w-fit ml-auto"
+                  onClick={() => {
+                    handleFollows(singleUser?._id);
+                  }}
                 >
-                  Update
+                  {isFollowing ? "Follow" : "Unfollow"}
                 </button>
-              </div>
-            )}
+              )}
+              {(coverImg || profileImg) && (
+                <div className="bg-[#ffffff]">
+                  <button
+                    className="btn bg-indigo-600 text-[#fff] border-0 btn-sm px-4 w-fit"
+                    onClick={handleImgSubmit}
+                  >
+                    Update
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         <section>
           <div className="sticky top-12 md:top-15 flex w-full font-semibold shadow-md z-50 bg-[#ffffff]">

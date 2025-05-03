@@ -102,7 +102,7 @@ const EditProfileModal = () => {
               ✕
             </button>
           </form>
-          <h3 className="font-bold text-lg md:text-xl">Edit Profile</h3>
+          <h3 className="font-bold font-serif text-lg md:text-xl">Edit Profile</h3>
           <form
             method="PATCH"
             className="flex flex-col flex-[2_2_0] flex-wrap gap-1"

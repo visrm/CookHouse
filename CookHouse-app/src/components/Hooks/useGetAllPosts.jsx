@@ -10,14 +10,14 @@ import {
 } from "../../redux/slices/post.slice.js";
 import toast from "react-hot-toast";
 
-const useGetAllPosts = () => {
+const useGetAllPosts = (keyword) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     (async function FetchAllPosts() {
       try {
         dispatch(setLoadingPost(true));
-        const response = await axios.get(`${POSTS_API_END_POINT}/all`, {
+        const response = await axios.get(`${POSTS_API_END_POINT}/all?keyword=${keyword}`, {
           withCredentials: true,
         });
         if (response.data.success) {
@@ -29,7 +29,7 @@ const useGetAllPosts = () => {
         dispatch(setLoadingPost(false));
       }
     })();
-  }, []);
+  }, [keyword]);
 };
 
 export default useGetAllPosts;

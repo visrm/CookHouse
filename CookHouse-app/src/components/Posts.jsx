@@ -5,11 +5,10 @@ import LoadingSpinner from "./LoadingSpinner";
 
 const Posts = () => {
   // using getHook for loadingPost all posts.
-  useGetAllPosts();
+  useGetAllPosts("");
 
   //   const dispatch = useDispatch()
   const { loadingPost, allPosts } = useSelector((store) => store.posts);
-  const { user } = useSelector((store) => store.auth);
 
   return (
     <>

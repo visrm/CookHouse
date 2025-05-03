@@ -124,15 +124,23 @@ const CreateRecipe = () => {
               onSubmit={handleSubmit}
               id="handleCreateRecipe"
             >
-              <h3 className="font-bold text-lg md:text-xl">Publish Recipe</h3>
+              <h3 className="font-bold font-serif text-lg md:text-xl">Publish Recipe</h3>
               <textarea
-                className="rounded-md textarea-sm min-h-8 w-full p-1 sm:p-2 text-lg resize-none border-none focus:outline-none bg-amber-50 border-gray-200 overflow-hidden"
+                className="rounded-md textarea-sm h-8 min-h-8 w-full p-1 sm:p-2 text-lg resize-none border-none focus:outline-none bg-amber-50 border-gray-200 overflow-hidden"
                 placeholder="Dish Name"
                 name="title"
                 value={recipe.title}
                 onChange={handleInputChange}
                 maxLength={"40ch"}
                 required
+              />
+                 <textarea
+                className="rounded-md textarea-sm  h-8 min-h-8 w-full p-1 sm:p-2 text-lg resize-none border-none focus:outline-none bg-amber-50 border-gray-200 overflow-hidden"
+                placeholder="Cuisine type (optional)"
+                name="cuisine_type"
+                value={recipe.cuisine_type}
+                onChange={handleInputChange}
+                maxLength={"40ch"}
               />
               <textarea
                 className="rounded-md textarea-sm h-full min-h-15 w-full p-1 sm:p-2 text-base resize-none border-none focus:outline-none bg-amber-50 border-gray-200"
@@ -158,6 +166,13 @@ const CreateRecipe = () => {
                 value={recipe.instructions}
                 onChange={handleInputChange}
                 required
+              />
+              <textarea
+                className="rounded-md textarea textarea-sm h-full min-h-15 w-full p-1 sm:p-2 text-base resize-none border-none focus:outline-none bg-amber-50 border-gray-200"
+                placeholder={`Provide Dietary tags seperated by commas(",").`}
+                name="dietary_tags"
+                value={recipe.dietary_tags}
+                onChange={handleInputChange}
               />
               {img && (
                 <div className="relative w-72 mx-auto">

@@ -67,7 +67,7 @@ const SignUp = () => {
               name="username"
               value={registerInfo.username}
               maxLength={"20ch"}
-              className="border rounded-sm border-black/50 bg-white/50"
+              className="border rounded-xs btn btn-sm text-base text-left w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-white/50"
               onChange={handleChange}
               autoComplete="username"
               required
@@ -79,7 +79,7 @@ const SignUp = () => {
               name="fullname"
               value={registerInfo.fullname}
               maxLength={"30ch"}
-              className="border rounded-sm border-black/50 bg-white/50"
+              className="border rounded-xs btn btn-sm text-base text-left w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-white/50"
               onChange={handleChange}
               required
             />
@@ -90,7 +90,7 @@ const SignUp = () => {
               name="email"
               value={registerInfo.email}
               autoComplete="username"
-              className="border rounded-sm border-black/50 bg-white/50"
+              className="border rounded-xs btn btn-sm text-base text-left w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-white/50"
               onChange={handleChange}
               required
             />
@@ -102,7 +102,7 @@ const SignUp = () => {
               value={registerInfo.password}
               autoComplete="current-password"
               maxLength={"20ch"}
-              className="border rounded-sm border-black/50 bg-white/50"
+              className="border rounded-xs btn btn-sm text-base text-left w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-white/50"
               onChange={handleChange}
               required
             />

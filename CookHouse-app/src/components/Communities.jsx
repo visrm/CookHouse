@@ -13,6 +13,7 @@ const Communities = () => {
   const { loadingCommunity, allCommunities } = useSelector(
     (store) => store.communities
   );
+  
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const keywordFromUrl = urlParams.get("keyword");
@@ -29,14 +30,14 @@ const Communities = () => {
     <>
       <main className="h-full w-full max-w-full min-h-[90svh] md:min-h-screen overflow-hidden">
         <div className="flex justify-between items-center p-4 bg-[#ffffff] border-b border-gray-700 z-20">
-          <p className="font-bold">Communities</p>
+          <p className="font-bold font-serif">Communities</p>
         </div>
         <section>
           <article className="block mt-2 md:mt-3">
             <div>
               <form
                 onSubmit={handleSearch}
-                className="flex flex-row flex-nowrap gap-1 items-center justify-center w-full"
+                className="flex flex-row flex-nowrap gap-2 items-center justify-center w-full"
                 id="search-bar-form2"
               >
                 <input
@@ -80,7 +81,7 @@ const Communities = () => {
               allCommunities.length > 0 &&
               allCommunities.map((community) => {
                 return (
-                  <CommunityCard community={community} key={community._id} />
+                  <CommunityCard community={community} key={community?._id} />
                 );
               })}
           </div>

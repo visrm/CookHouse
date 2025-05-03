@@ -124,7 +124,7 @@ const CreateRecipe = () => {
               onSubmit={handleSubmit}
               id="handleCreateRecipe"
             >
-              <h3 className="font-bold text-lg md:text-xl">Publish Recipe</h3>
+              <h3 className="font-bold font-serif text-lg md:text-xl">Publish Recipe</h3>
               <textarea
                 className="rounded-md textarea-sm h-8 min-h-8 w-full p-1 sm:p-2 text-lg resize-none border-none focus:outline-none bg-amber-50 border-gray-200 overflow-hidden"
                 placeholder="Dish Name"

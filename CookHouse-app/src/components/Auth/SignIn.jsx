@@ -68,7 +68,7 @@ const SignIn = () => {
               id="email"
               name="email"
               value={userInfo.email}
-              className="border rounded-sm border-black/50 bg-white/50"
+              className="border rounded-xs btn btn-sm text-base text-left focus:outline-0 w-full backdrop-blur-sm border-black/50 bg-white/50"
               autoComplete="username"
               onChange={handleChange}
               required
@@ -80,7 +80,7 @@ const SignIn = () => {
               name="password"
               value={userInfo.password}
               maxLength={"20ch"}
-              className="border rounded-sm border-black/50 bg-white/50"
+              className="border rounded-xs btn btn-sm text-base text-left focus:outline-0 w-full backdrop-blur-sm border-black/50 bg-white/50"
               autoComplete="current-password"
               onChange={handleChange}
               required
