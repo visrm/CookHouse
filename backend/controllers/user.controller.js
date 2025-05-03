@@ -35,7 +35,7 @@ export const followUnfollowUser = async (req, res) => {
   try {
     const { id } = req.params;
     const userById = await User.findById(id);
-    const currentUser = await User.findById(req.id);
+    const currentUser = await User.findById(req.id).select("-password");
 
     if (userById._id == currentUser._id) {
       return res.status(400).json({
@@ -51,40 +51,39 @@ export const followUnfollowUser = async (req, res) => {
 
     if (isFollowing) {
       // then unfollow user
-      const removeFollower = await User.findByIdAndUpdate(id, {
-        $pull: { followers: req.id },
-      });
-      const removeFollowing = await User.findByIdAndUpdate(req.id, {
+      await User.findByIdAndUpdate(req.id, {
         $pull: { following: id },
       });
-
-      await Promise.all([removeFollower, removeFollowing]);
+      await User.findByIdAndUpdate(id, {
+        $pull: { followers: req.id },
+      });
 
       return res.status(200).json({
         message: "User unfollowed successfully!",
+        currentUser,
         success: true,
       });
     } else {
       // then follow user
-      const addFollower = await User.findByIdAndUpdate(id, {
-        $push: { followers: req.id },
-      });
-      const addFollowing = await User.findByIdAndUpdate(req.id, {
+      await User.findByIdAndUpdate(req.id, {
         $push: { following: id },
       });
+      await User.findByIdAndUpdate(id, {
+        $push: { followers: req.id },
+      });
+
       const newNotification = new Notification({
         type: "follow",
         from: req.id,
         to: userById._id,
       });
 
-      await Promise.all([newNotification.save(), addFollower, addFollowing]);
+      await newNotification.save();
 
       // TODO return the id of the user as a response
       return res.status(200).json({
         message: "User followed successfully!",
         currentUser,
-        userById,
         success: true,
       });
     }

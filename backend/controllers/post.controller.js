@@ -347,7 +347,9 @@ export const getAllPosts = async (req, res) => {
         success: false,
       });
 
-    const posts = await Post.find()
+    const keyword = req.query.keyword || "";
+
+    const posts = await Post.find({ text: { $regex: keyword, $options: "i" } })
       .sort({ createdAt: -1 })
       .populate({
         path: "user",

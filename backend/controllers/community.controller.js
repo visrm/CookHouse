@@ -227,6 +227,7 @@ export const getCommunities = async (req, res) => {
         path: "members",
         select: "-password -profile.communities",
       });
+      
     if (!communities) {
       return res.status(404).json({
         message: "Communities not found.",
@@ -347,6 +348,7 @@ export const getUserCommunities = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate({ path: "posts", select: "-community" })
       .populate({ path: "recipes", select: "-community" })
+      .populate({ path: "events", select: "-community" })
       .populate({
         path: "owner",
         select: "-password -profile.communities",
@@ -382,7 +384,7 @@ export const joinUnjoinCommunityById = async (req, res) => {
     const { communityId } = req.params;
     const userId = req.id;
 
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select("-password");
     if (!user)
       return res.status(404).json({
         message: "User not found.",
@@ -426,6 +428,8 @@ export const joinUnjoinCommunityById = async (req, res) => {
 
       return res.status(200).json({
         message: "Community left successfully!",
+        community,
+        user,
         success: true,
       });
     } else {
@@ -438,6 +442,8 @@ export const joinUnjoinCommunityById = async (req, res) => {
 
       return res.status(200).json({
         message: "Community joined successfully!",
+        community,
+        user,
         success: true,
       });
     }
