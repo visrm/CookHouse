@@ -183,7 +183,6 @@ const RecipeCard = ({ recipe }) => {
               )}
             </div>
 
-            {/* To be changed */}
             <div className="flex flex-col gap-3 p-2 sm:p-3 transition-all duration-300 w-full max-w-[93%]">
               <div>
                 <h1 className="block font-semibold text-lg sm:text-xl my-2 w-full text-left first-letter:capitalize underline underline-offset-4 font-serif">
@@ -249,7 +248,6 @@ const RecipeCard = ({ recipe }) => {
                 </article>
               </div>
             </div>
-            {/* Till here */}
 
             <div className="flex justify-between mt-3">
               <div className="flex gap-4 items-center w-2/3 justify-around">
@@ -285,59 +283,64 @@ const RecipeCard = ({ recipe }) => {
                           No comments yet. Be the first 😉
                         </p>
                       )}
-                      {recipe?.comments.map((comment) => (
-                        <div
-                          key={comment._id}
-                          className="flex gap-2 items-start"
-                        >
-                          <div className="avatar h-8">
-                            <div className="w-8 rounded-full">
-                              <img
-                                src={
-                                  comment?.user?.profile?.profileImg ||
-                                  "/assets/avatar-placeholder.png"
-                                }
-                              />
+                      {recipe?.comments.map((comment) => {
+                        const isMyComment = comment?.user?._id === user?._id;
+                        return (
+                          <div
+                            key={comment._id}
+                            className="flex gap-2 items-start"
+                          >
+                            <div className="avatar h-8">
+                              <div className="w-8 rounded-full">
+                                <img
+                                  src={
+                                    comment?.user?.profile?.profileImg ||
+                                    "/assets/avatar-placeholder.png"
+                                  }
+                                />
+                              </div>
                             </div>
-                          </div>
-                          <div className="flex flex-col">
-                            <div className="flex items-center gap-1">
-                              <span className="font-bold">
-                                {comment?.user?.fullname}
-                              </span>
-                              <span className="text-gray-700 text-sm">
-                                @{comment?.user?.username}
-                              </span>
-                            </div>
-                            <div className="text-sm">{comment?.text}</div>
-                          </div>
-                          <div className="flex justify-end flex-1 dropdown dropdown-top">
-                            <div
-                              tabIndex={0}
-                              role="button"
-                              className="btn btn-sm border-0 rounded-full"
-                            >
-                              <MdMoreVert className="h-3 w-3 rounded-full" />
-                            </div>
-                            <ul
-                              tabIndex={0}
-                              className="menu dropdown-content border-1 border-slate-200 rounded-box z-1 w-34 p-0.5 mb-2 shadow-sm bg-[#fdfdfd]"
-                            >
-                              <li>
-                                <span
-                                  className="flex place-items-center gap-1 hover:text-red-500 cursor-pointer text-sm font-semibold"
-                                  onClick={() => {
-                                    handleDeleteComment(comment?._id);
-                                  }}
-                                >
-                                  <FaTrash className="h-3 w-3" />
-                                  Delete
+                            <div className="flex flex-col">
+                              <div className="flex items-center gap-1">
+                                <span className="font-bold">
+                                  {comment?.user?.fullname}
                                 </span>
-                              </li>
-                            </ul>
+                                <span className="text-gray-700 text-sm">
+                                  @{comment?.user?.username}
+                                </span>
+                              </div>
+                              <div className="text-sm">{comment?.text}</div>
+                            </div>
+                            {isMyComment && (
+                              <div className="flex justify-end flex-1 dropdown dropdown-top">
+                                <div
+                                  tabIndex={0}
+                                  role="button"
+                                  className="btn btn-sm border-0 rounded-full"
+                                >
+                                  <MdMoreVert className="h-3 w-3 rounded-full" />
+                                </div>
+                                <ul
+                                  tabIndex={0}
+                                  className="menu dropdown-content border-1 border-slate-200 rounded-box z-1 w-34 p-0.5 mb-2 shadow-sm bg-[#fdfdfd]"
+                                >
+                                  <li>
+                                    <span
+                                      className="flex place-items-center gap-1 hover:text-red-500 cursor-pointer text-sm font-semibold"
+                                      onClick={() => {
+                                        handleDeleteComment(comment?._id);
+                                      }}
+                                    >
+                                      <FaTrash className="h-3 w-3" />
+                                      Delete
+                                    </span>
+                                  </li>
+                                </ul>
+                              </div>
+                            )}
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                     <form
                       className="flex flex-col gap-2 items-center mt-4 border-t border-gray-600 pt-2"

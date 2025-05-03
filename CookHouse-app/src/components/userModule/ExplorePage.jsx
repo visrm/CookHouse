@@ -27,12 +27,43 @@ const ExplorePage = () => {
   return (
     <>
       <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto">
-        <section className="flex flex-col flex-nowrap gap-2 w-full h-full">
-          <article className="block mt-2 md:mt-3">
+        <section className="relative flex flex-col flex-nowrap gap-2 w-full h-full backdrop-blur">
+          <div className="absolute top-[14%] right-[68%] block h-42 w-42 bg-amber-500 rounded-full blur-2xl"></div>
+          <article className="relative flex flex-row flex-wrap lg:flex-nowrap h-full w-full max-w-full backdrop-blur">
+            <figure className="block w-[33%] min-w-[75%] md:min-w-fit md:max-w-[33%] h-auto z-50">
+              <img
+                src={"/assets/strawberry-bowl.png"}
+                alt="bowl img"
+                className="h-full w-full"
+                loading="eager"
+              />
+            </figure>
+
+            <div className="p-1 sm:p-2 text-left w-full h-full lg:my-auto">
+              <div className="z-50 block h-full w-full">
+                <p className="flex max-w-[32rem] text-xs text-amber-500 font-mono font-bold tracking-wide">
+                  Delicious..
+                </p>
+                <hgroup>
+                  <h1 className="sm:text-7xl text-2xl font-semibold">
+                    Recipe for Happiness
+                  </h1>
+                  <h4 className="sm:text-5xl text-xl mb-4 font-semibold text-amber-500">
+                    Unlock Flavor. Explore Recipes.
+                  </h4>
+                </hgroup>
+                <p className="flex sm:py-2 max-w-[32rem] text-sm font-light tracking-wide">
+                  Ready to cook something amazing? Dive into our recipe library
+                  and find your next culinary adventure.
+                </p>
+              </div>
+            </div>
+          </article>
+          <article className="block">
             <div>
               <form
                 onSubmit={handleSearch}
-                className="flex flex-row flex-nowrap gap-1 items-center justify-center w-full"
+                className="flex flex-row flex-nowrap gap-2 items-center justify-center w-full"
                 id="search-bar-form1"
               >
                 <input

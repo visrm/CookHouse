@@ -19,6 +19,7 @@ const PostCard = ({ post }) => {
 
   const dispatch = useDispatch();
   const isMyPost = postOwner?._id === user?._id || user?.role === "admin";
+  // const isMyComment = true;
 
   let isCommenting = loadingPost;
 
@@ -232,62 +233,67 @@ const PostCard = ({ post }) => {
                           No comments yet. Be the first 😉
                         </p>
                       )}
-                      {post?.comments.map((comment) => (
-                        <div
-                          key={comment._id}
-                          className="flex gap-2 items-start"
-                        >
-                          {/* Comment header */}
-                          <div className="avatar h-8">
-                            <div className="w-8 rounded-full">
-                              <img
-                                src={
-                                  comment?.user?.profile?.profileImg ||
-                                  "/assets/avatar-placeholder.png"
-                                }
-                              />
+                      {post?.comments.map((comment) => {
+                        const isMyComment = comment?.user?._id === user?._id
+                        return (
+                          <div
+                            key={comment._id}
+                            className="flex gap-2 items-start"
+                          >
+                            {/* Comment header */}
+                            <div className="avatar h-8">
+                              <div className="w-8 rounded-full">
+                                <img
+                                  src={
+                                    comment?.user?.profile?.profileImg ||
+                                    "/assets/avatar-placeholder.png"
+                                  }
+                                />
+                              </div>
                             </div>
-                          </div>
 
-                          <div className="flex flex-col">
-                            <div className="flex items-center gap-1">
-                              <span className="font-bold">
-                                {comment?.user?.fullname}
-                              </span>
-                              <span className="text-gray-700 text-sm">
-                                @{comment?.user?.username}
-                              </span>
-                            </div>
-                            {/* Comment text */}
-                            <div className="text-sm">{comment?.text}</div>
-                          </div>
-                          <div className="flex justify-end flex-1 dropdown dropdown-top">
-                            <div
-                              tabIndex={0}
-                              role="button"
-                              className="btn btn-sm border-0 rounded-full"
-                            >
-                              <MdMoreVert className="h-3 w-3 rounded-full" />
-                            </div>
-                            <ul
-                              tabIndex={0}
-                              className="menu dropdown-content border-1 border-slate-200 rounded-box z-1 w-34 p-0.5 mb-2 shadow-sm bg-[#fdfdfd]"
-                            >
-                              <li>
-                                <span
-                                  className="flex place-items-center gap-1 hover:text-red-500 cursor-pointer text-sm font-semibold"
-                                  onClick={() => {
-                                    handleDeleteComment(comment?._id);
-                                  }}
-                                >
-                                  <FaTrash className="h-3 w-3" />
-                                  Delete
+                            <div className="flex flex-col">
+                              <div className="flex items-center gap-1">
+                                <span className="font-bold">
+                                  {comment?.user?.fullname}
                                 </span>
-                              </li>
-                            </ul>
+                                <span className="text-gray-700 text-sm">
+                                  @{comment?.user?.username}
+                                </span>
+                              </div>
+                              {/* Comment text */}
+                              <div className="text-sm">{comment?.text}</div>
+                            </div>
+                            {isMyComment && (
+                              <div className="flex justify-end flex-1 dropdown dropdown-top">
+                                <div
+                                  tabIndex={0}
+                                  role="button"
+                                  className="btn btn-sm border-0 rounded-full"
+                                >
+                                  <MdMoreVert className="h-3 w-3 rounded-full" />
+                                </div>
+                                <ul
+                                  tabIndex={0}
+                                  className="menu dropdown-content border-1 border-slate-200 rounded-box z-1 w-34 p-0.5 mb-2 shadow-sm bg-[#fdfdfd]"
+                                >
+                                  <li>
+                                    <span
+                                      className="flex place-items-center gap-1 hover:text-red-500 cursor-pointer text-sm font-semibold"
+                                      onClick={() => {
+                                        handleDeleteComment(comment?._id);
+                                      }}
+                                    >
+                                      <FaTrash className="h-3 w-3" />
+                                      Delete
+                                    </span>
+                                  </li>
+                                </ul>
+                              </div>
+                            )}
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                     <form
                       className="flex flex-col gap-2 items-center mt-4 border-t border-gray-600 pt-2"
