@@ -45,7 +45,6 @@ const CreateCommunity = () => {
       if (response.data.success) {
         toast.success(response.data.message);
         dispatch(setSelfCommunity(response.data.community));
-        window.location.reload();
       }
     } catch (err) {
       toast.error(err.response.data.message);
@@ -61,7 +60,7 @@ const CreateCommunity = () => {
   return (
     <>
       <section className="sm:fixed sm:top-0 sm:left-0 md:mx-4 grid place-content-center max-w-full w-full h-screen min-h-[90svh] md:min-h-screen">
-        <article className="p-4 bg-[#fdfdfd] rounded-xl md:px-6 lg:px-8 text-left w-96 max-h-full">
+        <article className="p-4 bg-[#fafafa] border border-slate-100 rounded-xl md:p-6 lg:p-8 text-left w-96 max-h-full">
           <form
             method="POST"
             className="block min-w-72 w-full md:min-h-74 h-full text-base"

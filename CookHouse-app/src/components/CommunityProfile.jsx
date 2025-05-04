@@ -7,7 +7,13 @@ import {
 } from "../redux/slices/community.slice.js";
 import axios from "axios";
 import { IoCalendarOutline } from "react-icons/io5";
-import { MdMoreVert, MdOutlineModeEdit } from "react-icons/md";
+import {
+  MdEventNote,
+  MdMoreVert,
+  MdOutlineMessage,
+  MdOutlineModeEdit,
+  MdOutlineRefresh,
+} from "react-icons/md";
 import ProfileSkeleton from "./Skeleton/ProfileSkeleton.jsx";
 import CommunityPosts from "./CommunityPosts.jsx";
 import toast from "react-hot-toast";
@@ -17,11 +23,14 @@ import CreateCommunityPostAndRecipe from "./CreateCommunityPostAndRecipe.jsx";
 import LoadingSpinner from "./LoadingSpinner.jsx";
 import EditCommunityModal from "./EditCommunityModal";
 import CommunityEvents from "./CommunityEvents.jsx";
+import { FaRegFileAlt } from "react-icons/fa";
 
 const CommunityProfile = () => {
   const [feedType, setFeedType] = useState("posts");
   const [coverImg, setCoverImg] = useState(null);
   const [profileImg, setProfileImg] = useState(null);
+  const [singleCommunityProfile, setSingleCommunityProfile] = useState({});
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const coverImgRef = useRef(null);
   const profileImgRef = useRef(null);
@@ -56,12 +65,14 @@ const CommunityProfile = () => {
         dispatch(setLoadingCommunity(false));
       }
     })();
-  }, []);
+  }, [singleCommunityProfile]);
 
-  let isMyCommunity =
-    singleCommunity?.owner?._id.toString() === user?._id.toString();
-  let isJoinedCommunity =
-    singleCommunity?.members.includes(user?._id) || isMyCommunity;
+  const isMyCommunity = singleCommunity?.owner?._id === user?._id;
+
+  const isJoinedCommunity =
+    singleCommunity?.members
+      .map((member) => member._id === user?._id)
+      .includes(true) || isMyCommunity;
 
   const handleImgChange = (e, state) => {
     const file = e.target.files[0];
@@ -81,7 +92,6 @@ const CommunityProfile = () => {
       coverImg,
     };
     try {
-      dispatch(setLoadingCommunity(true))
       const response = await axios.patch(
         `${COMMUNITIES_API_END_POINT}/update/${communityId}`,
         updateInfo,
@@ -95,12 +105,11 @@ const CommunityProfile = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        window.location.reload();
+        setSingleCommunityProfile({});
       }
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
-      dispatch(setLoadingCommunity(false))
       setCoverImg(null);
       setProfileImg(null);
     }
@@ -108,7 +117,6 @@ const CommunityProfile = () => {
 
   const handleJoins = async (communityId) => {
     try {
-      dispatch(setLoadingCommunity(true))
       const response = await axios.get(
         `${COMMUNITIES_API_END_POINT}/join/${communityId}`,
         {
@@ -118,17 +126,16 @@ const CommunityProfile = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
+        setSingleCommunityProfile({});
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    }finally {
-      dispatch(setLoadingCommunity(false))
     }
   };
 
   const handleDeletion = async (communityId) => {
     try {
-      dispatch(setLoadingCommunity(true))
+      dispatch(setLoadingCommunity(true));
       const response = await axios.delete(
         `${COMMUNITIES_API_END_POINT}/delete/${communityId}`,
         {
@@ -142,8 +149,8 @@ const CommunityProfile = () => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    }finally {
-      dispatch(setLoadingCommunity(false))
+    } finally {
+      dispatch(setLoadingCommunity(false));
     }
   };
 
@@ -176,9 +183,20 @@ const CommunityProfile = () => {
     }
   };
 
+  const handleRefresh = (e) => {
+    e.preventDefault();
+    setIsRefreshing(true);
+    setSingleCommunityProfile({});
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 1000);
+  };
+
+  const refreshAnimate = isRefreshing ? "rotate-360" : "";
+
   return (
     <>
-      <main className="w-full max-w-6xl md:max-w-full min-h-[90svh] md:min-h-screen">
+      <main className="w-full max-w-6xl md:max-w-full min-h-[90svh] md:min-h-screen transition-all duration-300 overflow-x-hidden">
         {/* User Profile Details*/}
         {loadingCommunity && <ProfileSkeleton />}
         {!loadingCommunity && singleCommunity && (
@@ -235,15 +253,18 @@ const CommunityProfile = () => {
                   )}
                 </div>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full bg-[#ffffff]">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full bg-[#fafafa]">
                 <span className="grid col-start-2 sm:col-start-2 col-span-2 py-1 text-left w-fit">
                   <h1 className="flex flex-col flex-nowrap mb-2 gap-0 text-xl md:text-3xl font-semibold">
                     {singleCommunity?.name}
                     <span className="text-sm text-slate-800 font-medium">
                       {singleCommunity?.description}
                     </span>
-                    <span className="text-xs text-slate-500 font-normal">
-                      creator:@{singleCommunity?.owner?.username}
+                    <span className="text-sm text-slate-500 font-medium">
+                      Created By:{" "}
+                      <span className="font-normal">
+                        @{singleCommunity?.owner?.username}
+                      </span>
                     </span>
                   </h1>
                   <div className="flex gap-2 items-center mb-2">
@@ -263,7 +284,102 @@ const CommunityProfile = () => {
               </div>{" "}
             </section>
 
-            <article className="w-full flex justify-end bg-[#fff] transition-all duration-300">
+            <div className="flex bg-[#fafafa] justify-center items-center w-full max-w-full p-2 md:py-4">
+              <div className="stats shadow md:h-40 bg-[#fdfdfd]">
+                <div className="stat">
+                  <div className="stat-figure text-[#FEB340]">
+                    <MdOutlineMessage className="h-9 w-9" />
+                  </div>
+                  <div className="stat-title md:text-base md:font-semibold">
+                    Total Posts
+                  </div>
+                  <div className="stat-value md:text-6xl text-slate-800">
+                    {singleCommunity?.posts.length}
+                  </div>
+                  <div className="stat-desc">
+                    {getMonth(
+                      singleCommunity?.createdAt
+                        ?.split("T")[0]
+                        ?.split("-")[1]
+                        .toString()
+                    )}{" "}
+                    {singleCommunity?.createdAt?.split("T")[0]?.split("-")[0]} -
+                    Today
+                  </div>
+                </div>
+                <div className="stat">
+                  <div className="stat-figure text-[#FEB340]">
+                    <FaRegFileAlt className="h-8 w-8" />
+                  </div>
+                  <div className="stat-title md:text-base md:font-semibold">
+                    Total Recipes
+                  </div>
+                  <div className="stat-value md:text-6xl text-slate-800">
+                    {singleCommunity?.recipes.length}
+                  </div>
+                  <div className="stat-desc">
+                    {getMonth(
+                      singleCommunity?.createdAt
+                        ?.split("T")[0]
+                        ?.split("-")[1]
+                        .toString()
+                    )}{" "}
+                    {singleCommunity?.createdAt?.split("T")[0]?.split("-")[0]} -
+                    Today
+                  </div>
+                </div>
+
+                <div className="stat">
+                  <div className="stat-figure text-[#FEB340]">
+                    <MdEventNote className="h-9 w-9" />
+                  </div>
+                  <div className="stat-title md:text-base md:font-semibold">
+                    Events
+                  </div>
+                  <div className="stat-value md:text-6xl text-slate-800">
+                    {singleCommunity?.events.length}
+                  </div>
+                  <div className="stat-desc">
+                    {getMonth(
+                      singleCommunity?.createdAt
+                        ?.split("T")[0]
+                        ?.split("-")[1]
+                        .toString()
+                    )}{" "}
+                    {singleCommunity?.createdAt?.split("T")[0]?.split("-")[0]} -
+                    Today
+                  </div>
+                </div>
+
+                <div className="stat">
+                  <div className="stat-figure">
+                    <div className="avatar-group -space-x-6">
+                      <div className="avatar">
+                        <div className="w-12">
+                          <img src="https://img.daisyui.com/images/profile/demo/batperson@192.webp" />
+                        </div>
+                      </div>
+                      <div className="avatar avatar-placeholder">
+                        <div className="bg-slate-700 text-neutral-content w-12">
+                          <span>+{singleCommunity?.members.length}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="stat-value md:text-7xl text-slate-800 text-center">
+                    {singleCommunity?.members.length + 1}
+                  </div>
+                  <div className="stat-title text-base text-center">
+                    Members Count
+                  </div>
+                  <div className="stat-desc text-xs font-semibold font-sans bg-[#FEB340] text-white p-1.5 px-2 rounded">
+                    Join Our Community!!
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <article className="w-full flex justify-end bg-[#fafafa] transition-all duration-300 p-2 md:p-3 gap-1 sm:gap-2 lg:gap-3">
               {(coverImg || profileImg) && (
                 <button
                   className="btn bg-indigo-500 text-[#fdfdfd] border rounded-full btn-sm w-fit"
@@ -274,24 +390,53 @@ const CommunityProfile = () => {
                   Update
                 </button>
               )}
-              <div className="flex justify-end dropdown dropdown-start dropdown-hover mx-2">
-                <div
-                  tabIndex={0}
-                  role="button"
-                  className="btn btn-sm border-0 rounded-full"
-                >
-                  <MdMoreVert className="w-fit" />
+              {!isMyCommunity && (
+                <div>
+                  <button
+                    type="button"
+                    className="btn btn-sm bg-indigo-500 text-[#fff] hover:bg-indigo-600 border transition-all duration-300"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleJoins(singleCommunity?._id);
+                    }}
+                    id="join-community-button"
+                  >
+                    {isJoinedCommunity ? "Joined Community" : "Join Community"}
+                  </button>
                 </div>
-                <ul
-                  tabIndex={0}
-                  className="menu dropdown-content border-1 border-slate-200 bg-[#fdfdfd] rounded-box z-1 mt-10 w-40 p-1 shadow-sm font-semibold"
+              )}
+
+              <div
+                className="bg-[#fafafa] my-auto tooltip tooltip-top"
+                data-tip="Refresh"
+              >
+                <button
+                  className="flex items-center rounded-full w-fit hover:text-indigo-600 bg-indigo-200 p-1.5"
+                  onClick={handleRefresh}
                 >
-                  {isMyCommunity && (
+                  <MdOutlineRefresh
+                    className={`h-5 w-5 ${refreshAnimate} transition-all duration-300`}
+                  />
+                </button>
+              </div>
+
+              {isMyCommunity && (
+                <div className="flex justify-end dropdown dropdown-start dropdown-hover mx-2">
+                  <div
+                    tabIndex={0}
+                    role="button"
+                    className="btn btn-sm border-0 rounded-full"
+                  >
+                    <MdMoreVert className="w-fit" />
+                  </div>
+                  <ul
+                    tabIndex={0}
+                    className="menu dropdown-content border-1 border-slate-200 bg-[#fdfdfd] rounded-box z-1 mt-10 w-40 p-1 shadow-sm font-semibold"
+                  >
                     <li>
                       <EditCommunityModal />
                     </li>
-                  )}
-                  {isMyCommunity && (
+
                     <li>
                       <button
                         className="btn hover:text-red-400 border btn-sm"
@@ -303,34 +448,20 @@ const CommunityProfile = () => {
                         Delete Community
                       </button>
                     </li>
-                  )}
-
-                  {!isMyCommunity && (
-                    <li>
-                      <button
-                        type="button"
-                        className="btn btn-sm hover:text-indigo-500 border"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleJoins(singleCommunity?._id);
-                        }}
-                      >
-                        Join Community
-                      </button>
-                    </li>
-                  )}
-                </ul>
-              </div>
+                  </ul>
+                </div>
+              )}
             </article>
+
             {isJoinedCommunity && (
-              <div className="block w-full bg-[#ffffff]">
+              <div className="block w-full bg-[#fafafa]">
                 <CreateCommunityPostAndRecipe isOwner={isMyCommunity} />
               </div>
             )}
           </>
         )}
         <section className="transition-all duration-200">
-          <div className="sticky top-12 md:top-15 flex w-full font-semibold bg-[#ffffff] z-50 shadow-md">
+          <div className="sticky top-12 md:top-15 flex w-full font-semibold bg-[#fafafa] z-50 shadow-md">
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("posts")}
@@ -360,14 +491,14 @@ const CommunityProfile = () => {
             </div>
           </div>
           {loadingCommunity && (
-            <div className="flex w-full mt-2 justify-center">
+            <div className="flex w-full mt-2 justify-center min-h-screen">
               <div className="block text-center">
                 <LoadingSpinner size="lg" />
               </div>
             </div>
           )}
           {!loadingCommunity && (
-            <div className="flex w-full mt-2 justify-center">
+            <div className="flex w-full mt-2 justify-center min-h-screen">
               {feedType === "posts" && (
                 <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
                   {singleCommunity?.posts.length === 0 && (

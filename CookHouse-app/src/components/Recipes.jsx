@@ -4,9 +4,9 @@ import RecipesCard from "./RecipeCard";
 import useGetAllRecipes from "../components/Hooks/useGetAllRecipes";
 import { useEffect } from "react";
 
-const Recipes = () => {
+const Recipes = ({ refreshVar }) => {
   // using getHook for loadingRecipe all posts.
-  useGetAllRecipes("");
+  useGetAllRecipes("", refreshVar);
 
   //   const dispatch = useDispatch()
   const { loadingRecipe, allRecipes } = useSelector((store) => store.recipes);

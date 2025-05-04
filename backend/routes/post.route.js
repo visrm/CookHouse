@@ -26,7 +26,7 @@ router.get("/user/:username", isAuthenticated, getUserPosts);
 router.get("/community/:communityId", isAuthenticated, getCommunityPosts);
 router.get("/communities/user", isAuthenticated, getUserCommunitiesPosts);
 router.get("/following", isAuthenticated, getFollowingPosts);
-router.delete("/:postId/comment/:id", isAuthenticated, deleteComment);
-router.delete("/:id", isAuthenticated, deletePost);
+router.delete("/comment/:postId/:id", isAuthenticated, deleteComment);
+router.delete("/post/:id", isAuthenticated, deletePost);
 
 export default router;

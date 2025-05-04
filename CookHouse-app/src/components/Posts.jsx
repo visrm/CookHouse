@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import  useGetAllPosts  from "./Hooks/useGetAllPosts";
 import LoadingSpinner from "./LoadingSpinner";
 
-const Posts = () => {
+const Posts = ({refreshVar}) => {
   // using getHook for loadingPost all posts.
-  useGetAllPosts("");
+  useGetAllPosts("", refreshVar);
 
   //   const dispatch = useDispatch()
   const { loadingPost, allPosts } = useSelector((store) => store.posts);

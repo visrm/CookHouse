@@ -8,7 +8,7 @@ import {
 import { POSTS_API_END_POINT } from "../../utils/constants.js";
 
 
-const useGetAllFollowingPosts = async () => {
+const useGetAllFollowingPosts = async (refreshVar) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const useGetAllFollowingPosts = async () => {
         dispatch(setLoadingPost(false));
       }
     })();
-  }, []);
+  }, [refreshVar]);
 };
 
 export default useGetAllFollowingPosts

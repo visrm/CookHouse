@@ -28,7 +28,7 @@ function App() {
       <div className="flex p-0 m-0 max-w-full h-full mx-auto scroll-smooth">
         <SideBar />
         <Routes>
-          <Route path="/" element={<LandingPage />} exact />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/register" element={<SignUp />} />
           <Route path="/home" element={<Home />} />

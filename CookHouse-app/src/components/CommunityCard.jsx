@@ -1,40 +1,16 @@
-import axios from "axios";
 import { Link } from "react-router-dom";
-import { COMMUNITIES_API_END_POINT } from "../utils/constants";
-import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
 
 const CommunityCard = ({ community }) => {
-  const { allUserCommunities } = useSelector((store) => store.communities);
-
-  const handleJoinUnjoin = async (e) => {
-    try {
-      e.preventDefault();
-      const response = await axios.get(
-        `${COMMUNITIES_API_END_POINT}/join/${community?._id}`,
-        { withCredentials: true }
-      );
-      if (response.data.success) {
-        toast.success(response.data.message);
-        window.location.reload();
-      }
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  };
-
-  const isJoined = allUserCommunities.includes(community);
-
   return (
     <>
       <div className="flex flex-wrap justify-between items-center p-2 sm:p-3 mx-auto md:p-6 lg:p-8 w-full max-w-[85%] rounded-sm md:rounded-md bg-[#fafafa] border border-slate-200">
         <Link
           to={`/community/${community?._id}`}
-          className="flex flex-nowrap gap-2 sm:gap-3 w-full max-w-[85%] h-full min-h-fit"
+          className="flex flex-nowrap gap-2 sm:gap-3 w-full max-w-full h-full min-h-fit supports-[backdrop]:backdrop-blur"
         >
           {/* Community profileImg */}
-          <div className="avatar h-20 inline-flex">
-            <div className="w-20 rounded-full border border-slate-900">
+          <div className="avatar h-24 inline-flex">
+            <div className="w-24 rounded-full border border-slate-900">
               <img
                 src={community?.profileImg || "/assets/avatar-placeholder.png"}
               />
@@ -50,19 +26,17 @@ const CommunityCard = ({ community }) => {
               {community?.description}
             </p>
 
-            {/* For Development stages only. To know who created it. */}
-            <p className="text-sm md:text-xs text-slate-500">
-              creator: @{community?.owner?.username}
+            {/* For Development stages. To know who created it. */}
+            <p className="text-sm md:text-xs text-slate-600">
+              <span className="font-medium">Created By:</span> @
+              {community?.owner?.username}
+            </p>
+            <p className="text-sm md:text-xs text-slate-600">
+              <span className="font-medium">Members:</span>{" "}
+              {community?.members.length + 1}
             </p>
           </div>
         </Link>
-        <div
-          className="btn flex w-fit ml-auto"
-          onClick={handleJoinUnjoin}
-          id="join-btn"
-        >
-          {isJoined ? "JOINED" : "JOIN"}
-        </div>
       </div>
     </>
   );

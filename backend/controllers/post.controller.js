@@ -256,9 +256,13 @@ export const deleteComment = async (req, res) => {
 
     let cantDeleteComment =
       post.user.toString() !== userId.toString() && user.role !== "admin";
-    if (cantDeleteComment)
+    let isCommentor = post.comments
+      .map((comment) => comment.user._id.toString() === userId.toString())
+      .includes(true);
+
+    if (cantDeleteComment && !isCommentor)
       return res.status(401).json({
-        message: "Unauthorized to delete post.",
+        message: "Unauthorized to delete comment.",
         success: false,
       });
 

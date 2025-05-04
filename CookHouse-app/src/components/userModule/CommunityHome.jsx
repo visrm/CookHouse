@@ -33,7 +33,7 @@ const CommunityHome = () => {
 
   return (
     <>
-      <main className="h-full w-full max-w-full min-h-[90svh] md:min-h-screen overflow-hidden">
+      <main className="h-full w-full max-w-full min-h-[90svh] md:min-h-screen overflow-hidden transition-all duration-300">
         <section>
           <article className="relative flex w-full bg-[#fafafa]">
             <div className="p-1 sm:p-2 text-center w-full h-full lg:my-auto">

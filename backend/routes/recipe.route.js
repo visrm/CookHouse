@@ -26,7 +26,7 @@ router.get("/user/:username", isAuthenticated, getUserRecipes);
 router.get("/community/:communityId", isAuthenticated, getCommunityRecipes);
 router.get("/communities/user", isAuthenticated, getUserCommunitiesRecipes);
 router.get("/following", isAuthenticated, getFollowingRecipes);
-router.delete("/:recipeId/comment/:id", isAuthenticated, deleteComment);
-router.delete("/:id", isAuthenticated, deleteRecipe);
+router.delete("/comment/:recipeId/:id", isAuthenticated, deleteComment);
+router.delete("/recipe/:id", isAuthenticated, deleteRecipe);
 
 export default router;

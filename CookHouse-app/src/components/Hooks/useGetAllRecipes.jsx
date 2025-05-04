@@ -10,7 +10,7 @@ import {
 } from "../../redux/slices/recipe.slice.js";
 import toast from "react-hot-toast";
 
-const useGetAllRecipes = (keyword) => {
+const useGetAllRecipes = (keyword, refreshVar) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const useGetAllRecipes = (keyword) => {
         dispatch(setLoadingRecipe(false));
       }
     })();
-  }, [keyword]);
+  }, [keyword, refreshVar]);
 };
 
 export default useGetAllRecipes;

@@ -25,9 +25,8 @@ const RecipeCard = ({ recipe }) => {
 
   const handleDeleteRecipe = async () => {
     try {
-      dispatch(setLoadingRecipe(true));
       const response = await axios.delete(
-        `${RECIPES_API_END_POINT}/${recipe?._id}`,
+        `${RECIPES_API_END_POINT}/recipe/${recipe?._id}`,
         {
           withCredentials: true,
         }
@@ -35,18 +34,14 @@ const RecipeCard = ({ recipe }) => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoadingRecipe(false));
     }
   };
 
   const handleRecipeComment = async (e) => {
     e.preventDefault();
-    dispatch(setLoadingRecipe(true));
     try {
       let commentData = {
         text: comment,
@@ -68,16 +63,13 @@ const RecipeCard = ({ recipe }) => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoadingRecipe(false));
-    }
+    } 
   };
 
   const handleDeleteComment = async (commentId) => {
     try {
-      dispatch(setLoadingRecipe(true));
       const response = await axios.delete(
-        `${RECIPES_API_END_POINT}/${recipe?._id}/comment/${commentId}`,
+        `${RECIPES_API_END_POINT}/comment/${recipe?._id}/${commentId}`,
         {
           withCredentials: true,
         }
@@ -85,18 +77,14 @@ const RecipeCard = ({ recipe }) => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoadingRecipe(false));
     }
   };
 
   const handleLikeRecipe = async () => {
     try {
-      dispatch(setLoadingRecipe(true));
       const response = await axios.post(
         `${RECIPES_API_END_POINT}/like/${recipe?._id}`,
         {},
@@ -110,12 +98,9 @@ const RecipeCard = ({ recipe }) => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoadingRecipe(false));
     }
   };
 

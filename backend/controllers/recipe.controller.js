@@ -273,9 +273,13 @@ export const deleteComment = async (req, res) => {
 
     let cantDeleteComment =
       recipe.user.toString() !== userId.toString() && user.role !== "admin";
-    if (cantDeleteComment)
+    let isCommentor = recipe.comments
+      .map((comment) => comment.user._id.toString() === userId.toString())
+      .includes(true);
+
+    if (cantDeleteComment && !isCommentor)
       return res.status(401).json({
-        message: "Unauthorized to delete recipe.",
+        message: "Unauthorized to delete comment.",
         success: false,
       });
 

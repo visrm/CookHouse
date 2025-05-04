@@ -25,9 +25,8 @@ const PostCard = ({ post }) => {
 
   const handleDeletePost = async () => {
     try {
-      dispatch(setLoadingPost(true));
       const response = await axios.delete(
-        `${POSTS_API_END_POINT}/${post?._id}`,
+        `${POSTS_API_END_POINT}/post/${post?._id}`,
         {
           withCredentials: true,
         }
@@ -35,19 +34,14 @@ const PostCard = ({ post }) => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoadingPost(false));
     }
   };
 
   const handlePostComment = async (e) => {
     e.preventDefault();
-    dispatch(setLoadingPost(true));
-
     try {
       let commentData = {
         text: comment,
@@ -66,21 +60,16 @@ const PostCard = ({ post }) => {
       if (response.data.success) {
         toast.success(response.data.message);
         setComment("");
-        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoadingPost(false));
     }
   };
 
   const handleDeleteComment = async (commentId) => {
     try {
-      dispatch(setLoadingPost(true));
-
       const response = await axios.delete(
-        `${POSTS_API_END_POINT}/${post?._id}/comment/${commentId}`,
+        `${POSTS_API_END_POINT}/comment/${post?._id}/${commentId}`,
         {
           withCredentials: true,
         }
@@ -91,15 +80,11 @@ const PostCard = ({ post }) => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoadingPost(false));
     }
   };
 
   const handleLikePost = async () => {
     try {
-      dispatch(setLoadingPost(true));
-
       const response = await axios.get(
         `${POSTS_API_END_POINT}/like/${post?._id}`,
         {
@@ -109,16 +94,9 @@ const PostCard = ({ post }) => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        window.location.reload();
-        // let myRegex = /unlike/g;
-        // if(!myRegex.test(response.data.message)){
-        //   setPostState({isLiked: true})
-        // }
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoadingPost(false));
     }
   };
 
@@ -234,7 +212,7 @@ const PostCard = ({ post }) => {
                         </p>
                       )}
                       {post?.comments.map((comment) => {
-                        const isMyComment = comment?.user?._id === user?._id
+                        const isMyComment = comment?.user?._id === user?._id;
                         return (
                           <div
                             key={comment._id}
@@ -280,7 +258,8 @@ const PostCard = ({ post }) => {
                                   <li>
                                     <span
                                       className="flex place-items-center gap-1 hover:text-red-500 cursor-pointer text-sm font-semibold"
-                                      onClick={() => {
+                                      onClick={(e) => {
+                                        e.preventDefault();
                                         handleDeleteComment(comment?._id);
                                       }}
                                     >

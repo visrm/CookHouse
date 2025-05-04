@@ -1,4 +1,4 @@
-import { MdOutlineModeEdit } from "react-icons/md";
+import { MdOutlineModeEdit, MdOutlineRefresh } from "react-icons/md";
 import { IoCalendarOutline } from "react-icons/io5";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +24,8 @@ const Profile = () => {
   const [coverImg, setCoverImg] = useState(null);
   const [profileImg, setProfileImg] = useState(null);
   const [feedType, setFeedType] = useState("posts");
+  const [singleUserProfile, setSingleUserProfile] = useState({});
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const coverImgRef = useRef(null);
   const profileImgRef = useRef(null);
@@ -59,7 +61,7 @@ const Profile = () => {
         dispatch(setLoading(false));
       }
     })();
-  }, [userName]);
+  }, [userName, singleUserProfile]);
 
   // console.log(user);
   useGetUserPosts(userName);
@@ -89,7 +91,6 @@ const Profile = () => {
       },
     };
     try {
-      dispatch(setLoading(true));
       const response = await axios.patch(
         `${USERS_API_END_POINT}/update`,
         updateInfo,
@@ -103,12 +104,12 @@ const Profile = () => {
 
       if (response.data.success) {
         dispatch(setUser(response.data.user));
+        setSingleUserProfile({});
         toast.success(response.data.message);
       }
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
-      dispatch(setLoading(false));
       setCoverImg(null);
       setProfileImg(null);
     }
@@ -116,7 +117,6 @@ const Profile = () => {
 
   const handleFollows = async (userId) => {
     try {
-      dispatch(setLoading(true));
       const response = await axios.post(
         `${USERS_API_END_POINT}/follow/${userId}`,
         {},
@@ -131,17 +131,27 @@ const Profile = () => {
       if (response.data.success) {
         toast.success(response.data.message);
         dispatch(setUser(response.data.currentUser));
+        setSingleUserProfile({});
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoading(false));
     }
   };
   // console.log(user?._id);
+  const handleRefresh = (e) => {
+    e.preventDefault();
+    setIsRefreshing(true);
+    setSingleUserProfile({});
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 2000);
+  };
+
+  const refreshAnimate = isRefreshing ? "rotate-360" : "";
+
   return (
     <>
-      <main className="w-full max-w-6xl md:max-w-full min-h-[90svh] md:min-h-screen">
+      <main className="w-full max-w-6xl md:max-w-full min-h-[90svh] md:min-h-screen transition-all duration-300">
         {/* User Profile Details*/}
         {loading && <ProfileSkeleton />}
         {!loading && singleUser && (
@@ -244,17 +254,17 @@ const Profile = () => {
         )}
 
         {!loading && singleUser && (
-          <div className="block py-2 bg-[#fafafa]">
-            <div className="flex mr-1 px-1 gap-x-1 w-full">
+          <div className="block p-2 md:p-3 bg-[#fafafa]">
+            <div className="flex mr-1 px-1 gap-1 sm:gap-2 lg:gap-3 w-full">
               {isMyProfile && (
-                <div className="w-full flex flex-end bg-[#fafafa]">
+                <div className="w-full flex flex-end bg-[#fafafa] my-auto">
                   <EditProfileModal />
                 </div>
               )}
               {!isMyProfile && (
                 <button
                   type="button"
-                  className="btn btn-sm bg-indigo-600 text-[#fff] border-0 w-fit ml-auto"
+                  className="btn btn-sm bg-indigo-600 text-[#fff] border-0 w-fit ml-auto my-auto"
                   onClick={() => {
                     handleFollows(singleUser?._id);
                   }}
@@ -263,7 +273,10 @@ const Profile = () => {
                 </button>
               )}
               {(coverImg || profileImg) && (
-                <div className="bg-[#fafafa]">
+                <div
+                  className="bg-[#fafafa] my-auto tooltip tooltip-top"
+                  data-tip="Update pictures"
+                >
                   <button
                     className="btn bg-indigo-600 text-[#fff] border-0 btn-sm px-4 w-fit"
                     onClick={handleImgSubmit}
@@ -272,6 +285,19 @@ const Profile = () => {
                   </button>
                 </div>
               )}
+              <div
+                className="bg-[#fafafa] my-auto tooltip tooltip-top"
+                data-tip="Refresh"
+              >
+                <button
+                  className="flex items-center rounded-full w-fit hover:text-indigo-600 bg-indigo-200 p-1.5"
+                  onClick={handleRefresh}
+                >
+                  <MdOutlineRefresh
+                    className={`h-5 w-5 ${refreshAnimate} transition-all duration-300`}
+                  />
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -308,7 +334,7 @@ const Profile = () => {
               </div>
             )}
           </div>
-          <div className="flex w-full mt-2 justify-center">
+          <div className="flex w-full mt-2 justify-center min-h-screen">
             {feedType === "posts" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
                 {loading && (

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { FaTrashAlt, FaUser } from "react-icons/fa";
@@ -12,8 +12,11 @@ import {
 } from "../../redux/slices/user.slice.js";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { MdOutlineRefresh } from "react-icons/md";
 
 const Notifications = () => {
+  const [notifs, setNotifs] = useState({});
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const { loading, allNotifications } = useSelector((store) => store.users);
   const dispatch = useDispatch();
 
@@ -33,7 +36,7 @@ const Notifications = () => {
         dispatch(setLoading(false));
       }
     })();
-  }, []);
+  }, [notifs]);
 
   const deleteNotifications = async () => {
     try {
@@ -42,28 +45,49 @@ const Notifications = () => {
       });
       if (response.data.success) {
         toast.success(response.data.message);
-        window.location.reload()
       }
     } catch (error) {
       toast.error(error.response.data.message);
     }
   };
+
+  const handleRefresh = (e) => {
+    e.preventDefault();
+    setIsRefreshing(true);
+    setNotifs({});
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 2000);
+  };
+  const refreshAnimate = isRefreshing ? "rotate-360" : "";
+
   return (
     <>
-      <div className="relative flex-[4_4_0] border-l border-r border-gray-700 h-full min-h-[90svh] md:min-h-screen">
+      <div className="relative flex-[4_4_0] border-l border-r border-gray-700 h-full min-h-[90svh] md:min-h-screen transition-all duration-300">
         <div className="sticky top-11 md:top-14 flex justify-between items-center p-4 bg-[#fafafa] border-b border-gray-700 z-20">
           <p className="font-bold font-serif">Notifications</p>
-          <div className="dropdown dropdown-left">
-            <div tabIndex={0} role="button" className="m-1">
-              <FaTrashAlt className="w-8 md:w-10 hover:scale-110 hover:text-red-600" />
+          <div className="flex items-center">
+            <button
+              className="flex rounded-full w-fit hover:text-indigo-400 hover:scale-110"
+              onClick={handleRefresh}
+            >
+              <MdOutlineRefresh
+                className={`h-5 w-5 ${refreshAnimate} transition-all duration-300`}
+              />
+            </button>
+            <div className="dropdown dropdown-left">
+              <div tabIndex={0} role="button" className="m-1">
+                <FaTrashAlt className="w-8 md:w-10 hover:scale-110 hover:text-red-600" />
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+              >
+                <li>
+                  <a onClick={deleteNotifications}>Delete all notifications</a>
+                </li>
+              </ul>
             </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-              <li>
-                <a onClick={deleteNotifications}>Delete all notifications</a>
-              </li>
-            </ul>
           </div>
         </div>
         {loading && (

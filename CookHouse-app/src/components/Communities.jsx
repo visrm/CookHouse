@@ -28,7 +28,7 @@ const Communities = () => {
 
   return (
     <>
-      <main className="h-full w-full max-w-full min-h-[90svh] md:min-h-screen overflow-hidden">
+      <main className="h-full w-full max-w-full min-h-[90svh] md:min-h-screen overflow-hidden transition-all duration-300">
         <div className="flex justify-between items-center p-4 bg-[#fafafa] border-b border-gray-700 z-20">
           <p className="font-bold font-serif">Communities</p>
         </div>

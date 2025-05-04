@@ -7,20 +7,33 @@ import PostsCard from "../PostCard.jsx";
 import Recipes from "../Recipes.jsx";
 import useGetAllFollowingPosts from "../Hooks/useGetAllFollowingPosts.jsx";
 import useGetLikedPosts from "../Hooks/useGetLikedPosts.jsx";
-import useGetAllFollowingRecipes from "../Hooks/useGetAllFollowingRecipes.jsx";
+import { MdOutlineRefresh } from "react-icons/md";
 
 const Home = () => {
   const [feedType, setFeedType] = useState("posts");
-  useGetAllFollowingPosts();
+  const [homeRefresh, setHomeRefresh] = useState({});
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  useGetAllFollowingPosts(homeRefresh);
 
   const { loadingPost, followingPosts } = useSelector((store) => store.posts);
   const { user } = useSelector((store) => store.auth);
 
   useGetLikedPosts(user?._id);
 
+  const handleRefresh = (e) => {
+    e.preventDefault();
+    setIsRefreshing(true);
+    setHomeRefresh({});
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 2000);
+  };
+
+  const refreshAnimate = isRefreshing ? "rotate-360" : "";
+
   return (
     <>
-      <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto">
+      <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto transition-all duration-300 overflow-x-hidden">
         <div className="bg-[#fafafa]">
           <CreatePostAndRecipe />
         </div>
@@ -54,8 +67,24 @@ const Home = () => {
                 <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />
               )}
             </div>
+            <div className="flex justify-end transition duration-300 relative cursor-pointer">
+              {" "}
+              <div
+                className="bg-[#fafafa] my-auto tooltip tooltip-left"
+                data-tip="Refresh"
+              >
+                <button
+                  className="flex items-center rounded-full w-fit p-1.5 sm:mr-2"
+                  onClick={handleRefresh}
+                >
+                  <MdOutlineRefresh
+                    className={`h-5 w-5 ${refreshAnimate} transition-all duration-300`}
+                  />
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="flex w-full mt-2 justify-center">
+          <div className="flex w-full mt-2 justify-center min-h-screen">
             {feedType === "following" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
                 {loadingPost && (
@@ -77,12 +106,12 @@ const Home = () => {
             )}
             {feedType === "recipes" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                <Recipes />
+                <Recipes refreshVar={homeRefresh} />
               </div>
             )}
             {feedType === "posts" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                <Posts />
+                <Posts refreshVar={homeRefresh} />
               </div>
             )}
           </div>

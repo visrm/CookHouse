@@ -10,7 +10,7 @@ import {
 } from "../../redux/slices/post.slice.js";
 import toast from "react-hot-toast";
 
-const useGetAllPosts = (keyword) => {
+const useGetAllPosts = (keyword, refreshVar) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const useGetAllPosts = (keyword) => {
         dispatch(setLoadingPost(false));
       }
     })();
-  }, [keyword]);
+  }, [keyword, refreshVar]);
 };
 
 export default useGetAllPosts;
