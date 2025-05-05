@@ -107,9 +107,9 @@ const CommunityHome = () => {
               )}
             </div>
           </div>
-          <div className="flex w-full mt-2 justify-center">
+          <div className="flex w-full mt-2 sm:mt-3 justify-center">
             {feedType === "posts" && (
-              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
                 {loadingPost && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
@@ -128,7 +128,7 @@ const CommunityHome = () => {
               </div>
             )}
             {feedType === "recipes" && (
-              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
                 {loadingRecipe && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
@@ -147,7 +147,7 @@ const CommunityHome = () => {
               </div>
             )}
             {feedType === "events" && (
-              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
                 {loadingEvent && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
@@ -166,7 +166,7 @@ const CommunityHome = () => {
               </div>
             )}
             {feedType === "communities" && (
-              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
                 {loadingCommunity && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />

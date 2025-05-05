@@ -296,6 +296,7 @@ const CreateCommunityPostAndRecipe = ({ isOwner = false }) => {
       toast.error(error.response.data.message);
     } finally {
       dispatch(setLoadingPost(false));
+      setOpenEmoji(false)
       setText("");
       setImg(null);
     }

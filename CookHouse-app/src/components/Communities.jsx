@@ -48,7 +48,7 @@ const Communities = () => {
                     setKeyword(e.target.value);
                   }}
                   placeholder="Search"
-                  className="input input-sm bg-[#fdfdfd] focus:outline-none rounded-full"
+                  className="input input-sm bg-[#fff] focus:outline-none rounded-full"
                 />
                 <button
                   className="btn btn-sm bg-slate-300 border-none rounded-full"
@@ -60,13 +60,13 @@ const Communities = () => {
             </div>
             <div>
               {!loadingCommunity && (
-                <span className="block w-full p-2 sm:px-3 font-bold font-mono text-xs text-left">
-                  {`Search results ( ${allCommunities.length} )`}
+                <span className="block w-full p-2 sm:p-3 my-2 font-bold font-mono text-xs text-left">
+                  {`Search results (${allCommunities.length})`}
                 </span>
               )}
             </div>
           </article>
-          <div className="flex flex-col flex-nowrap gap-1 p-2 min-h-full w-full max-w-full">
+          <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 p-2 min-h-full w-full max-w-full">
             {loadingCommunity && (
               <div className="block text-center p-2 h-52">
                 <LoadingSpinner size="lg" />

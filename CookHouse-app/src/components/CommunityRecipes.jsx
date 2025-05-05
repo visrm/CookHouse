@@ -10,7 +10,6 @@ import RecipeCard from "./RecipeCard";
 import toast from "react-hot-toast";
 import { RECIPES_API_END_POINT } from "../utils/constants.js";
 
-
 const CommunityRecipes = ({ communityId }) => {
   const dispatch = useDispatch();
 
@@ -35,25 +34,29 @@ const CommunityRecipes = ({ communityId }) => {
     })();
   }, [communityId]);
 
-  const { loadingRecipe, communityRecipes } = useSelector((store) => store.recipes);
+  const { loadingRecipe, communityRecipes } = useSelector(
+    (store) => store.recipes
+  );
 
   return (
     <>
-      {loadingRecipe && (
-        <div className="block text-center">
-          <LoadingSpinner size="lg" />
-        </div>
-      )}
-      {!loadingRecipe && communityRecipes.length === 0 && (
-        <div className="block text-center text-sm p-2 sm:p-4">
-          No community recipes found.
-        </div>
-      )}
-      {!loadingRecipe &&
-        communityRecipes.length > 0 &&
-        communityRecipes.map((recipe) => {
-          return <RecipeCard recipe={recipe} key={recipe?._id} />;
-        })}
+      <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4">
+        {loadingRecipe && (
+          <div className="block text-center">
+            <LoadingSpinner size="lg" />
+          </div>
+        )}
+        {!loadingRecipe && communityRecipes.length === 0 && (
+          <div className="block text-center text-sm p-2 sm:p-4">
+            No community recipes found.
+          </div>
+        )}
+        {!loadingRecipe &&
+          communityRecipes.length > 0 &&
+          communityRecipes.map((recipe) => {
+            return <RecipeCard recipe={recipe} key={recipe?._id} />;
+          })}
+      </div>
     </>
   );
 };

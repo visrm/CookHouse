@@ -496,9 +496,9 @@ const CommunityProfile = () => {
             </div>
           )}
           {!loadingCommunity && (
-            <div className="flex w-full mt-2 justify-center min-h-screen">
+            <div className="flex w-full mt-2 sm:mt-3 justify-center min-h-screen">
               {feedType === "posts" && (
-                <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+                <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
                   {singleCommunity?.posts.length === 0 && (
                     <div className="block text-center text-sm p-2 sm:p-4">
                       No community posts found.
@@ -510,7 +510,7 @@ const CommunityProfile = () => {
                 </div>
               )}
               {feedType === "recipes" && (
-                <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+                <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
                   {singleCommunity?.recipes.length === 0 && (
                     <div className="block text-center text-sm p-2 sm:p-4">
                       No community recipes found.
@@ -522,7 +522,7 @@ const CommunityProfile = () => {
                 </div>
               )}
               {feedType === "events" && (
-                <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+                <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
                   {singleCommunity?.events.length === 0 && (
                     <div className="block text-center text-sm p-2 sm:p-4">
                       No Community events found.

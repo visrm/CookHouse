@@ -38,21 +38,23 @@ const CommunityPosts = ({ communityId }) => {
 
   return (
     <>
-      {loadingPost && (
-        <div className="block text-center">
-          <LoadingSpinner size="lg" />
-        </div>
-      )}
-      {!loadingPost && communityPosts.length === 0 && (
-        <div className="block text-center text-sm p-2 sm:p-4">
-          No community feeds found.
-        </div>
-      )}
-      {!loadingPost &&
-        communityPosts.length > 0 &&
-        communityPosts.map((post) => {
-          return <PostCard post={post} key={post?._id} />;
-        })}
+      <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4">
+        {loadingPost && (
+          <div className="block text-center">
+            <LoadingSpinner size="lg" />
+          </div>
+        )}
+        {!loadingPost && communityPosts.length === 0 && (
+          <div className="block text-center text-sm p-2 sm:p-4">
+            No community feeds found.
+          </div>
+        )}
+        {!loadingPost &&
+          communityPosts.length > 0 &&
+          communityPosts.map((post) => {
+            return <PostCard post={post} key={post?._id} />;
+          })}
+      </div>
     </>
   );
 };

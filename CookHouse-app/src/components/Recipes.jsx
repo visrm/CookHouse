@@ -13,21 +13,23 @@ const Recipes = ({ refreshVar }) => {
 
   return (
     <>
-      {loadingRecipe && (
-        <div className="block text-center">
-          <LoadingSpinner size="lg" />
-        </div>
-      )}
-      {!loadingRecipe && allRecipes.length === 0 && (
-        <div className="block text-center text-sm p-2 sm:p-4">
-          No recipes found.
-        </div>
-      )}
-      {!loadingRecipe &&
-        allRecipes.length > 0 &&
-        allRecipes.map((recipe) => {
-          return <RecipesCard recipe={recipe} key={recipe?._id} />;
-        })}
+      <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4">
+        {loadingRecipe && (
+          <div className="block text-center">
+            <LoadingSpinner size="lg" />
+          </div>
+        )}
+        {!loadingRecipe && allRecipes.length === 0 && (
+          <div className="block text-center text-sm p-2 sm:p-4">
+            No recipes found.
+          </div>
+        )}
+        {!loadingRecipe &&
+          allRecipes.length > 0 &&
+          allRecipes.map((recipe) => {
+            return <RecipesCard recipe={recipe} key={recipe?._id} />;
+          })}
+      </div>
     </>
   );
 };

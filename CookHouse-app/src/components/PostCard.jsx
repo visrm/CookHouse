@@ -102,8 +102,8 @@ const PostCard = ({ post }) => {
 
   return (
     <>
-      <article className="w-[90%] sm:w-[80%] mx-auto">
-        <div className="flex gap-2 items-start p-4 border-b-2 border-gray-300 bg-[#fafafa]">
+      <article className="w-[90%] sm:w-[80%] mx-auto glass-morph overflow-hidden">
+        <div className="flex gap-2 items-start p-4 bg-[#fdfdfd]">
           <div className="avatar h-8">
             <Link
               to={`/profile/${postOwner?.username}`}

@@ -74,7 +74,7 @@ const ExplorePage = () => {
                     setKeyword(e.target.value);
                   }}
                   placeholder="Search"
-                  className="input input-sm bg-[#fdfdfd] focus:outline-none rounded-full"
+                  className="input input-sm bg-[#fff] focus:outline-none rounded-full"
                 />
                 <button
                   className="btn btn-sm bg-slate-300 border-none rounded-full"
@@ -86,13 +86,13 @@ const ExplorePage = () => {
             </div>
             <div>
               {!loadingRecipe && (
-                <span className="block w-full p-2 sm:px-3 mt-1 md:mt-2 font-bold font-mono text-xs text-left">
-                  {`Search results ( ${allRecipes.length} )`}
+                <span className="block w-full p-2 sm:px-3 my-2 md:my-3 font-bold font-mono text-xs text-left">
+                  {`Search results (${allRecipes.length})`}
                 </span>
               )}
             </div>
           </article>
-          <article id="search-results" className="block h-full">
+          <article id="search-results" className="block h-full mt-2 sm:mt-3">
             {loadingRecipe && (
               <div className="block text-center">
                 <LoadingSpinner size="lg" />

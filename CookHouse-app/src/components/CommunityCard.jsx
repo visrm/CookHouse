@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const CommunityCard = ({ community }) => {
   return (
     <>
-      <div className="flex flex-wrap justify-between items-center p-2 sm:p-3 mx-auto md:p-6 lg:p-8 w-full max-w-[85%] rounded-sm md:rounded-md bg-[#fafafa] border border-slate-200">
+      <div className="flex flex-wrap justify-between items-center p-2 sm:p-3 mx-auto md:p-6 lg:p-8 w-full max-w-[85%] glass-morph bg-[#fdfdfd] overflow-hidden">
         <Link
           to={`/community/${community?._id}`}
           className="flex flex-nowrap gap-2 sm:gap-3 w-full max-w-full h-full min-h-fit supports-[backdrop]:backdrop-blur"

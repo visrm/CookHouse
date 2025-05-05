@@ -333,9 +333,9 @@ const Profile = () => {
               </div>
             </div>
           </div>
-          <div className="flex w-full mt-2 justify-center min-h-screen">
+          <div className="flex w-full mt-2 sm:mt-3 justify-center min-h-screen">
             {feedType === "posts" && (
-              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
                 {loading && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
@@ -353,7 +353,7 @@ const Profile = () => {
               </div>
             )}
             {feedType === "recipes" && (
-              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
                 {loading && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
@@ -371,7 +371,7 @@ const Profile = () => {
               </div>
             )}
             {feedType === "liked" && (
-              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
                 {loadingPost && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
