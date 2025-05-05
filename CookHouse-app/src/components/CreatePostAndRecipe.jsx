@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { setLoadingRecipe } from "../redux/slices/recipe.slice.js";
 import { setLoadingPost } from "../redux/slices/post.slice.js";
+import EmojiPicker from "emoji-picker-react";
 
 const CreateRecipe = () => {
   const [recipe, setRecipe] = useState({
@@ -219,16 +220,12 @@ const CreateRecipe = () => {
                 </div>
               )}
 
-              <div className="flex justify-between border-t py-2 border-t-gray-100">
+              <div className="relative flex justify-between border-t py-2 border-t-gray-100">
                 <div className="flex gap-1 sm:gap-2 lg:gap-4 items-center">
                   <CiImageOn
                     className="fill-indigo-600 w-6 h-6 cursor-pointer"
                     onClick={() => imgRef.current.click()}
                     title="Add image"
-                  />
-                  <BsEmojiSmileFill
-                    className="fill-indigo-600 w-5 h-5 cursor-pointer"
-                    title="Add emoji"
                   />
                 </div>
                 <input
@@ -256,6 +253,7 @@ const CreateRecipe = () => {
 const CreatePostAndRecipe = () => {
   const [text, setText] = useState("");
   const [img, setImg] = useState(null);
+  const [openEmoji, setOpenEmoji] = useState(false);
 
   const imgRef = useRef(null);
 
@@ -292,6 +290,7 @@ const CreatePostAndRecipe = () => {
       toast.error(error.response.data.message);
     } finally {
       dispatch(setLoadingPost(false));
+      setOpenEmoji(false)
       setText("");
       setImg(null);
     }
@@ -348,7 +347,12 @@ const CreatePostAndRecipe = () => {
               </div>
             )}
 
-            <div className="flex justify-between border-t py-2 border-t-gray-100">
+            <div className="relative flex justify-between border-t py-2 border-t-gray-100">
+              {openEmoji && (
+                <div className="absolute top-[90%] md:-left-[50%] z-[100]">
+                  <EmojiPicker onEmojiClick={(e) => setText(text + e.emoji)} height="24rem" width="24rem" />
+                </div>
+              )}
               <div className="flex gap-1 sm:gap-2 lg:gap-4 items-center">
                 <CiImageOn
                   className="fill-indigo-600 w-6 h-6 cursor-pointer"
@@ -357,6 +361,7 @@ const CreatePostAndRecipe = () => {
                 />
                 <BsEmojiSmileFill
                   className="fill-indigo-600 w-5 h-5 cursor-pointer"
+                  onClick={() => setOpenEmoji(!openEmoji)}
                   title="Add emoji"
                 />
               </div>
