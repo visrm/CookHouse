@@ -401,24 +401,10 @@ const CommunityProfile = () => {
                     }}
                     id="join-community-button"
                   >
-                    {isJoinedCommunity ? "Joined Community" : "Join Community"}
+                    {isJoinedCommunity ? "Leave Community" : "Join Community"}
                   </button>
                 </div>
               )}
-
-              <div
-                className="bg-[#fafafa] my-auto tooltip tooltip-top"
-                data-tip="Refresh"
-              >
-                <button
-                  className="flex items-center rounded-full w-fit hover:text-indigo-600 bg-indigo-200 p-1.5"
-                  onClick={handleRefresh}
-                >
-                  <MdOutlineRefresh
-                    className={`h-5 w-5 ${refreshAnimate} transition-all duration-300`}
-                  />
-                </button>
-              </div>
 
               {isMyCommunity && (
                 <div className="flex justify-end dropdown dropdown-start dropdown-hover mx-2">
@@ -460,7 +446,7 @@ const CommunityProfile = () => {
             )}
           </>
         )}
-        <section className="transition-all duration-200">
+        <section>
           <div className="sticky top-12 md:top-15 flex w-full font-semibold bg-[#fafafa] z-50 shadow-md">
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
@@ -488,6 +474,18 @@ const CommunityProfile = () => {
               {feedType === "events" && (
                 <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />
               )}
+            </div>
+            <div className="flex justify-end transition duration-300 relative cursor-pointer">
+              <div className="my-auto tooltip tooltip-left" data-tip="Refresh">
+                <button
+                  className="flex items-center rounded-full w-fit hover:text-indigo-600 p-1.5 sm:mr-2"
+                  onClick={handleRefresh}
+                >
+                  <MdOutlineRefresh
+                    className={`h-5 w-5 ${refreshAnimate} transition-all duration-300`}
+                  />
+                </button>
+              </div>
             </div>
           </div>
           {loadingCommunity && (

@@ -17,6 +17,7 @@ import CommunityHome from "./components/userModule/CommunityHome";
 import ManageCommunity from "./components/ManageCommunity";
 import AdminHome from "./components/adminModule/AdminHome";
 import { Toaster } from "react-hot-toast";
+import PageNotFound from "./components/PageNotFound";
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
         <Toaster />
       </div>
       <NavigationBar />
-      <div className="flex p-0 m-0 max-w-full h-full mx-auto scroll-smooth">
+      <div className="flex p-0 m-0 max-w-full h-full mx-auto scroll-smooth transition-all">
         <SideBar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -43,6 +44,8 @@ function App() {
           <Route path="community/:communityId" element={<CommunityProfile />} />
           <Route path="/conversations" element={<ChatsHome />} />
           <Route path="/admin" element={<AdminHome />} />
+          {/* Catch-all route for 404 */}
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </div>
     </>

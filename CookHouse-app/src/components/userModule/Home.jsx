@@ -68,13 +68,12 @@ const Home = () => {
               )}
             </div>
             <div className="flex justify-end transition duration-300 relative cursor-pointer">
-              {" "}
               <div
                 className="bg-[#fafafa] my-auto tooltip tooltip-left"
                 data-tip="Refresh"
               >
                 <button
-                  className="flex items-center rounded-full w-fit p-1.5 sm:mr-2"
+                  className="flex items-center rounded-full w-fit hover:text-indigo-600 p-1.5 sm:mr-2"
                   onClick={handleRefresh}
                 >
                   <MdOutlineRefresh

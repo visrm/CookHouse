@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedConversation } from "../redux/slices/chat.slice.js";
 import { MdOutlineRefresh } from "react-icons/md";
 
+
 const MessageContainer = () => {
   const [chatRefresh, setChatRefresh] = useState({});
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -44,7 +45,6 @@ const MessageContainer = () => {
               </div>
 
               <div>
-                {" "}
                 <button
                   className="flex rounded-full w-fit hover:text-indigo-400 hover:scale-110"
                   onClick={handleRefresh}
@@ -57,6 +57,7 @@ const MessageContainer = () => {
             </div>
             <Messages refreshVar={chatRefresh} />
             <div className="block sticky bottom-0 w-full bg-[#FECD62]">
+
               <MessageInput />
             </div>
           </>
@@ -73,9 +74,11 @@ const NoChatSelected = () => {
   return (
     <>
       <div className="flex items-center justify-center w-full h-full">
-        <div className="px-4 text-center sm:text-lg md:text-xl text-slate-800 font-semibold flex flex-col items-center gap-2">
+        <div className="px-4 text-center sm:text-lg md:text-xl lg:text-3xl text-slate-800 font-semibold flex flex-col items-center gap-0.5">
           <p>Welcome 👋 {user?.fullname} ❄</p>
-          <p>Select a chat to start messaging</p>
+          <p className="text-base md:text-lg lg:text-xl">
+            Select a chat to start messaging
+          </p>
           <TiMessages className="text-3xl md:text-6xl text-center" />
         </div>
       </div>

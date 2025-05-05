@@ -285,19 +285,6 @@ const Profile = () => {
                   </button>
                 </div>
               )}
-              <div
-                className="bg-[#fafafa] my-auto tooltip tooltip-top"
-                data-tip="Refresh"
-              >
-                <button
-                  className="flex items-center rounded-full w-fit hover:text-indigo-600 bg-indigo-200 p-1.5"
-                  onClick={handleRefresh}
-                >
-                  <MdOutlineRefresh
-                    className={`h-5 w-5 ${refreshAnimate} transition-all duration-300`}
-                  />
-                </button>
-              </div>
             </div>
           </div>
         )}
@@ -333,6 +320,18 @@ const Profile = () => {
                 )}
               </div>
             )}
+            <div className="flex justify-end transition duration-300 relative cursor-pointer">
+              <div className="my-auto tooltip tooltip-left" data-tip="Refresh">
+                <button
+                  className="flex items-center rounded-full w-fit hover:text-indigo-600 p-1.5 sm:mr-2"
+                  onClick={handleRefresh}
+                >
+                  <MdOutlineRefresh
+                    className={`h-5 w-5 ${refreshAnimate} transition-all duration-300`}
+                  />
+                </button>
+              </div>
+            </div>
           </div>
           <div className="flex w-full mt-2 justify-center min-h-screen">
             {feedType === "posts" && (
