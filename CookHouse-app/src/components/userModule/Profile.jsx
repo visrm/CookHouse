@@ -264,7 +264,7 @@ const Profile = () => {
               {!isMyProfile && (
                 <button
                   type="button"
-                  className="btn btn-sm bg-indigo-600 text-[#fff] border-0 w-fit ml-auto my-auto"
+                  className="btn btn-sm amber-gradient text-[#fff] font-semibold border-0 w-fit ml-auto my-auto"
                   onClick={() => {
                     handleFollows(singleUser?._id);
                   }}
@@ -278,7 +278,7 @@ const Profile = () => {
                   data-tip="Update pictures"
                 >
                   <button
-                    className="btn bg-indigo-600 text-[#fff] border-0 btn-sm px-4 w-fit"
+                    className="btn amber-gradient text-[#fff] font-semibold border-0 btn-sm px-4 w-fit"
                     onClick={handleImgSubmit}
                   >
                     Update

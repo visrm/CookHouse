@@ -10,7 +10,7 @@ import {
 import toast from "react-hot-toast";
 import { CHATS_API_END_POINT } from "../../utils/constants.js";
 
-const useGetChatMessages = (recieverId) => {
+const useGetChatMessages = (recieverId, refreshVar) => {
   const { selectedConversation } = useSelector((store) => store.chats);
   const dispatch = useDispatch();
 
@@ -33,7 +33,7 @@ const useGetChatMessages = (recieverId) => {
         dispatch(setLoadingMessages(false));
       }
     })();
-  }, [selectedConversation]);
+  }, [selectedConversation, refreshVar]);
 };
 
 export default useGetChatMessages;

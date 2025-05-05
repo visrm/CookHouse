@@ -4,11 +4,11 @@ import Message from "./Message";
 import MessageSkeleton from "./Skeleton/MessageSkeleton";
 import useGetChatMessages from "./Hooks/useGetChatMessages";
 
-const Messages = () => {
+const Messages = ({ refreshVar }) => {
   const { loadingMessages, singleChatMessages, selectedConversation } =
     useSelector((store) => store.chats);
 
-  useGetChatMessages(selectedConversation?._id);
+  useGetChatMessages(selectedConversation?._id, refreshVar);
   const lastMessageRef = useRef();
 
   useEffect(() => {

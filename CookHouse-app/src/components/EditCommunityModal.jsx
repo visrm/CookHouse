@@ -105,10 +105,9 @@ const EditCommunityModal = () => {
                 id="name"
                 name="name"
                 value={communityData.name}
-                pattern="[A-Z a-z]*"
                 maxLength={40}
-                title="Only letters"
                 onChange={handleChange}
+                autoComplete="name"
               />
             </div>
             <div>
@@ -128,7 +127,7 @@ const EditCommunityModal = () => {
                 onChange={handleChange}
               />
             </div>
-            <button className="btn max-w-fit mt-2" type="submit">
+            <button className="submit-btn max-w-fit mt-2" type="submit">
               Update
             </button>
           </form>

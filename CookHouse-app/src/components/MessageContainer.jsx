@@ -1,12 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import MessageInput from "./MessageInput";
 import Messages from "./Messages";
 import { TiMessages } from "react-icons/ti";
-
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedConversation } from "../redux/slices/chat.slice.js";
+import { MdOutlineRefresh } from "react-icons/md";
 
 const MessageContainer = () => {
+  const [chatRefresh, setChatRefresh] = useState({});
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const { selectedConversation } = useSelector((store) => store.chats);
   const dispatch = useDispatch();
 
@@ -14,6 +16,16 @@ const MessageContainer = () => {
     // cleanup function (unmounts)
     return () => dispatch(setSelectedConversation(null));
   }, [setSelectedConversation]);
+
+  const handleRefresh = (e) => {
+    e.preventDefault();
+    setIsRefreshing(true);
+    setChatRefresh({});
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 2000);
+  };
+  const refreshAnimate = isRefreshing ? "rotate-360" : "";
 
   return (
     <>
@@ -23,13 +35,27 @@ const MessageContainer = () => {
         ) : (
           <>
             {/* Header */}
-            <div className="bg-amber-200/75 px-2 py-2 sm:px-4 mb-2">
-              <span className="label-text sm:text-base">To:</span>{" "}
-              <span className="text-slate-900 sm:text-xl font-semibold">
-                {selectedConversation?.fullname}
-              </span>
+            <div className="flex flex-row justify-between bg-amber-200/75 px-2 py-2 sm:px-4 mb-2">
+              <div>
+                <span className="label-text sm:text-base">To:</span>{" "}
+                <span className="text-slate-900 sm:text-xl font-semibold">
+                  {selectedConversation?.fullname}
+                </span>
+              </div>
+
+              <div>
+                {" "}
+                <button
+                  className="flex rounded-full w-fit hover:text-indigo-400 hover:scale-110"
+                  onClick={handleRefresh}
+                >
+                  <MdOutlineRefresh
+                    className={`h-5 w-5 ${refreshAnimate} transition-all duration-300`}
+                  />
+                </button>
+              </div>
             </div>
-            <Messages />
+            <Messages refreshVar={chatRefresh} />
             <div className="block sticky bottom-0 w-full bg-[#FECD62]">
               <MessageInput />
             </div>

@@ -3,7 +3,10 @@ import { BsEmojiSmileFill } from "react-icons/bs";
 import { useRef, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import axios from "axios";
-import { POSTS_API_END_POINT, RECIPES_API_END_POINT } from "../utils/constants.js";
+import {
+  POSTS_API_END_POINT,
+  RECIPES_API_END_POINT,
+} from "../utils/constants.js";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { setLoadingRecipe } from "../redux/slices/recipe.slice.js";
@@ -22,15 +25,15 @@ const CreateRecipe = () => {
 
   const imgRef = useRef(null);
 
-  const isPending = false;
   const isError = false;
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { user } = useSelector((store) => store.auth);
+  const { loadingRecipe } = useSelector((store) => store.recipes);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(setLoadingRecipe(true))
+    dispatch(setLoadingRecipe(true));
     try {
       let recipeData = {
         user: user?._id,
@@ -59,7 +62,7 @@ const CreateRecipe = () => {
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
-    dispatch(setLoadingRecipe(false))
+      dispatch(setLoadingRecipe(false));
       setRecipe({
         title: "",
         desc: "",
@@ -99,11 +102,11 @@ const CreateRecipe = () => {
           Add Recipe
         </button>
         <dialog id="addRecipeModal" className="modal">
-          <div className="modal-box flex flex-col flex-nowrap my-2 sm:my-3 md:my-6 lg:my-8 w-full rounded-xl bg-amber-200 p-4 items-start gap-4 border-b border-gray-100">
+          <div className="modal-box flex flex-col flex-nowrap my-2 sm:my-3 md:my-6 lg:my-8 w-full rounded-xl bg-[#fafafa] p-4 items-start gap-4 border-b border-gray-100">
             <form method="dialog" id="handleCloseRecipe">
               {/* if there is a button in form, it will close the modal */}
               <button
-                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                className="btn btn-sm btn-circle bg-transparent border-0 absolute right-2 top-2"
                 onClick={() => {
                   setRecipe({
                     title: "",
@@ -120,60 +123,86 @@ const CreateRecipe = () => {
               </button>
             </form>
             <form
-              className="flex flex-col gap-2 w-full h-full"
+              className="flex flex-col gap-0.5 w-full h-full justify-center max-w-[95%] sm:px-2"
               onSubmit={handleSubmit}
               id="handleCreateRecipe"
             >
-              <h3 className="font-bold font-serif text-lg md:text-xl">Publish Recipe</h3>
-              <textarea
-                className="rounded-md textarea-sm h-8 min-h-8 w-full p-1 sm:p-2 text-lg resize-none border-none focus:outline-none bg-amber-50 border-gray-200 overflow-hidden"
-                placeholder="Dish Name"
-                name="title"
-                value={recipe.title}
-                onChange={handleInputChange}
-                maxLength={"40ch"}
-                required
-              />
-                 <textarea
-                className="rounded-md textarea-sm  h-8 min-h-8 w-full p-1 sm:p-2 text-lg resize-none border-none focus:outline-none bg-amber-50 border-gray-200 overflow-hidden"
-                placeholder="Cuisine type (optional)"
-                name="cuisine_type"
-                value={recipe.cuisine_type}
-                onChange={handleInputChange}
-                maxLength={"40ch"}
-              />
-              <textarea
-                className="rounded-md textarea-sm h-full min-h-15 w-full p-1 sm:p-2 text-base resize-none border-none focus:outline-none bg-amber-50 border-gray-200"
-                placeholder="Desciption"
-                name="desc"
-                value={recipe.desc}
-                onChange={handleInputChange}
-                maxLength={"500ch"}
-                required
-              />
-              <textarea
-                className="rounded-md textarea-sm h-full min-h-15 w-full p-1 sm:p-2 text-base resize-none border-none focus:outline-none bg-amber-50 border-gray-200"
-                placeholder={`Provide Ingredients seperated by commas(",").`}
-                name="ingredients"
-                value={recipe.ingredients}
-                onChange={handleInputChange}
-                required
-              />
-              <textarea
-                className="rounded-md textarea textarea-sm h-full min-h-22 w-full p-1 sm:p-2 text-base resize-none border-none focus:outline-none bg-amber-50 border-gray-200"
-                placeholder={`Example Instruction: \n Fill a kettle with fresh water and bring it to a boil.\n Pour the boiling water over the tea and let it steep for the 3-5 min. `}
-                name="instructions"
-                value={recipe.instructions}
-                onChange={handleInputChange}
-                required
-              />
-              <textarea
-                className="rounded-md textarea textarea-sm h-full min-h-15 w-full p-1 sm:p-2 text-base resize-none border-none focus:outline-none bg-amber-50 border-gray-200"
-                placeholder={`Provide Dietary tags seperated by commas(",").`}
-                name="dietary_tags"
-                value={recipe.dietary_tags}
-                onChange={handleInputChange}
-              />
+              <h3 className="font-bold font-serif text-lg md:text-xl">
+                Publish Recipe
+              </h3>
+              <div>
+                <label htmlFor="title">Recipe title :</label>
+                <textarea
+                  className="rounded-md textarea-sm h-8 min-h-8 w-full p-1 sm:p-2 text-lg resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300 overflow-hidden"
+                  placeholder="Dish Name"
+                  name="title"
+                  id="title"
+                  value={recipe.title}
+                  onChange={handleInputChange}
+                  maxLength={"40ch"}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="cuisine_type">Cuisine type :</label>
+                <textarea
+                  className="rounded-md textarea-sm  h-8 min-h-8 w-full p-1 sm:p-2 text-lg resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300 overflow-hidden"
+                  placeholder="Cuisine type (optional)"
+                  name="cuisine_type"
+                  id="cuisine_type"
+                  value={recipe.cuisine_type}
+                  onChange={handleInputChange}
+                  maxLength={"40ch"}
+                />
+              </div>
+              <div>
+                <label htmlFor="desc">Description :</label>
+                <textarea
+                  className="rounded-md textarea-sm h-full min-h-12 w-full p-1 sm:p-2 text-base resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300"
+                  placeholder="Desciption"
+                  name="desc"
+                  id="desc"
+                  value={recipe.desc}
+                  onChange={handleInputChange}
+                  maxLength={"500ch"}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="ingredients">Ingredients :</label>
+                <textarea
+                  className="rounded-md textarea-sm h-full min-h-14 w-full p-1 sm:p-2 text-base resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300"
+                  placeholder={`Provide Ingredients seperated by commas(",").`}
+                  name="ingredients"
+                  id="ingredients"
+                  value={recipe.ingredients}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="instructions">Instructions :</label>
+                <textarea
+                  className="rounded-md textarea textarea-sm h-full min-h-20 w-full p-1 sm:p-2 text-base resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300"
+                  placeholder={`Example Instruction: \n Fill a kettle with fresh water and bring it to a boil.\n Pour the boiling water over the tea and let it steep for the 3-5 min. `}
+                  name="instructions"
+                  id="instructions"
+                  value={recipe.instructions}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="dietary_tags">Dietary tags :</label>
+                <textarea
+                  className="rounded-md textarea textarea-sm h-full min-h-6 w-full p-1 sm:p-2 text-base resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300"
+                  placeholder={`Provide Dietary tags seperated by commas(",").`}
+                  name="dietary_tags"
+                  id="dietary_tags"
+                  value={recipe.dietary_tags}
+                  onChange={handleInputChange}
+                />
+              </div>
               {img && (
                 <div className="relative w-72 mx-auto">
                   <IoCloseSharp
@@ -209,11 +238,8 @@ const CreateRecipe = () => {
                   ref={imgRef}
                   onChange={handleImgChange}
                 />
-                <button
-                  className="btn border-0 bg-indigo-600 rounded-full btn-sm text-white px-4"
-                  type="submit"
-                >
-                  {isPending ? "Publishing..." : "Publish"}
+                <button className="submit-btn px-4" type="submit">
+                  {loadingRecipe ? "Publishing..." : "Publish"}
                 </button>
               </div>
               {isError && (
@@ -236,12 +262,12 @@ const CreatePostAndRecipe = () => {
   const isPending = false;
   const isError = false;
 
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { user } = useSelector((store) => store.auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(setLoadingPost(true))
+    dispatch(setLoadingPost(true));
     try {
       let postData = {
         user: user?._id,
@@ -265,7 +291,7 @@ const dispatch = useDispatch()
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
-    dispatch(setLoadingPost(false))
+      dispatch(setLoadingPost(false));
       setText("");
       setImg(null);
     }

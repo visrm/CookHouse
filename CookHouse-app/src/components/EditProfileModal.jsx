@@ -76,7 +76,7 @@ const EditProfileModal = () => {
       {/* You can open the modal using document.getElementById('ID').showModal() method */}
 
       <button
-        className="btn btn-sm bg-indigo-600 text-[#fdfdfd] border-0 w-fit ml-auto"
+        className="btn btn-sm amber-gradient font-semibold text-[#fdfdfd] border-0 w-fit ml-auto"
         onClick={() => document.getElementById("editModal").showModal()}
       >
         Edit Profile
@@ -206,7 +206,7 @@ const EditProfileModal = () => {
                 onChange={handleChange}
               />
             </div>
-            <button className="btn max-w-fit mt-2" type="submit">
+            <button className="submit-btn max-w-fit mt-2" type="submit">
               Update
             </button>
           </form>

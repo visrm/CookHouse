@@ -394,7 +394,7 @@ const CommunityProfile = () => {
                 <div>
                   <button
                     type="button"
-                    className="btn btn-sm bg-indigo-500 text-[#fff] hover:bg-indigo-600 border transition-all duration-300"
+                    className="btn btn-sm bg-indigo-500 text-[#fff] font-semibold hover:bg-indigo-600 border transition-all duration-300 amber-gradient"
                     onClick={(e) => {
                       e.preventDefault();
                       handleJoins(singleCommunity?._id);

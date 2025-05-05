@@ -2,20 +2,17 @@ import axios from "axios";
 import { useState } from "react";
 import { BsSend } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { CHATS_API_END_POINT } from "../utils/constants";
-import { setLoadingMessages } from "../redux/slices/chat.slice.js";
+import { CHATS_API_END_POINT } from "../utils/constants.js";
 import toast from "react-hot-toast";
 const MessageInput = () => {
   const [message, setMessage] = useState("");
   const { loadingMessages, selectedConversation } = useSelector(
     (store) => store.chats
   );
-  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      dispatch(setLoadingMessages(true));
       let messageObj = { message: message };
       const response = await axios.post(
         `${CHATS_API_END_POINT}/message/send/${selectedConversation?._id}`,
@@ -32,7 +29,6 @@ const MessageInput = () => {
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
-      dispatch(setLoadingMessages(false));
       setMessage("");
     }
   };

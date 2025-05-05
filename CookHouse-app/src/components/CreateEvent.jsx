@@ -82,8 +82,8 @@ const CreateEvent = () => {
           Add Event
         </button>
         <dialog id="addeventModal" className="modal">
-          <div className="modal-box flex flex-col flex-nowrap my-2  w-full rounded-xl bg-amber-200 items-start border-b border-gray-100">
-            <form method="dialog" id="handleCloseevent">
+          <div className="modal-box flex flex-col flex-nowrap my-2  w-full rounded-xl bg-[#fafafa] items-start border-b border-gray-100">
+            <form method="dialog" id="handleClosEvent">
               {/* if there is a button in form, it will close the modal */}
               <button
                 className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
@@ -105,13 +105,13 @@ const CreateEvent = () => {
               onSubmit={handleSubmit}
               id="handleCreateevent"
             >
-              <h3 className="font-bold text-lg md:text-xl">Create Event</h3>
+              <h3 className="font-bold text-lg md:text-xl font-serif">Create Event</h3>
               <div className="w-[90%]">
                 <label className="w-fit font-base text-sm" htmlFor="title">
                   Title :
                 </label>
                 <input
-                  className="rounded-md input w-full border-none focus:outline-none bg-amber-50 border-gray-200"
+                  className="rounded-md input w-full border focus:outline-none bg-[#fdfdfd]  border-slate-300"
                   placeholder="Event title"
                   name="title"
                   id="title"
@@ -126,7 +126,7 @@ const CreateEvent = () => {
                   Description :
                 </label>
                 <input
-                  className="rounded-md input w-full border-none focus:outline-none bg-amber-50 border-gray-200"
+                  className="rounded-md input w-full border focus:outline-none bg-[#fdfdfd]  border-slate-300"
                   placeholder="Event description"
                   name="desc"
                   id="desc"
@@ -140,7 +140,7 @@ const CreateEvent = () => {
                   Location :
                 </label>
                 <input
-                  className="rounded-md input w-full border-none focus:outline-none bg-amber-50 border-gray-200"
+                  className="rounded-md input w-full border focus:outline-none bg-[#fdfdfd]  border-slate-300"
                   placeholder="Event Venue"
                   name="location"
                   id="location"
@@ -153,7 +153,7 @@ const CreateEvent = () => {
                 <p className="w-fit font-base text-sm">Date & Time :</p>
                 <div className="flex flex-row justify-around items-center gap-1.5 w-full max-w-full">
                   <input
-                    className="rounded-md input w-full border-none focus:outline-none bg-amber-50 border-gray-200"
+                    className="rounded-md input w-full border focus:outline-none bg-[#fdfdfd]  border-slate-300"
                     type="datetime-local"
                     name="startDate"
                     id="startDate"
@@ -163,7 +163,7 @@ const CreateEvent = () => {
                   />
                   {" "}To{" "}
                   <input
-                    className="rounded-md input w-full border-none focus:outline-none bg-amber-50 border-gray-200"
+                    className="rounded-md input w-full border focus:outline-none bg-[#fdfdfd]  border-slate-300"
                     type="datetime-local"
                     name="endDate"
                     id="endDate"
@@ -183,7 +183,7 @@ const CreateEvent = () => {
                 </div>
 
                 <button
-                  className="btn border-0 bg-indigo-600 rounded-full btn-sm text-white px-4"
+                  className="submit-btn px-4"
                   type="submit"
                 >
                   {isPending ? "Creating..." : "Create"}
