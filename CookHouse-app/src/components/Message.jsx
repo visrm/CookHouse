@@ -56,20 +56,25 @@ const Message = ({ message }) => {
         </div>
 
         <div
-          className={`relative chat-bubble text-white ${bubbleBgColor} pb-2 sm:pb-3`}
+          className={`relative chat-bubble text-white ${bubbleBgColor} pb-2 sm:pb-4`}
         >
           {message?.message}
           {message?.media_url && (
-            <img
-              alt="Tailwind CSS chat bubble component"
-              src={message?.media_url}
-            />
+            <figure className="block h-72 w-auto">
+              <img
+                alt="image"
+                src={message?.media_url}
+                className="block w-full h-full max-w-full object-contain"
+              />
+            </figure>
           )}
-          <div className={`${fromMe ? "dropdown dropdown-left" : "hidden"}`}>
+          <div
+            className={`${fromMe ? "absolute left-[90%] flex dropdown dropdown-left" : "hidden"}`}
+          >
             <div
               tabIndex={0}
               role="button"
-              className="btn-ghost absolute left-[95%] rounded-full z-1"
+              className="rounded-full"
             >
               <MdMoreVert className="h-4 w-4" />
             </div>

@@ -1,6 +1,8 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
 import User from "../models/user.model.js";
+import { v2 as cloudinary } from "cloudinary";
+
 
 export const sendMessage = async (req, res) => {
   try {
@@ -37,7 +39,7 @@ export const sendMessage = async (req, res) => {
       media_url = uploadedResponse.secure_url;
     }
 
-    const newMessage = new Message.create({
+    const newMessage = await Message.create({
       senderId,
       receiverId,
       message,
@@ -118,7 +120,7 @@ export const deleteMessageById = async (req, res) => {
       });
 
     if (message.media_url) {
-      const imgId = post.media_url.split("/").pop().split(".")[0];
+      const imgId = message.media_url.split("/").pop().split(".")[0];
       await cloudinary.uploader.destroy(imgId);
     }
 

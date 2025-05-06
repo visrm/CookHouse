@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedConversation } from "../redux/slices/chat.slice.js";
 import { MdOutlineRefresh } from "react-icons/md";
 
-
 const MessageContainer = () => {
   const [chatRefresh, setChatRefresh] = useState({});
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -56,8 +55,7 @@ const MessageContainer = () => {
               </div>
             </div>
             <Messages refreshVar={chatRefresh} />
-            <div className="block sticky bottom-0 w-full bg-[#FECD62]">
-
+            <div className="block sticky bottom-0 w-full bg-[#FECD62] z-10">
               <MessageInput />
             </div>
           </>

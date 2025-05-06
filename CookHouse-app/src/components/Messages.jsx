@@ -19,7 +19,7 @@ const Messages = ({ refreshVar }) => {
 
   return (
     <>
-      <div className="px-4 flex-1 overflow-auto">
+      <div className="px-4 flex-1 overflow-hidden">
         {!loadingMessages &&
           singleChatMessages.length > 0 &&
           singleChatMessages.map((message) => {
