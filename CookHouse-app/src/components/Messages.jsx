@@ -13,7 +13,7 @@ const Messages = ({ refreshVar }) => {
 
   useEffect(() => {
     setTimeout(() => {
-      lastMessageRef.current?.scrollIntoView({ behavior: "auto" });
+      lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 100);
   }, [lastMessageRef]);
 
@@ -22,11 +22,17 @@ const Messages = ({ refreshVar }) => {
       <div className="px-4 flex-1 overflow-auto">
         {!loadingMessages &&
           singleChatMessages.length > 0 &&
-          singleChatMessages.map((message) => (
-            <div key={message?._id} ref={lastMessageRef}>
-              <Message message={message} />
-            </div>
-          ))}
+          singleChatMessages.map((message) => {
+            return (
+              <div
+                key={message?._id}
+                ref={lastMessageRef}
+                className="flex flex-col flex-nowrap w-full gap-2"
+              >
+                <Message message={message} />
+              </div>
+            );
+          })}
 
         {loadingMessages &&
           [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)}

@@ -36,7 +36,7 @@ const ManageCommunity = () => {
     <>
       <main className="relative h-full w-full max-w-full min-h-[90svh] md:min-h-screen overflow-hidden">
         <section>
-          <div className="flex w-full font-semibold bg-[#fafafa] z-50 shadow-md">
+          <div className="sticky flex w-full font-semibold bg-[#fafafa] z-[100] shadow-md">
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("manage")}
@@ -56,7 +56,7 @@ const ManageCommunity = () => {
               )}
             </div>
           </div>
-          <div className="flex w-full mt-2 justify-center">
+          <div className="flex w-full mt-2 sm:mt-3 justify-center">
             {feedType === "manage" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
                 {loading && (
@@ -81,7 +81,7 @@ const ManageCommunity = () => {
               </div>
             )}
             {feedType === "add" && (
-              <div className="flex flex-col flex-nowrap place-items-baseline w-full max-w-full">
+              <div className="flex flex-col flex-nowrap place-items-baseline w-full max-w-full h-[70vh]">
                 <CreateCommunity />
               </div>
             )}

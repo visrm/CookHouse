@@ -34,7 +34,7 @@ const EventsTable = () => {
     var dateString = ` ${string.split("T")[0].split("-")[2]} ${getMonth(
       string.split("T")[0].split("-")[1]
     )} ${string.split("T")[0].split("-")[0]}, ${extractTime(string)}`;
-    return dateString;
+    return dateString.trim();
   };
 
   let i = 0;
@@ -51,7 +51,6 @@ const EventsTable = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);

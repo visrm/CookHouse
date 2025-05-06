@@ -60,7 +60,7 @@ const CreateCommunity = () => {
   return (
     <>
       <section className="sm:fixed sm:top-0 sm:left-0 md:mx-4 grid place-content-center max-w-full w-full h-screen min-h-[90svh] md:min-h-screen">
-        <article className="p-4 bg-[#fafafa] border border-slate-100 rounded-xl md:p-6 lg:p-8 text-left w-96 max-h-full">
+        <article className="p-4 glass-morph bg-[#fafafa] border border-slate-100 rounded-xl md:p-6 lg:p-8 text-left w-96 max-h-full">
           <form
             method="POST"
             className="block min-w-72 w-full md:min-h-74 h-full text-base"
@@ -74,7 +74,7 @@ const CreateCommunity = () => {
               Name :
             </label>
             <textarea
-              className="rounded-md textarea-md min-h-8 h-11 w-full p-1 sm:p-2 text-lg resize-none border focus:outline-none border-black/50 bg-white/50 overflow-hidden"
+              className="rounded-md textarea-md min-h-8 h-11 w-full p-1 sm:p-2 text-lg resize-none border focus:outline-none border-black/50 bg-[#fff] overflow-hidden"
               placeholder="Community Name"
               type="text"
               id="name"
@@ -93,7 +93,7 @@ const CreateCommunity = () => {
               Description :
             </label>
             <textarea
-              className="rounded-md textarea-md min-h-18 w-full p-1 sm:p-2 text-base resize-none border focus:outline-none border-black/50 bg-white/50"
+              className="rounded-md textarea-md min-h-18 w-full p-1 sm:p-2 text-base resize-none border focus:outline-none border-black/50 bg-[#fff]"
               placeholder="Desciption"
               id="description"
               name="description"

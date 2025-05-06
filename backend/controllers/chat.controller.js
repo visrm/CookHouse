@@ -5,6 +5,7 @@ import User from "../models/user.model.js";
 export const sendMessage = async (req, res) => {
   try {
     const { message } = req.body;
+    let { media_url } = req.body;
     const { receiverId } = req.params;
     const senderId = req.id;
 
@@ -15,7 +16,7 @@ export const sendMessage = async (req, res) => {
         success: false,
       });
 
-    if (!message)
+    if (!message && !media_url)
       return res.status(400).json({
         message: "Message content required.",
         success: false,
@@ -31,10 +32,16 @@ export const sendMessage = async (req, res) => {
       });
     }
 
-    const newMessage = new Message({
+    if (media_url) {
+      const uploadedResponse = await cloudinary.uploader.upload(media_url);
+      media_url = uploadedResponse.secure_url;
+    }
+
+    const newMessage = new Message.create({
       senderId,
       receiverId,
       message,
+      media_url,
     });
 
     if (newMessage) {

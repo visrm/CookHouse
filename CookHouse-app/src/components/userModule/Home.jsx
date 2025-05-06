@@ -8,6 +8,7 @@ import Recipes from "../Recipes.jsx";
 import useGetAllFollowingPosts from "../Hooks/useGetAllFollowingPosts.jsx";
 import useGetLikedPosts from "../Hooks/useGetLikedPosts.jsx";
 import { MdOutlineRefresh } from "react-icons/md";
+import HomeCarousel from "../HomeCarousel.jsx";
 
 const Home = () => {
   const [feedType, setFeedType] = useState("posts");
@@ -33,13 +34,17 @@ const Home = () => {
 
   return (
     <>
-      <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto transition-all duration-300 overflow-x-hidden">
-        <div className="bg-[#fafafa]">
+      <main className="relative flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto transition-all duration-300 overflow-x-hidden">
+        <div className="relative block w-full max-w-full mx-auto h-60">
+          <HomeCarousel />
+        </div>
+
+        <div className="pt-2 pb-4">
           <CreatePostAndRecipe />
         </div>
 
         <section>
-          <div className="sticky top-12 md:top-15 flex w-full font-semibold bg-[#fafafa] z-50 shadow-md">
+          <div className="sticky top-12 md:top-15 flex w-full font-semibold mt-2 z-[100] shadow-md">
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("posts")}

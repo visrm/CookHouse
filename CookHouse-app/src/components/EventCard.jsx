@@ -18,7 +18,7 @@ const EventCard = ({ event }) => {
     var dateString = ` ${string.split("T")[0].split("-")[2]} ${getMonth(
       string.split("T")[0].split("-")[1]
     )} ${string.split("T")[0].split("-")[0]}, ${extractTime(string)}`;
-    return dateString;
+    return dateString.trim();
   };
 
   const handleDeleteEvent = async () => {

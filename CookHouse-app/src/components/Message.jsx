@@ -1,5 +1,9 @@
 import { useSelector } from "react-redux";
-import { extractTime } from "../utils/extractTime.js";
+import { extractTime, getMonth } from "../utils/extractTime.js";
+import { CHATS_API_END_POINT } from "../utils/constants.js";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { MdMoreVert } from "react-icons/md";
 
 const Message = ({ message }) => {
   const { user } = useSelector((store) => store.auth);
@@ -7,7 +11,14 @@ const Message = ({ message }) => {
 
   const fromMe = message?.senderId === user?._id;
 
-  const formattedTime = extractTime(message?.createdAt);
+  const formattedDate = (string) => {
+    var dateString = ` ${string.split("T")[0].split("-")[2]} ${getMonth(
+      string.split("T")[0].split("-")[1]
+    )}, ${extractTime(string)}`;
+    return dateString.trim();
+  };
+
+  const formattedTime = formattedDate(message?.createdAt);
 
   const chatClassName = fromMe ? "chat-end" : "chat-start";
   const profileImg = fromMe
@@ -15,9 +26,26 @@ const Message = ({ message }) => {
     : selectedConversation?.profile?.profileImg;
   const bubbleBgColor = fromMe ? "bg-indigo-400" : "bg-indigo-500";
 
+  const handleDeletion = async (messageId) => {
+    try {
+      const response = await axios.delete(
+        `${CHATS_API_END_POINT}/message/delete/${messageId}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
   return (
     <>
-      <div className={`chat ${chatClassName}`}>
+      <div className={`chat ${chatClassName} p-2`}>
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
             <img
@@ -26,7 +54,10 @@ const Message = ({ message }) => {
             />
           </div>
         </div>
-        <div className={`chat-bubble text-white ${bubbleBgColor} pb-2`}>
+
+        <div
+          className={`relative chat-bubble text-white ${bubbleBgColor} pb-2 sm:pb-3`}
+        >
           {message?.message}
           {message?.media_url && (
             <img
@@ -34,7 +65,33 @@ const Message = ({ message }) => {
               src={message?.media_url}
             />
           )}
+          <div className={`${fromMe ? "dropdown dropdown-left" : "hidden"}`}>
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn-ghost absolute left-[95%] rounded-full z-1"
+            >
+              <MdMoreVert className="h-4 w-4" />
+            </div>
+            <ul
+              tabIndex={0}
+              className="menu dropdown-content border-slate-200 bg-[#fdfdfd] rounded-box z-20 mt-1 sm:mt-2 w-28 p-0.5 shadow-sm text-xs font-semibold"
+            >
+              <li>
+                <button
+                  className="btn hover:text-red-400 border btn-sm p-0.5"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleDeletion(message?._id);
+                  }}
+                >
+                  Delete
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
+
         <div className="chat-footer opacity-50 text-xs flex gap-1 items-center">
           {formattedTime}
         </div>

@@ -102,13 +102,13 @@ const CreateRecipe = () => {
       <article className="flex flex-col min-w-fit w-[75%] md:w-[50%] max-w-[90%] mx-auto">
         {/* You can open the modal using document.getElementById('ID').showModal() method */}
         <button
-          className="btn btn-sm text-amber-800 bg-amber-100 border-0 font-semibold hover:scale-105  hover:rounded-xs transition-all duration-300"
+          className="submit-btn transition-all duration-300"
           onClick={() => document.getElementById("addRecipeModal").showModal()}
         >
           Add Recipe
         </button>
         <dialog id="addRecipeModal" className="modal">
-          <div className="modal-box flex flex-col flex-nowrap my-2 sm:my-3 md:my-6 lg:my-8 w-full rounded-xl bg-[#fafafa] p-4 items-start gap-4 border-b border-gray-100">
+          <div className="modal-box flex flex-col flex-nowrap my-2 sm:my-3 md:my-6 lg:my-8 w-full rounded-xl bg-[#fafafa] p-4 items-start gap-4 border-b border-slate-100">
             <form method="dialog" id="handleCloseRecipe">
               {/* if there is a button in form, it will close the modal */}
               <button
@@ -212,7 +212,7 @@ const CreateRecipe = () => {
               {img && (
                 <div className="relative w-72 mx-auto">
                   <IoCloseSharp
-                    className="absolute top-0 right-0 text-white bg-gray-800 rounded-full w-5 h-5 cursor-pointer"
+                    className="absolute top-0 right-0 text-white bg-slate-800 rounded-full w-5 h-5 cursor-pointer"
                     onClick={() => {
                       setImg(null);
                       imgRef.current.value = null;
@@ -224,10 +224,10 @@ const CreateRecipe = () => {
                   />
                 </div>
               )}
-              <div className="relative flex justify-between border-t py-2 border-t-gray-100">
+              <div className="relative flex justify-between border-t py-2 border-t-slate-100">
                 <div className="flex gap-1 sm:gap-2 lg:gap-4 items-center">
                   <CiImageOn
-                    className="fill-indigo-600 w-6 h-6 cursor-pointer"
+                    className="fill-slate-700 w-6 h-6 cursor-pointer"
                     onClick={() => imgRef.current.click()}
                     title="Add image"
                   />
@@ -315,8 +315,8 @@ const CreateCommunityPostAndRecipe = ({ isOwner = false }) => {
 
   return (
     <>
-      <article className="flex flex-col min-w-fit w-[75%] md:w-[66%] mx-auto py-2">
-        <div className="flex flex-col flex-nowrap my-2 sm:my-3 md:my-6 lg:my-8 w-full rounded-xl bg-amber-200 p-4 items-start gap-4 border-b border-gray-100">
+      <article className="flex flex-col min-w-fit w-[75%] md:w-[66%] mx-auto py-2 glass-morph">
+        <div className="flex flex-col flex-nowrap my-2 sm:my-3 md:my-6 lg:my-8 w-full rounded-xl p-4 items-start gap-4 border-b border-slate-100">
           <div className="avatar">
             <div className="w-8 rounded-full">
               <img
@@ -332,7 +332,7 @@ const CreateCommunityPostAndRecipe = ({ isOwner = false }) => {
             id="handleCreateCommunityPost"
           >
             <textarea
-              className="textarea sm:textarea-md w-full p-1 sm:p-2 text-base sm:text-lg resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300"
+              className="textarea sm:textarea-md w-full p-1 sm:p-2 text-base sm:text-lg resize-none border focus:outline-none bg-[#fff] border-slate-300"
               placeholder="What's happening?!"
               value={text}
               onChange={(e) => setText(e.target.value)}
@@ -340,7 +340,7 @@ const CreateCommunityPostAndRecipe = ({ isOwner = false }) => {
             {img && (
               <div className="relative w-72 mx-auto">
                 <IoCloseSharp
-                  className="absolute top-0 right-0 text-white bg-gray-800 rounded-full w-5 h-5 cursor-pointer"
+                  className="absolute top-0 right-0 text-white bg-slate-800 rounded-full w-5 h-5 cursor-pointer"
                   onClick={() => {
                     setImg(null);
                     imgRef.current.value = null;
@@ -353,7 +353,7 @@ const CreateCommunityPostAndRecipe = ({ isOwner = false }) => {
               </div>
             )}
 
-            <div className="relative flex justify-between border-t py-2 border-t-gray-100">
+            <div className="relative flex justify-between border-t py-2 border-t-slate-100">
               {openEmoji && (
                 <div className="absolute bottom-[90%] md:left-[60%] z-[100]">
                   <EmojiPicker
@@ -365,12 +365,12 @@ const CreateCommunityPostAndRecipe = ({ isOwner = false }) => {
               )}
               <div className="flex gap-1 sm:gap-2 lg:gap-4 items-center">
                 <CiImageOn
-                  className="fill-indigo-600 w-6 h-6 cursor-pointer"
+                  className="fill-slate-700 w-6 h-6 cursor-pointer"
                   onClick={() => imgRef.current.click()}
                   title="Add image"
                 />
                 <BsEmojiSmileFill
-                  className="fill-indigo-600 w-5 h-5 cursor-pointer"
+                  className="fill-slate-700 w-5 h-5 cursor-pointer"
                   onClick={() => setOpenEmoji(!openEmoji)}
                   title="Add emoji"
                 />
@@ -382,7 +382,7 @@ const CreateCommunityPostAndRecipe = ({ isOwner = false }) => {
                 ref={imgRef}
                 onChange={handleImgChange}
               />
-              <button className="btn border-0 text-amber-800 bg-amber-100 btn-sm px-4 font-semibold hover:scale-105 hover:rounded-xs transition-all duration-300">
+              <button className="submit-btn transition-all duration-300">
                 {loadingPost ? "Posting..." : "Create Post"}
               </button>
             </div>

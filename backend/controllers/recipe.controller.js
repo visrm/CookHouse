@@ -575,8 +575,7 @@ export const getUserCommunitiesRecipes = async (req, res) => {
 
     const communityRecipes = Arr.map(async (recipe) => {
       const recipeId = recipe._id;
-      const recipes = await recipe
-        .findById(recipeId)
+      const recipes = await Recipe.findById(recipeId)
         .sort({ createdAt: -1 })
         .populate({
           path: "user",

@@ -161,7 +161,7 @@ const Profile = () => {
                 src={
                   coverImg ||
                   singleUser?.profile?.coverImg ||
-                  "/assets/cover.png"
+                  "/assets/cover.webp"
                 }
                 className="object-cover w-full max-h-56 z-0"
               />

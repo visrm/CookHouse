@@ -205,7 +205,7 @@ const CommunityProfile = () => {
               <div className="relative block h-fit">
                 <img
                   src={
-                    coverImg || singleCommunity?.coverImg || "/assets/cover.png"
+                    coverImg || singleCommunity?.coverImg || "/assets/cover.webp"
                   }
                   className="object-cover w-full max-h-56 z-0"
                 />
@@ -440,14 +440,14 @@ const CommunityProfile = () => {
             </article>
 
             {isJoinedCommunity && (
-              <div className="block w-full bg-[#fafafa]">
+              <div className="block w-full bg-[#fafafa] py-2 sm:py-3 lg:py-4">
                 <CreateCommunityPostAndRecipe isOwner={isMyCommunity} />
               </div>
             )}
           </>
         )}
         <section>
-          <div className="sticky top-12 md:top-15 flex w-full font-semibold bg-[#fafafa] z-50 shadow-md">
+          <div className="sticky top-12 md:top-15 flex w-full font-semibold bg-[#fafafa] pt-2 sm:pt-3 z-[100] shadow-md">
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("posts")}

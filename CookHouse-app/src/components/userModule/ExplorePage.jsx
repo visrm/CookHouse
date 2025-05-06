@@ -32,7 +32,7 @@ const ExplorePage = () => {
           <article className="relative flex flex-row flex-wrap lg:flex-nowrap h-full w-full max-w-full backdrop-blur">
             <figure className="hidden lg:block w-[33%] min-w-[75%] md:min-w-fit md:max-w-[33%] h-auto z-50">
               <img
-                src={"/assets/strawberry-bowl.png"}
+                src={"/assets/strawberry-bowl.webp"}
                 alt="bowl img"
                 className="h-full w-full"
                 loading="eager"

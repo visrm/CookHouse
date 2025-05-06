@@ -76,7 +76,7 @@ const CreateEvent = () => {
       <article className="flex flex-col min-w-fit w-[75%] md:w-[50%] max-w-[90%] mx-auto">
         {/* You can open the modal using document.getElementById('ID').showModal() method */}
         <button
-          className="btn btn-sm text-amber-800 bg-amber-100 border-0 font-semibold hover:scale-105  hover:rounded-xs transition-all duration-300"
+          className="submit-btn transition-all duration-300"
           onClick={() => document.getElementById("addeventModal").showModal()}
         >
           Add Event
@@ -177,7 +177,7 @@ const CreateEvent = () => {
               <div className="flex justify-between border-t py-1 md:my-2 border-t-gray-100 w-full">
                 <div className="flex items-center">
                   <BsEmojiSmileFill
-                    className="fill-indigo-600 w-5 h-5 cursor-pointer"
+                    className="fill-slate-700 w-5 h-5 cursor-pointer"
                     title="Add emoji"
                   />
                 </div>
