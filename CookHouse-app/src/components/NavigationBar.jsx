@@ -58,23 +58,23 @@ const NavigationBar = () => {
                 </ul>
               </div>
             )}
-            <div className="dropdown dropdown-end">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-sm text-xs sm:text-sm bg-transparent border-0 md:font-semibold"
-              >
-                Contacts
-              </div>
-              <ul
-                tabIndex={0}
-                className="menu dropdown-content bg-amber-200 rounded-box z-1 mt-5 w-48 p-2 shadow-sm"
-              >
-                <li>
-                  <a>Item 1</a>
-                </li>
-              </ul>
+
+            <div>
+              <Link to="/contact">
+                <div className="btn btn-sm text-xs sm:text-sm bg-transparent border-0 md:font-semibold">
+                  Contact
+                </div>
+              </Link>
             </div>
+
+            <div>
+              <Link to="/about">
+                <div className="btn btn-sm text-xs sm:text-sm bg-transparent border-0 md:font-semibold">
+                  About
+                </div>
+              </Link>
+            </div>
+
             {!user && (
               <ul className="ml-2 md:ml-4 list-none inline-flex flex-nowrap gap-2 md:gap-4 md:font-semibold">
                 <li className="btn btn-sm border border-black/50 rounded-md bg-slate-200 hover:scale-105">

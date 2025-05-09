@@ -13,6 +13,7 @@ import {
 import axios from "axios";
 import toast from "react-hot-toast";
 import { MdOutlineRefresh } from "react-icons/md";
+import { extractTime, getMonth } from "../../utils/extractTime.js";
 
 const Notifications = () => {
   const [notifs, setNotifs] = useState({});
@@ -59,7 +60,12 @@ const Notifications = () => {
       setIsRefreshing(false);
     }, 2000);
   };
-  const refreshAnimate = isRefreshing ? "rotate-360" : "";
+  const refreshAnimate = isRefreshing ? "loading loading-md" : "";
+
+  const formattedDate = (string) => {
+    var dateString = ` ${string.split("T")[0].split("-")[2]}/${string.split("T")[0].split("-")[1]}, ${extractTime(string)}`;
+    return dateString.trim();
+  };
 
   return (
     <>
@@ -99,7 +105,10 @@ const Notifications = () => {
           <div className="text-center p-3 font-bold">No notifications 🤔</div>
         )}
         {allNotifications?.map((notification) => (
-          <div className="border-0" key={notification?._id}>
+          <div
+            className="border-0 flex flex-row justify-between items-center"
+            key={notification?._id}
+          >
             <div className="flex gap-2 p-4">
               {notification?.type === "follow" && (
                 <FaUser className="w-7 h-7 text-primary" />
@@ -117,6 +126,9 @@ const Notifications = () => {
                     : "liked your post"}
                 </div>
               </Link>
+            </div>
+            <div className="p-2 flex text-slate-500">
+              {formattedDate(notification?.createdAt)}
             </div>
           </div>
         ))}

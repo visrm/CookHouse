@@ -92,7 +92,7 @@ const ExplorePage = () => {
               )}
             </div>
           </article>
-          <article id="search-results" className="block h-full mt-2 sm:mt-3">
+          <article id="search-results" className="block h-full mt-2 sm:mt-3 py-2">
             {loadingRecipe && (
               <div className="block text-center">
                 <LoadingSpinner size="lg" />

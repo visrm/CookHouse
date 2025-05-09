@@ -334,6 +334,8 @@ const CreateCommunityPostAndRecipe = ({ isOwner = false }) => {
             <textarea
               className="textarea sm:textarea-md w-full p-1 sm:p-2 text-base sm:text-lg resize-none border focus:outline-none bg-[#fff] border-slate-300"
               placeholder="What's happening?!"
+              name="text"
+              id="text-post"
               value={text}
               onChange={(e) => setText(e.target.value)}
             />

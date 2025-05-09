@@ -5,7 +5,7 @@ import { setLoading, setSelfRecipes } from "../../redux/slices/user.slice.js";
 import { RECIPES_API_END_POINT } from "../../utils/constants.js";
 import toast from "react-hot-toast";
 
-const useGetUserRecipes = async (username) => {
+const useGetUserRecipes = async (username, refreshVar) => {
   const dispatch = useDispatch();
   useEffect(() => {
     (async function FetchUserRecipes() {
@@ -26,7 +26,7 @@ const useGetUserRecipes = async (username) => {
         dispatch(setLoading(false));
       }
     })();
-  }, [username]);
+  }, [username, refreshVar]);
 };
 
 export default useGetUserRecipes;

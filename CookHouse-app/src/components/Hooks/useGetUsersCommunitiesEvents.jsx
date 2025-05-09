@@ -8,7 +8,7 @@ import {
   setUsersCommunitiesEvents,
 } from "../../redux/slices/event.slice.js";
 
-const useGetUsersCommunitiesEvents = () => {
+const useGetUsersCommunitiesEvents = (refreshVar) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const useGetUsersCommunitiesEvents = () => {
         dispatch(setLoadingEvent(false));
       }
     })();
-  }, []);
+  }, [refreshVar]);
 };
 
 export default useGetUsersCommunitiesEvents;

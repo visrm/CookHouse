@@ -5,17 +5,15 @@ import { RECIPES_API_END_POINT } from "../../utils/constants.js";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../LoadingSpinner.jsx";
 import { MdMoreVert } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import { setLoadingRecipe } from "../../redux/slices/recipe.slice.js";
+import { useSelector } from "react-redux";
 import { LuSearch } from "react-icons/lu";
 
-const RecipesTable = () => {
+const RecipesTable = (refreshVar) => {
   const [keyword, setKeyword] = useState("");
 
-  useGetAllRecipes(keyword);
+  useGetAllRecipes(keyword,refreshVar);
 
   const { loadingRecipe, allRecipes } = useSelector((store) => store.recipes);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -33,22 +31,18 @@ const RecipesTable = () => {
 
   const handleDeletion = async (recipeId) => {
     try {
-      dispatch(setLoadingRecipe(true));
       const response = await axios.delete(
         `${RECIPES_API_END_POINT}/${recipeId}`,
         {
           withCredentials: true,
         }
       );
-
       if (response.data.success) {
         toast.success(response.data.message);
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoadingRecipe(false));
-    }
+    } 
   };
 
   return (

@@ -9,7 +9,7 @@ import axios from "axios";
 // import { useGetLikedPosts } from "../Hooks/useGetLikedPosts.jsx";
 import useGetUserPosts from "../Hooks/useGetUserPosts.jsx";
 import useGetUserRecipes from "../Hooks/useGetUserRecipes.jsx";
-
+import useGetLikedPosts from "../Hooks/useGetLikedPosts.jsx";
 import ProfileSkeleton from "../Skeleton/ProfileSkeleton.jsx";
 import PostsCard from "../PostCard.jsx";
 import RecipesCard from "../RecipeCard.jsx";
@@ -64,8 +64,9 @@ const Profile = () => {
   }, [userName, singleUserProfile]);
 
   // console.log(user);
-  useGetUserPosts(userName);
-  useGetUserRecipes(userName);
+  useGetUserPosts(userName, singleUserProfile);
+  useGetUserRecipes(userName, singleUserProfile);
+  useGetLikedPosts(user?._id, singleUserProfile);
 
   const isMyProfile = user?._id.toString() === singleUser?._id.toString();
   const isFollowing = user?.following.includes(singleUser?._id);
@@ -147,7 +148,7 @@ const Profile = () => {
     }, 2000);
   };
 
-  const refreshAnimate = isRefreshing ? "rotate-360" : "";
+  const refreshAnimate = isRefreshing ? "loading loading-md" : "";
 
   return (
     <>

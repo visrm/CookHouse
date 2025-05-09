@@ -5,7 +5,7 @@ import { setLoading, setSelfPosts } from "../../redux/slices/user.slice.js";
 import { POSTS_API_END_POINT } from "../../utils/constants.js";
 import toast from "react-hot-toast";
 
-const useGetUserPosts = async (username) => {
+const useGetUserPosts = async (username, refreshVar) => {
   const dispatch = useDispatch();
   useEffect(() => {
     (async function FetchUserPosts() {
@@ -26,7 +26,7 @@ const useGetUserPosts = async (username) => {
         dispatch(setLoading(false));
       }
     })();
-  }, [username]);
+  }, [username, refreshVar]);
 };
 
 export default useGetUserPosts;

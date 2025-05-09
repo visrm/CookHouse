@@ -5,18 +5,16 @@ import { EVENTS_API_END_POINT } from "../../utils/constants.js";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../LoadingSpinner.jsx";
 import { MdMoreVert } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { extractTime, getMonth } from "../../utils/extractTime.js";
-import { setLoadingEvent } from "../../redux/slices/event.slice.js";
 import { LuSearch } from "react-icons/lu";
 
-const EventsTable = () => {
+const EventsTable = (refreshVar) => {
   const [keyword, setKeyword] = useState("");
 
-  useGetAllEvents(keyword);
+  useGetAllEvents(keyword, refreshVar);
 
   const { loadingEvent, allEvents } = useSelector((store) => store.events);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -41,7 +39,6 @@ const EventsTable = () => {
 
   const handleDeletion = async (eventId) => {
     try {
-      dispatch(setLoadingEvent(true));
       const response = await axios.delete(
         `${EVENTS_API_END_POINT}/delete/${eventId}`,
         {
@@ -54,8 +51,6 @@ const EventsTable = () => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoadingEvent(false));
     }
   };
 

@@ -9,14 +9,17 @@ import useGetUsersCommunitiesRecipes from "../Hooks/useGetUsersCommunitiesRecipe
 import CommunityCard from "../CommunityCard";
 import useGetUsersCommunitiesEvents from "../Hooks/useGetUsersCommunitiesEvents";
 import EventCard from "../EventCard";
+import { MdOutlineRefresh } from "react-icons/md";
 
 const CommunityHome = () => {
   const [feedType, setFeedType] = useState("posts");
+  const [homeRefresh, setHomeRefresh] = useState({});
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  useGetAllUserCommunities();
-  useGetUsersCommunitiesPosts();
-  useGetUsersCommunitiesRecipes();
-  useGetUsersCommunitiesEvents();
+  useGetAllUserCommunities(homeRefresh);
+  useGetUsersCommunitiesPosts(homeRefresh);
+  useGetUsersCommunitiesRecipes(homeRefresh);
+  useGetUsersCommunitiesEvents(homeRefresh);
 
   const { loadingCommunity, allUserCommunities } = useSelector(
     (store) => store.communities
@@ -30,6 +33,17 @@ const CommunityHome = () => {
   const { loadingEvent, usersCommunitiesEvents } = useSelector(
     (store) => store.events
   );
+
+  const handleRefresh = (e) => {
+    e.preventDefault();
+    setIsRefreshing(true);
+    setHomeRefresh({});
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 2000);
+  };
+
+  const refreshAnimate = isRefreshing ? "loading loading-md" : "";
 
   return (
     <>
@@ -106,10 +120,25 @@ const CommunityHome = () => {
                 <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />
               )}
             </div>
+            <div className="flex justify-self-end transition duration-300 relative cursor-pointer">
+              <div
+                className="bg-[#fafafa] my-auto tooltip tooltip-left"
+                data-tip="Refresh"
+              >
+                <button
+                  className="flex items-center rounded-full w-fit hover:text-indigo-600 p-1.5 sm:mr-2"
+                  onClick={handleRefresh}
+                >
+                  <MdOutlineRefresh
+                    className={`h-5 w-5 ${refreshAnimate} transition-all duration-300`}
+                  />
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="flex w-full mt-2 sm:mt-3 justify-center">
+          <div className="flex w-full h-full mt-2 sm:mt-3 justify-center">
             {feedType === "posts" && (
-              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 py-2 min-h-full w-full max-w-full">
                 {loadingPost && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
@@ -128,7 +157,7 @@ const CommunityHome = () => {
               </div>
             )}
             {feedType === "recipes" && (
-              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 py-2 min-h-full w-full max-w-full">
                 {loadingRecipe && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
@@ -147,7 +176,7 @@ const CommunityHome = () => {
               </div>
             )}
             {feedType === "events" && (
-              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 py-2 min-h-full w-full max-w-full">
                 {loadingEvent && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
@@ -166,7 +195,7 @@ const CommunityHome = () => {
               </div>
             )}
             {feedType === "communities" && (
-              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 py-2 min-h-full w-full max-w-full">
                 {loadingCommunity && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />

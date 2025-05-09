@@ -192,7 +192,7 @@ const CommunityProfile = () => {
     }, 1000);
   };
 
-  const refreshAnimate = isRefreshing ? "rotate-360" : "";
+  const refreshAnimate = isRefreshing ? "loading loading-md" : "";
 
   return (
     <>
@@ -373,7 +373,7 @@ const CommunityProfile = () => {
                     Members Count
                   </div>
                   <div className="stat-desc text-xs font-semibold font-sans bg-[#FEB340] text-white p-1.5 px-2 rounded">
-                    Join Our Community!!
+                    Join Community!!
                   </div>
                 </div>
               </div>
@@ -440,7 +440,7 @@ const CommunityProfile = () => {
             </article>
 
             {isJoinedCommunity && (
-              <div className="block w-full bg-[#fafafa] py-2 sm:py-3 lg:py-4">
+              <div className="block w-full bg-[#fafafa] py-2 sm:py-3 lg:py-4 z-[150]">
                 <CreateCommunityPostAndRecipe isOwner={isMyCommunity} />
               </div>
             )}

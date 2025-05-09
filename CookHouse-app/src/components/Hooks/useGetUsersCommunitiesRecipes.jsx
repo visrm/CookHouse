@@ -8,7 +8,7 @@ import {
   setUsersCommunitiesRecipes,
 } from "../../redux/slices/recipe.slice.js";
 
-const useGetUsersCommunitiesRecipes = () => {
+const useGetUsersCommunitiesRecipes = (refreshVar) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const useGetUsersCommunitiesRecipes = () => {
         dispatch(setLoadingRecipe(false));
       }
     })();
-  }, []);
+  }, [refreshVar]);
 };
 
 export default useGetUsersCommunitiesRecipes;

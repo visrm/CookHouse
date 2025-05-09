@@ -7,7 +7,7 @@ import { USERS_API_END_POINT } from "../../utils/constants.js";
 import { setAllUsers, setLoading } from "../../redux/slices/user.slice.js";
 import toast from "react-hot-toast";
 
-const useGetAllUsers = (keyword) => {
+const useGetAllUsers = (keyword, refreshVar) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const useGetAllUsers = (keyword) => {
         dispatch(setLoading(false));
       }
     })();
-  }, [keyword]);
+  }, [keyword, refreshVar]);
 };
 
 export default useGetAllUsers;

@@ -558,6 +558,10 @@ export const getUserCommunitiesPosts = async (req, res) => {
         .populate({
           path: "user",
           select: "-password",
+        })
+        .populate({
+          path: "comments.user",
+          select: "-password",
         });
 
       if (!posts)

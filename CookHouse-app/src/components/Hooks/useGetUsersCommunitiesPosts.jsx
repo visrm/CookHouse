@@ -8,7 +8,7 @@ import {
   setUsersCommunitiesPosts,
 } from "../../redux/slices/post.slice.js";
 
-const useGetUsersCommunitiesPosts = () => {
+const useGetUsersCommunitiesPosts = (refreshVar) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const useGetUsersCommunitiesPosts = () => {
         dispatch(setLoadingPost(false));
       }
     })();
-  }, []);
+  }, [refreshVar]);
 };
 
 export default useGetUsersCommunitiesPosts;

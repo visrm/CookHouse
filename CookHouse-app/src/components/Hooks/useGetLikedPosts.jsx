@@ -7,7 +7,7 @@ import {
 } from "../../redux/slices/post.slice.js";
 import { POSTS_API_END_POINT } from "../../utils/constants.js";
 
-const useGetLikedPosts = async (userId) => {
+const useGetLikedPosts = async (userId, refreshVar) => {
   const dispatch = useDispatch();
   useEffect(() => {
     (async function FetchLikedPosts() {
@@ -25,7 +25,7 @@ const useGetLikedPosts = async (userId) => {
         dispatch(setLoadingPost(false));
       }
     })();
-  }, [userId]);
+  }, [userId, refreshVar]);
 };
 
 export default useGetLikedPosts;

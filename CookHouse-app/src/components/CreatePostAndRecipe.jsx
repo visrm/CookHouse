@@ -328,6 +328,8 @@ const CreatePostAndRecipe = () => {
             <textarea
               className="textarea sm:textarea-md w-full p-1 sm:p-2 text-base sm:text-lg resize-none border focus:outline-none bg-[#fff] border-slate-300"
               placeholder="What's happening?!"
+              name="text"
+              id="text"
               value={text}
               onChange={(e) => setText(e.target.value)}
             />
@@ -349,7 +351,7 @@ const CreatePostAndRecipe = () => {
 
             <div className="relative flex justify-between border-t py-2 border-t-slate-100">
               {openEmoji && (
-                <div className="absolute top-[90%] md:-left-[50%] z-[100]">
+                <div className="absolute top-[90%] md:-left-[50%] z-[200]">
                   <EmojiPicker onEmojiClick={(e) => setText(text + e.emoji)} height="24rem" width="24rem" />
                 </div>
               )}

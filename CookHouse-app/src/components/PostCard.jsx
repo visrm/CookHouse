@@ -4,22 +4,19 @@ import { Link } from "react-router-dom";
 import { POSTS_API_END_POINT } from "../utils/constants.js";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { MdMoreVert } from "react-icons/md";
 import { timestampFn } from "../utils/extractTime.js";
-import { setLoadingPost } from "../redux/slices/post.slice.js";
 
 const PostCard = ({ post }) => {
   const [comment, setComment] = useState("");
   const postOwner = post?.user;
-  var isLiked = false;
 
   const { user } = useSelector((store) => store.auth);
   const { loadingPost } = useSelector((store) => store.posts);
 
-  const dispatch = useDispatch();
   const isMyPost = postOwner?._id === user?._id || user?.role === "admin";
-  // const isMyComment = true;
+  const isLiked = user?.likedPosts.includes(post?._id)
 
   let isCommenting = loadingPost;
 
@@ -163,15 +160,14 @@ const PostCard = ({ post }) => {
                 </div>
               )}
             </div>
-            <div className="flex flex-col gap-3 w-fit overflow-hidden transition-all duration-300">
+            <div className="flex flex-col gap-3 w-fit overflow-hidden">
               <span>{post?.text}</span>
               {post?.media_url && (
                 <figure className="flex max-w-[90%] min-h-fit aspect-[16/9] mr-auto bg-[#f5f5f5]">
                   <img
                     src={post?.media_url}
                     className="h-80 object-contain border overflow-hidden rounded-lg border-gray-200"
-                    alt=""
-                    loading="lazy"
+                    alt="post image"
                   />
                 </figure>
               )}
@@ -277,11 +273,13 @@ const PostCard = ({ post }) => {
                     <form
                       className="flex flex-col gap-2 items-center mt-4 border-t border-gray-600 pt-2"
                       onSubmit={handlePostComment}
-                      id="addPostCommentForm"
+                      id="add-Post-Comment-Form"
                     >
                       <textarea
                         className="textarea sm:textarea-md w-full p-1 sm:px-2 rounded text-base resize-none border focus:outline-none  border-gray-800"
                         placeholder="Add a comment..."
+                        id="comment"
+                        name="comment"
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                       />

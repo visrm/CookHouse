@@ -10,7 +10,7 @@ import {
 } from "../../redux/slices/community.slice.js";
 import toast from "react-hot-toast";
 
-const useGetAllCommunities = (keyword) => {
+const useGetAllCommunities = (keyword, refreshVar) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const useGetAllCommunities = (keyword) => {
         dispatch(setLoadingCommunity(false));
       }
     })();
-  }, [keyword]);
+  }, [keyword, refreshVar]);
 };
 
 export default useGetAllCommunities;

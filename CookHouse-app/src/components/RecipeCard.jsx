@@ -63,7 +63,7 @@ const RecipeCard = ({ recipe }) => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } 
+    }
   };
 
   const handleDeleteComment = async (commentId) => {
@@ -168,14 +168,29 @@ const RecipeCard = ({ recipe }) => {
               )}
             </div>
 
+            {/* Recipe Details */}
             <div className="flex flex-col gap-3 p-2 sm:p-3 transition-all duration-300 w-full max-w-[93%]">
               <div>
-                <h1 className="block font-semibold text-lg sm:text-xl my-2 w-full text-left first-letter:capitalize underline underline-offset-4 font-serif">
-                  {recipe?.title}
-                </h1>
+                <hgroup className="flex flex-row flex-wrap w-full max-w-full h-fit items-center gap-2 my-1">
+                  <h1 className="font-bold text-lg sm:text-3xl text-left first-letter:capitalize font-serif">
+                    {recipe?.title}
+                  </h1>
+                  <h3 className="font-semibold text-lg bg-slate-100 rounded-sm px-2 text-slate-700">{recipe?.cuisine_type}</h3>
+                </hgroup>
+
                 <span className="block text-xs sm:text-sm h-full w-full my-1 sm:my-2 first-letter:capitalize">
                   {recipe?.description}
                 </span>
+                <div className="flex flex-row flex-wrap gap-2 items-center w-full max-w-full h-full mb-2 sm:mb-4">
+                  {recipe?.dietary_tags.map((tag) => {
+                    return (
+                      <span className="bg-amber-100 px-4 py-1 rounded-md text-amber-800 font-medium text-xs sm:text-sm">
+                        {tag}
+                      </span>
+                    );
+                  })}
+                </div>
+
                 {recipe?.media_url && (
                   <figure className="flex max-w-full min-h-fit aspect-[16/9] mr-auto bg-[#f5f5f5]">
                     <img
@@ -335,6 +350,8 @@ const RecipeCard = ({ recipe }) => {
                       <textarea
                         className="textarea sm:textarea-md w-full p-1 sm:px-2 rounded text-base resize-none border focus:outline-none  border-gray-800"
                         placeholder="Add a comment..."
+                        id="comment-recipe"
+                        name="comment"
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                       />

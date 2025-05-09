@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import useGetAllCommunities from "../Hooks/useGetAllCommunities";
 import LoadingSpinner from "../LoadingSpinner";
 import { MdMoreVert } from "react-icons/md";
@@ -8,15 +8,13 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { LuSearch } from "react-icons/lu";
-import { setLoadingCommunity } from "../../redux/slices/community.slice.js";
 
-const CommunitiesTable = () => {
+const CommunitiesTable = (refreshVar) => {
   const [keyword, setKeyword] = useState("");
 
-  useGetAllCommunities(keyword);
+  useGetAllCommunities(keyword, refreshVar);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { loadingCommunity, allCommunities } = useSelector(
     (store) => store.communities
   );
@@ -37,7 +35,6 @@ const CommunitiesTable = () => {
 
   const handleDeletion = async (communityId) => {
     try {
-      dispatch(setLoadingCommunity(true));
       const response = await axios.delete(
         `${COMMUNITIES_API_END_POINT}/delete/${communityId}`,
         {
@@ -50,8 +47,6 @@ const CommunitiesTable = () => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoadingCommunity(false));
     }
   };
 

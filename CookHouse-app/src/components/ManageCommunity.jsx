@@ -56,9 +56,9 @@ const ManageCommunity = () => {
               )}
             </div>
           </div>
-          <div className="flex w-full mt-2 sm:mt-3 justify-center">
+          <div className="flex w-full mt-2 sm:mt-3 justify-center py-2">
             {feedType === "manage" && (
-              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
                 {loading && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />

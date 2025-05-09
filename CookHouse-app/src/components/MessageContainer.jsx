@@ -25,7 +25,7 @@ const MessageContainer = () => {
       setIsRefreshing(false);
     }, 2000);
   };
-  const refreshAnimate = isRefreshing ? "rotate-360" : "";
+  const refreshAnimate = isRefreshing ? "loading loading-md" : "";
 
   return (
     <>

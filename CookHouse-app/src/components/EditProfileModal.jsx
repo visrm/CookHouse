@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading, setSingleUser } from "../redux/slices/user.slice.js";
+import { setLoading } from "../redux/slices/user.slice.js";
 import { setUser } from "../redux/slices/auth.slice.js";
 import { USERS_API_END_POINT } from "../utils/constants.js";
 import axios from "axios";
@@ -15,7 +15,7 @@ const EditProfileModal = () => {
     username: user?.username || "",
     fullname: user?.fullname || "",
     bio: user?.profile?.bio || "",
-    
+
     email: user?.email || "",
     currentPassword: "",
     newPassword: "",
@@ -53,7 +53,6 @@ const EditProfileModal = () => {
       if (response.data.success) {
         dispatch(setUser(response.data.user));
         toast.success(response.data.message);
-        window.location.reload()
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -102,7 +101,9 @@ const EditProfileModal = () => {
               ✕
             </button>
           </form>
-          <h3 className="font-bold font-serif text-lg md:text-xl">Edit Profile</h3>
+          <h3 className="font-bold font-serif text-lg md:text-xl">
+            Edit Profile
+          </h3>
           <form
             method="PATCH"
             className="flex flex-col flex-[2_2_0] flex-wrap gap-1"

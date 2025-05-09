@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import useGetAllUsers from "../Hooks/useGetAllUsers.jsx";
 import LoadingSpinner from "../LoadingSpinner";
 import { MdMoreVert } from "react-icons/md";
@@ -8,15 +8,13 @@ import { USERS_API_END_POINT } from "../../utils/constants.js";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { LuSearch } from "react-icons/lu";
-import { setLoading } from "../../redux/slices/user.slice.js";
 
-const UsersTable = () => {
+const UsersTable = (refreshVar) => {
   const [keyword, setKeyword] = useState("");
 
-  useGetAllUsers(keyword);
+  useGetAllUsers(keyword, refreshVar);
 
   const { loading, allUsers } = useSelector((store) => store.users);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,7 +33,6 @@ const UsersTable = () => {
 
   const handleDeletion = async (userId) => {
     try {
-      dispatch(setLoading(true));
       const response = await axios.delete(`${USERS_API_END_POINT}/${userId}`, {
         withCredentials: true,
       });
@@ -45,8 +42,6 @@ const UsersTable = () => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoading(false));
     }
   };
 

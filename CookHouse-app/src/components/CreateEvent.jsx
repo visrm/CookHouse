@@ -15,13 +15,13 @@ const CreateEvent = () => {
     location: "",
   });
 
-  const isPending = false;
   const isError = false;
 
   const dispatch = useDispatch();
 
   const { user } = useSelector((store) => store.auth);
   const { singleCommunity } = useSelector((store) => store.communities);
+  const { loadingEvent } = useSelector((store) => store.events);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,7 +82,7 @@ const CreateEvent = () => {
           Add Event
         </button>
         <dialog id="addeventModal" className="modal">
-          <div className="modal-box flex flex-col flex-nowrap my-2  w-full rounded-xl bg-[#fafafa] items-start border-b border-gray-100">
+          <div className="modal-box flex flex-col flex-nowrap my-2  w-full rounded-xl bg-[#fafafa] items-start border-b border-slate-100">
             <form method="dialog" id="handleClosEvent">
               {/* if there is a button in form, it will close the modal */}
               <button
@@ -105,7 +105,9 @@ const CreateEvent = () => {
               onSubmit={handleSubmit}
               id="handleCreateevent"
             >
-              <h3 className="font-bold text-lg md:text-xl font-serif">Create Event</h3>
+              <h3 className="font-bold text-lg md:text-xl font-serif">
+                Create Event
+              </h3>
               <div className="w-[90%]">
                 <label className="w-fit font-base text-sm" htmlFor="title">
                   Title :
@@ -160,8 +162,8 @@ const CreateEvent = () => {
                     value={event.startDate}
                     onChange={handleInputChange}
                     required
-                  />
-                  {" "}To{" "}
+                  />{" "}
+                  To{" "}
                   <input
                     className="rounded-md input w-full border focus:outline-none bg-[#fdfdfd]  border-slate-300"
                     type="datetime-local"
@@ -174,19 +176,9 @@ const CreateEvent = () => {
                 </div>
               </div>
 
-              <div className="flex justify-between border-t py-1 md:my-2 border-t-gray-100 w-full">
-                <div className="flex items-center">
-                  <BsEmojiSmileFill
-                    className="fill-slate-700 w-5 h-5 cursor-pointer"
-                    title="Add emoji"
-                  />
-                </div>
-
-                <button
-                  className="submit-btn px-4"
-                  type="submit"
-                >
-                  {isPending ? "Creating..." : "Create"}
+              <div className="flex justify-end border-t py-1 md:my-2 border-t-slate-200 w-full">
+                <button className="submit-btn px-4" type="submit">
+                  {loadingEvent ? "Creating..." : "Create"}
                 </button>
               </div>
               {isError && (

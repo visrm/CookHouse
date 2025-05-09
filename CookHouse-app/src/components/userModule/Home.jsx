@@ -6,20 +6,18 @@ import LoadingSpinner from "../LoadingSpinner";
 import PostsCard from "../PostCard.jsx";
 import Recipes from "../Recipes.jsx";
 import useGetAllFollowingPosts from "../Hooks/useGetAllFollowingPosts.jsx";
-import useGetLikedPosts from "../Hooks/useGetLikedPosts.jsx";
 import { MdOutlineRefresh } from "react-icons/md";
 import HomeCarousel from "../HomeCarousel.jsx";
+import useGetMe from "../Hooks/useGetMe.jsx";
 
 const Home = () => {
   const [feedType, setFeedType] = useState("posts");
   const [homeRefresh, setHomeRefresh] = useState({});
   const [isRefreshing, setIsRefreshing] = useState(false);
   useGetAllFollowingPosts(homeRefresh);
+  useGetMe(homeRefresh)
 
   const { loadingPost, followingPosts } = useSelector((store) => store.posts);
-  const { user } = useSelector((store) => store.auth);
-
-  useGetLikedPosts(user?._id);
 
   const handleRefresh = (e) => {
     e.preventDefault();
@@ -30,7 +28,7 @@ const Home = () => {
     }, 2000);
   };
 
-  const refreshAnimate = isRefreshing ? "rotate-360" : "";
+  const refreshAnimate = isRefreshing ? "loading loading-md" : "";
 
   return (
     <>
@@ -39,7 +37,7 @@ const Home = () => {
           <HomeCarousel />
         </div>
 
-        <div className="pt-2 pb-4">
+        <div className="pt-2 pb-4 z-[150]">
           <CreatePostAndRecipe />
         </div>
 
@@ -90,7 +88,7 @@ const Home = () => {
           </div>
           <div className="flex w-full mt-2 sm:mt-3 justify-center min-h-screen">
             {feedType === "following" && (
-              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 py-2 min-h-full w-full max-w-full">
                 {loadingPost && (
                   <div className="block text-center">
                     <LoadingSpinner size="lg" />
@@ -109,12 +107,12 @@ const Home = () => {
               </div>
             )}
             {feedType === "recipes" && (
-              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap py-2 min-h-full w-full max-w-full">
                 <Recipes refreshVar={homeRefresh} />
               </div>
             )}
             {feedType === "posts" && (
-              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap py-2 min-h-full w-full max-w-full">
                 <Posts refreshVar={homeRefresh} />
               </div>
             )}

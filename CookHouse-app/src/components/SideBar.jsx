@@ -27,7 +27,6 @@ const SideBar = () => {
         withCredentials: true,
       });
       if (response.data.success) {
-        dispatch(setUser(null));
         store.dispatch({ type: "LOGOUT" });
         toast.success(response.data.message);
         navigate("/");

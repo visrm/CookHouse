@@ -5,17 +5,15 @@ import { POSTS_API_END_POINT } from "../../utils/constants.js";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../LoadingSpinner.jsx";
 import { MdMoreVert } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import { setLoadingPost } from "../../redux/slices/post.slice.js";
+import { useSelector } from "react-redux";
 import { LuSearch } from "react-icons/lu";
 
-const PostsTable = () => {
+const PostsTable = (refreshVar) => {
   const [keyword, setKeyword] = useState("");
 
-  useGetAllPosts(keyword);
+  useGetAllPosts(keyword, refreshVar);
 
   const { loadingPost, allPosts } = useSelector((store) => store.posts);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -33,7 +31,6 @@ const PostsTable = () => {
 
   const handleDeletion = async (postId) => {
     try {
-      dispatch(setLoadingPost(true));
       const response = await axios.delete(`${POSTS_API_END_POINT}/${postId}`, {
         withCredentials: true,
       });
@@ -43,9 +40,7 @@ const PostsTable = () => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      dispatch(setLoadingPost(false));
-    }
+    } 
   };
 
   return (

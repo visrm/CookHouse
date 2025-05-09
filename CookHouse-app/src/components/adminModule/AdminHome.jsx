@@ -4,9 +4,23 @@ import UsersTable from "./UsersTable";
 import EventsTable from "./EventsTable";
 import RecipesTable from "./RecipesTable";
 import PostsTable from "./PostsTable";
+import { MdOutlineRefresh } from "react-icons/md";
 
 const AdminHome = () => {
   const [feedType, setFeedType] = useState("users");
+  const [homeRefresh, setHomeRefresh] = useState({});
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = (e) => {
+    e.preventDefault();
+    setIsRefreshing(true);
+    setHomeRefresh({});
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 2000);
+  };
+
+  const refreshAnimate = isRefreshing ? "loading loading-md" : "";
 
   return (
     <>
@@ -58,32 +72,47 @@ const AdminHome = () => {
                 <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />
               )}
             </div>
+            <div className="flex justify-self-end transition duration-300 relative cursor-pointer">
+              <div
+                className="bg-[#fafafa] my-auto tooltip tooltip-left"
+                data-tip="Refresh"
+              >
+                <button
+                  className="flex items-center rounded-full w-fit hover:text-indigo-600 p-1.5 sm:mr-2"
+                  onClick={handleRefresh}
+                >
+                  <MdOutlineRefresh
+                    className={`h-5 w-5 ${refreshAnimate} transition-all duration-300`}
+                  />
+                </button>
+              </div>
+            </div>
           </div>
 
           <div className="flex w-full mt-2 justify-center">
             {feedType === "users" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                <UsersTable />
+                <UsersTable refreshVar={homeRefresh} />
               </div>
             )}
             {feedType === "posts" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                <PostsTable />
+                <PostsTable refreshVar={homeRefresh} />
               </div>
             )}
             {feedType === "recipes" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                <RecipesTable />
+                <RecipesTable refreshVar={homeRefresh} />
               </div>
             )}
             {feedType === "events" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                <EventsTable />
+                <EventsTable refreshVar={homeRefresh} />
               </div>
             )}
             {feedType === "communities" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
-                <CommunitiesTable />
+                <CommunitiesTable refreshVar={homeRefresh} />
               </div>
             )}
           </div>

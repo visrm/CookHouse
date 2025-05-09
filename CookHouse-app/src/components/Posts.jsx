@@ -12,7 +12,7 @@ const Posts = ({ refreshVar }) => {
 
   return (
     <>
-      <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4">
+      <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 py-2">
         {loadingPost && (
           <div className="block text-center">
             <LoadingSpinner size="lg" />
