@@ -79,14 +79,13 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: min(0.75rem, 1%);
 }
 
 .feature-icon {
-  display: block;
+  display: flex;
   min-height: 32px;
   max-width: 32px;
-  transform: scale(0.75);
+  transform: scale(0.5);
   margin-right: min(0.75rem, 9%);
 }
 

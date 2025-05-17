@@ -33,7 +33,7 @@ export const createRecipe = async (req, res) => {
       title,
       description,
       ingredients,
-      instructions,
+      instructions: instructions.splice(0, instructions.length - 1),
       media_url,
       cuisine_type,
       dietary_tags,
@@ -107,11 +107,11 @@ export const createCommunityRecipe = async (req, res) => {
       user: userId,
       title,
       description,
-      ingredients: ingredients.split(","),
-      instructions: instructions.split("."),
+      ingredients,
+      instructions: instructions.splice(0, instructions.length - 1),
       media_url,
       cuisine_type,
-      dietary_tags: dietary_tags.split(","),
+      dietary_tags,
       community: communityId,
     });
 
@@ -208,7 +208,7 @@ export const likeUnlikeRecipe = async (req, res) => {
   }
 };
 
-export const commentOnRecipe = async (req, res) => {
+export const reviewOnRecipe = async (req, res) => {
   try {
     const { text } = req.body;
     const recipeId = req.params.id;
@@ -216,7 +216,7 @@ export const commentOnRecipe = async (req, res) => {
 
     if (!text)
       return res.status(400).json({
-        message: "Text for comment required.",
+        message: "Text for review required.",
         success: false,
       });
 
@@ -233,12 +233,12 @@ export const commentOnRecipe = async (req, res) => {
     recipe.comments.push(comment);
     await recipe.save();
     return res.status(200).json({
-      message: "Comment added successfully.",
+      message: "Review added successfully.",
       recipe,
       success: true,
     });
   } catch (error) {
-    console.log("Error in commentOnRecipe: ", error.message);
+    console.log("Error in reviewOnRecipe: ", error.message);
     res.status(500).json({
       message: "Internal Server Error.",
       success: false,
@@ -246,7 +246,7 @@ export const commentOnRecipe = async (req, res) => {
   }
 };
 
-export const deleteComment = async (req, res) => {
+export const deleteReview = async (req, res) => {
   try {
     const { recipeId, id } = req.params;
     const userId = req.id;
@@ -279,7 +279,7 @@ export const deleteComment = async (req, res) => {
 
     if (cantDeleteComment && !isCommentor)
       return res.status(401).json({
-        message: "Unauthorized to delete comment.",
+        message: "Unauthorized to delete review.",
         success: false,
       });
 
@@ -287,12 +287,12 @@ export const deleteComment = async (req, res) => {
     await recipe.save();
 
     return res.status(200).json({
-      message: "Comment deleted successfully!",
+      message: "Review deleted successfully!",
       recipe,
       success: true,
     });
   } catch (error) {
-    console.log("Error in deleteComment: ", error.message);
+    console.log("Error in deleteReview: ", error.message);
     res.status(500).json({
       message: "Internal Server Error.",
       success: false,
@@ -437,42 +437,6 @@ export const getLikedRecipes = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in getLikedRecipes: ", error.message);
-    res.status(500).json({
-      message: "Internal Server Error.",
-      success: false,
-    });
-  }
-};
-
-export const getFollowingRecipes = async (req, res) => {
-  try {
-    const userId = req.id;
-    const user = await User.findById(userId);
-    if (!user)
-      return res.status(404).json({
-        message: "User not found.",
-        success: false,
-      });
-
-    const feedRecipes = await Recipe.find({ user: { $in: user.following } })
-      .sort({ createdAt: -1 })
-      .populate({
-        path: "user",
-        select: "-password",
-      })
-      .populate({
-        path: "comments.user",
-        select: "-password",
-      })
-      .populate("community");
-
-    return res.status(200).json({
-      message: "Recipes fetched successfully",
-      feedRecipes,
-      success: true,
-    });
-  } catch (error) {
-    console.log("Error in getFollowingRecipes: ", error.message);
     res.status(500).json({
       message: "Internal Server Error.",
       success: false,

@@ -3,7 +3,6 @@ import Message from "../models/message.model.js";
 import User from "../models/user.model.js";
 import { v2 as cloudinary } from "cloudinary";
 
-
 export const sendMessage = async (req, res) => {
   try {
     const { message } = req.body;
@@ -52,8 +51,6 @@ export const sendMessage = async (req, res) => {
 
     // this will run in parallel
     await Promise.all([conversation.save(), newMessage.save()]);
-
-    // SOCKET IO FUNCTIONALITY WILL GO HERE
 
     return res.status(201).json({
       message: "Message sent successfully!",

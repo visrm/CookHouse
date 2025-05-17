@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import LandingPage from "./components/Landing/LandingPage";
 import SignIn from "./components/Auth/SignIn";
@@ -20,33 +20,88 @@ import { Toaster } from "react-hot-toast";
 import PageNotFound from "./components/PageNotFound";
 import Contacts from "./components/Contacts";
 import About from "./components/About";
-
+import ProtectedRoute from "./components/adminModule/ProtectedRoute";
+import { useSelector } from "react-redux";
 
 function App() {
+  const { user } = useSelector((store) => store.auth);
   return (
     <>
       <div>
         <Toaster />
       </div>
       <NavigationBar />
-      <div className="flex p-0 m-0 max-w-full h-full mx-auto scroll-smooth">
+      <div className="flex p-0 m-0 max-w-full h-full mx-auto scroll-smooth transition-all">
         <SideBar />
         <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<SignIn />} />
-          <Route path="/register" element={<SignUp />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/recipes" element={<ExplorePage />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/:userName" element={<Profile />} />
-          <Route path="/notifications" element={<Notifications />} />
-          <Route path="/community" element={<CommunityHome />} />
-          <Route path="/explore-community" element={<Communities />} />
-          <Route path="/create-community" element={<CreateCommunity />} />
-          <Route path="/manage-community" element={<ManageCommunity />} />
-          <Route path="community/:communityId" element={<CommunityProfile />} />
-          <Route path="/conversations" element={<ChatsHome />} />
-          <Route path="/admin" element={<AdminHome />} />
+          <Route
+            path="/"
+            element={!user ? <LandingPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/login"
+            element={!user ? <SignIn /> : <Navigate to="/home" />}
+          />
+          <Route
+            path="/register"
+            element={!user ? <SignUp /> : <Navigate to="/home" />}
+          />
+          <Route
+            path="/home"
+            element={user ? <Home /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/recipes"
+            element={user ? <ExplorePage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/profile"
+            element={user ? <Profile /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/profile/:userName"
+            element={user ? <Profile /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/notifications"
+            element={user ? <Notifications /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/community"
+            element={user ? <CommunityHome /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/explore-community"
+            element={user ? <Communities /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/create-community"
+            element={user ? <CreateCommunity /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/manage-community"
+            element={user ? <ManageCommunity /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="community/:communityId"
+            element={user ? <CommunityProfile /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/conversations"
+            element={user ? <ChatsHome /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/admin"
+            element={
+              user ? (
+                <ProtectedRoute>
+                  <AdminHome />
+                </ProtectedRoute>
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
           <Route path="/contact" element={<Contacts />} />
           <Route path="/about" element={<About />} />
           {/* Catch-all route for 404 */}

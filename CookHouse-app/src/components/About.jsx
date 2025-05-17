@@ -26,7 +26,7 @@ const About = () => {
               <div className="md:flex items-center">
                 <div className="md:w-1/2 mb-6 md:mb-0 md:pr-8">
                   <img
-                    src="/api/placeholder/500/400"
+                    src="/assets/cookhouse-about.webp"
                     alt="CookHouse team cooking together"
                     className="rounded-lg shadow-md w-full"
                   />
@@ -104,12 +104,15 @@ const About = () => {
                   discovered otherwise. The community is so supportive and
                   inspiring!"
                 </p>
-                <div className="flex items-center">
-                  <img
-                    src="/api/placeholder/50/50"
-                    alt="User avatar"
-                    className="w-12 h-12 rounded-full mr-4"
-                  />
+                <div className="flex items-center gap-2 max-w-full">
+                  <figure className="block w-12 my-auto">
+                    <img
+                      src={"/assets/sarah-j-profile.webp"}
+                      alt="User avatar"
+                      className="w-12 h-12 rounded-full mr-4"
+                    />
+                  </figure>
+
                   <div>
                     <p className="font-semibold not-italic">Sarah J.</p>
                     <p className="text-sm text-gray-500 not-italic">
@@ -125,12 +128,15 @@ const About = () => {
                   educational, and has connected me with ingredients and
                   techniques that have elevated my restaurant's menu."
                 </p>
-                <div className="flex items-center">
-                  <img
-                    src="/api/placeholder/50/50"
-                    alt="User avatar"
-                    className="w-12 h-12 rounded-full mr-4"
-                  />
+                <div className="flex items-center gap-2 max-w-full">
+                  <figure className="block w-12 my-auto">
+                    <img
+                      src={"/assets/miguel-r-profile.webp"}
+                      alt="User avatar"
+                      className="w-12 h-12 rounded-full mr-4"
+                    />
+                  </figure>
+
                   <div>
                     <p className="font-semibold not-italic">Miguel R.</p>
                     <p className="text-sm text-gray-500 not-italic">

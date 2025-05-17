@@ -43,10 +43,10 @@ const CreateRecipe = () => {
         user: user?._id,
         title: recipe.title,
         description: recipe.desc,
-        ingredients: recipe.ingredients,
-        instructions: recipe.instructions,
+        ingredients: recipe.ingredients.split(","),
+        instructions: recipe.instructions.split("."),
         cuisine_type: recipe.cuisine_type,
-        dietary_tags: recipe.dietary_tags,
+        dietary_tags: recipe.dietary_tags.split(","),
         media_url: img,
       };
       const response = await axios.post(

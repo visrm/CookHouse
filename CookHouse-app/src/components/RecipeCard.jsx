@@ -7,17 +7,14 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { MdMoreVert } from "react-icons/md";
 import { timestampFn } from "../utils/extractTime.js";
-import { setLoadingRecipe } from "../redux/slices/recipe.slice.js";
 
 const RecipeCard = ({ recipe }) => {
-  const [comment, setComment] = useState("");
+  const [review, setReview] = useState("");
   const recipeMaker = recipe?.user;
   const isLiked = false;
 
   const { user } = useSelector((store) => store.auth);
   const { loadingRecipe } = useSelector((store) => store.recipes);
-
-  const dispatch = useDispatch();
 
   const isMyRecipe = recipeMaker?._id === user?._id || user?.role === "admin";
 
@@ -40,15 +37,15 @@ const RecipeCard = ({ recipe }) => {
     }
   };
 
-  const handleRecipeComment = async (e) => {
+  const handleRecipeReview = async (e) => {
     e.preventDefault();
     try {
-      let commentData = {
-        text: comment,
+      let reviewData = {
+        text: review,
       };
       const response = await axios.post(
-        `${RECIPES_API_END_POINT}/comment/${recipe?._id}`,
-        commentData,
+        `${RECIPES_API_END_POINT}/review/${recipe?._id}`,
+        reviewData,
         {
           headers: {
             "Content-Type": "application/json",
@@ -59,17 +56,17 @@ const RecipeCard = ({ recipe }) => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        setComment("");
+        setReview("");
       }
     } catch (error) {
       toast.error(error.response.data.message);
     }
   };
 
-  const handleDeleteComment = async (commentId) => {
+  const handleDeleteReview = async (reviewId) => {
     try {
       const response = await axios.delete(
-        `${RECIPES_API_END_POINT}/comment/${recipe?._id}/${commentId}`,
+        `${RECIPES_API_END_POINT}/review/${recipe?._id}/${reviewId}`,
         {
           withCredentials: true,
         }
@@ -124,16 +121,22 @@ const RecipeCard = ({ recipe }) => {
           </div>
           <div className="flex flex-col flex-1">
             <div className="flex gap-2 items-center">
-              <Link
-                to={`/profile/${recipeMaker?.username}`}
-                className="font-bold"
-              >
-                {recipeMaker?.fullname}
-              </Link>
-              <span className="text-gray-700 flex gap-1 text-sm">
-                <Link to={`/profile/${recipeMaker?.username}`}>
-                  @{recipeMaker?.username}
+              {recipeMaker?.role === "user" ? (
+                <Link
+                  to={`/profile/${recipeMaker?.username}`}
+                  className="font-bold"
+                >
+                  {recipeMaker?.fullname}
                 </Link>
+              ) : (
+                "Admin"
+              )}
+              <span className="text-gray-700 flex gap-1 text-sm">
+                {recipeMaker?.role === "user" && (
+                  <Link to={`/profile/${recipeMaker?.username}`}>
+                    @{recipeMaker?.username}
+                  </Link>
+                )}
                 <span>·</span>
                 <span>
                   {timestampFn(recipe?.createdAt) === 0
@@ -175,7 +178,9 @@ const RecipeCard = ({ recipe }) => {
                   <h1 className="font-bold text-lg sm:text-3xl text-left first-letter:capitalize font-serif">
                     {recipe?.title}
                   </h1>
-                  <h3 className="font-semibold text-lg bg-slate-100 rounded-sm px-2 text-slate-700">{recipe?.cuisine_type}</h3>
+                  <h3 className="font-semibold text-lg bg-slate-100 rounded-sm px-2 text-slate-700">
+                    {recipe?.cuisine_type}
+                  </h3>
                 </hgroup>
 
                 <span className="block text-xs sm:text-sm h-full w-full my-1 sm:my-2 first-letter:capitalize">
@@ -276,7 +281,7 @@ const RecipeCard = ({ recipe }) => {
                         ✕
                       </button>
                     </form>
-                    <h3 className="font-bold text-lg mb-3">COMMENTS</h3>
+                    <h3 className="font-bold text-lg mb-3">REVIEWS</h3>
                     <div className="flex flex-col gap-3 h-[50%]">
                       {recipe?.comments?.length === 0 && (
                         <p className="text-sm text-slate-500">
@@ -328,7 +333,7 @@ const RecipeCard = ({ recipe }) => {
                                     <span
                                       className="flex place-items-center gap-1 hover:text-red-500 cursor-pointer text-sm font-semibold"
                                       onClick={() => {
-                                        handleDeleteComment(comment?._id);
+                                        handleDeleteReview(comment?._id);
                                       }}
                                     >
                                       <FaTrash className="h-3 w-3" />
@@ -344,16 +349,16 @@ const RecipeCard = ({ recipe }) => {
                     </div>
                     <form
                       className="flex flex-col gap-2 items-center mt-4 border-t border-gray-600 pt-2"
-                      onSubmit={handleRecipeComment}
+                      onSubmit={handleRecipeReview}
                       id="addRecipeCommentForm"
                     >
                       <textarea
                         className="textarea sm:textarea-md w-full p-1 sm:px-2 rounded text-base resize-none border focus:outline-none  border-gray-800"
-                        placeholder="Add a comment..."
+                        placeholder="Add a review..."
                         id="comment-recipe"
-                        name="comment"
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
+                        name="review"
+                        value={review}
+                        onChange={(e) => setReview(e.target.value)}
                       />
                       <button className="btn border-0 bg-indigo-600 rounded-sm btn-sm text-[#ffffff] px-4 mr-auto">
                         {isCommenting ? (

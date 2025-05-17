@@ -4,6 +4,7 @@ import { CHATS_API_END_POINT } from "../utils/constants.js";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { MdMoreVert } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const Message = ({ message }) => {
   const { user } = useSelector((store) => store.auth);
@@ -47,12 +48,14 @@ const Message = ({ message }) => {
     <>
       <div className={`chat ${chatClassName} p-2`}>
         <div className="chat-image avatar">
-          <div className="w-10 rounded-full">
-            <img
-              alt="Tailwind CSS chat bubble component"
-              src={profileImg || "/assets/avatar-placeholder.png"}
-            />
-          </div>
+          <Link to={`/profile/${selectedConversation?.username}`}>
+            <div className="w-10 rounded-full">
+              <img
+                alt="Tailwind CSS chat bubble component"
+                src={profileImg || "/assets/avatar-placeholder.png"}
+              />
+            </div>
+          </Link>
         </div>
 
         <div
@@ -69,13 +72,13 @@ const Message = ({ message }) => {
             </figure>
           )}
           <div
-            className={`${fromMe ? "absolute left-[90%] flex dropdown dropdown-left" : "hidden"}`}
+            className={`${
+              fromMe
+                ? "absolute left-[90%] flex dropdown dropdown-left"
+                : "hidden"
+            }`}
           >
-            <div
-              tabIndex={0}
-              role="button"
-              className="rounded-full"
-            >
+            <div tabIndex={0} role="button" className="rounded-full">
               <MdMoreVert className="h-4 w-4" />
             </div>
             <ul

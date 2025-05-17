@@ -10,6 +10,7 @@ const SignUp = () => {
     fullname: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const navigate = useNavigate();
@@ -25,8 +26,12 @@ const SignUp = () => {
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
+      if (registerInfo.confirmPassword !== registerInfo.password) {
+        toast.error("Passwords doesn't match.");
+        return;
+      }
       let registration = {
-        username: registerInfo.username,
+        username: registerInfo.username.toLocaleLowerCase(),
         fullname: registerInfo.fullname,
         email: registerInfo.email,
         password: registerInfo.password,
@@ -71,6 +76,8 @@ const SignUp = () => {
               name="username"
               value={registerInfo.username}
               maxLength={"20ch"}
+              pattern="^[a-zA-Z][a-zA-Z0-9._]{2,19}$"
+              title="Only use letters, numbers, dots or underscores."
               className="border rounded-xs btn btn-sm text-base text-left w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-[#fdfdfd]"
               onChange={handleChange}
               autoComplete="username"
@@ -104,6 +111,18 @@ const SignUp = () => {
               id="password"
               name="password"
               value={registerInfo.password}
+              autoComplete="current-password"
+              maxLength={"20ch"}
+              className="border rounded-xs btn btn-sm text-base text-left w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-[#fdfdfd]"
+              onChange={handleChange}
+              required
+            />
+            <label htmlFor="confirmPassword">Confirm Password :</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={registerInfo.confirmPassword}
               autoComplete="current-password"
               maxLength={"20ch"}
               className="border rounded-xs btn btn-sm text-base text-left w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-[#fdfdfd]"

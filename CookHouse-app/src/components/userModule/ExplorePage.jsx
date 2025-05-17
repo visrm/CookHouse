@@ -28,7 +28,7 @@ const ExplorePage = () => {
     <>
       <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto transition-all duration-300">
         <section className="relative flex flex-col flex-nowrap w-full h-full backdrop-blur">
-          <div className="absolute top-[14%] right-[68%] block h-42 w-42 bg-amber-500 rounded-full blur-2xl"></div>
+          <div className="absolute top-[14%] right-[68%] hidden lg:block h-42 w-42 bg-amber-500 rounded-full blur-2xl"></div>
           <article className="relative flex flex-row flex-wrap lg:flex-nowrap h-full w-full max-w-full backdrop-blur">
             <figure className="hidden lg:block w-[33%] min-w-[75%] md:min-w-fit md:max-w-[33%] h-auto z-50">
               <img
