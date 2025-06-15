@@ -50,7 +50,6 @@ const CreateEvent = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        window.location.reload();
       }
     } catch (error) {
       toast.error(error.response.data.message);

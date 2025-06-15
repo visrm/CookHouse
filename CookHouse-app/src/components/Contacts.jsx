@@ -8,6 +8,9 @@ import {
   LuSend,
 } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
+import { FEEDBACKS_API_END_POINT } from "../utils/constants.js";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const Contacts = () => {
   const [formData, setFormData] = useState({
@@ -27,25 +30,49 @@ const Contacts = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-    //Send this data to your backend
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      let feedback = {
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+      };
+      const response = await axios.post(
+        `${FEEDBACKS_API_END_POINT}/`,
+        feedback,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.data.success) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      toast.error(err.response.data.message);
+    } finally {
+      setIsSubmitted(true);
+      setTimeout(() => setIsSubmitted(false), 3000);
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    }
   };
 
   return (
     <>
       <main className="relative flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto transition-all duration-300 overflow-x-hidden">
         <div className="max-w-6xl mx-auto px-4 py-12 w-[90%]">
-          <h1 className="text-4xl sm:text-5xl font-bold text-center mb-6">Contact Us</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold text-center mb-6">
+            Contact Us
+          </h1>
           <p className="text-lg text-center text-gray-600 mb-12">
             Have questions about CookHouse? We're here to help the cooking
             community grow together!

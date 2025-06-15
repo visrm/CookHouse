@@ -296,7 +296,7 @@ const CreateCommunityPostAndRecipe = ({ isOwner = false }) => {
       toast.error(error.response.data.message);
     } finally {
       dispatch(setLoadingPost(false));
-      setOpenEmoji(false)
+      setOpenEmoji(false);
       setText("");
       setImg(null);
     }
@@ -360,6 +360,7 @@ const CreateCommunityPostAndRecipe = ({ isOwner = false }) => {
                 <div className="absolute bottom-[90%] md:left-[60%] z-[100]">
                   <EmojiPicker
                     onEmojiClick={(e) => setText(text + e.emoji)}
+                    lazyLoadEmojis={true}
                     height="24rem"
                     width="24rem"
                   />

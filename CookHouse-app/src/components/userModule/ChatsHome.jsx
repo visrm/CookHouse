@@ -54,6 +54,8 @@ const ChatsHome = () => {
                   id="seach-conversations-form"
                 >
                   <input
+                    name="conversation"
+                    id="conversation"
                     type="text"
                     placeholder="Search…"
                     className="input input-sm focus:outline-0 rounded-full text-sm bg-[#fdfdfd] text-slate-600"

@@ -3,6 +3,7 @@ import axios from "axios";
 import { AUTH_API_END_POINT } from "../../utils/constants.js";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { LuEye, LuEyeClosed } from "react-icons/lu";
 
 const SignUp = () => {
   const [registerInfo, setRegisterInfo] = useState({
@@ -12,6 +13,7 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
+  const [togglePwd, setTogglePwd] = useState(false);
 
   const navigate = useNavigate();
 
@@ -56,6 +58,19 @@ const SignUp = () => {
     }
   };
 
+  function togglePasswordVisibility(e) {
+    const passwordInput = e.target
+      .closest(".form-control")
+      .querySelector("input");
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      setTogglePwd(true);
+    } else {
+      passwordInput.type = "password";
+      setTogglePwd(false);
+    }
+  }
+
   return (
     <>
       <section className="grid fixed top-0 left-0 place-content-center max-w-full w-full min-h-svh md:min-h-dvh bg-[#f0f0f0]">
@@ -69,29 +84,31 @@ const SignUp = () => {
             onSubmit={handleSubmit}
           >
             <h2 className="section-title font-bold">Sign Up</h2>
-            <label htmlFor="username">Username :</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={registerInfo.username}
-              maxLength={"20ch"}
-              pattern="^[a-zA-Z][a-zA-Z0-9._]{2,19}$"
-              title="Only use letters, numbers, dots or underscores."
-              className="border rounded-xs btn btn-sm text-base text-left w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-[#fdfdfd]"
-              onChange={handleChange}
-              autoComplete="username"
-              required
-            />
             <label htmlFor="fullname">Full Name :</label>
             <input
               type="text"
               id="fullname"
               name="fullname"
+              placeholder="John Doe"
               value={registerInfo.fullname}
               maxLength={"30ch"}
-              className="border rounded-xs btn btn-sm text-base text-left w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-[#fdfdfd]"
+              className="border rounded-xs btn btn-sm text-sm text-left font-normal w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-[#fdfdfd]"
               onChange={handleChange}
+              required
+            />
+            <label htmlFor="username">Username :</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="johndoe123"
+              value={registerInfo.username}
+              maxLength={"20ch"}
+              pattern="^[a-zA-Z][a-zA-Z0-9._]{2,19}$"
+              title="Only use letters, numbers, dots or underscores."
+              className="border rounded-xs btn btn-sm text-sm text-left font-normal w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-[#fdfdfd]"
+              onChange={handleChange}
+              autoComplete="username"
               required
             />
             <label htmlFor="email">Email Address :</label>
@@ -99,33 +116,50 @@ const SignUp = () => {
               type="email"
               id="email"
               name="email"
+              placeholder="johndoe123@gmail.com"
               value={registerInfo.email}
               autoComplete="username"
-              className="border rounded-xs btn btn-sm text-base text-left w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-[#fdfdfd]"
+              className="border rounded-xs btn btn-sm text-sm text-left font-normal w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-[#fdfdfd]"
               onChange={handleChange}
               required
             />
             <label htmlFor="password">Password :</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={registerInfo.password}
-              autoComplete="current-password"
-              maxLength={"20ch"}
-              className="border rounded-xs btn btn-sm text-base text-left w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-[#fdfdfd]"
-              onChange={handleChange}
-              required
-            />
+            <div className="flex flex-row flex-nowrap form-control">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="********"
+                value={registerInfo.password}
+                autoComplete="current-password"
+                maxLength={"20ch"}
+                className="border rounded-xs btn btn-sm text-sm text-left font-normal w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-[#fdfdfd]"
+                onChange={handleChange}
+                required
+              />
+              <button
+                type="button"
+                className="absolute right-5 md:right-9 btn py-0.5 px-1 btn-sm btn-outline-none border-0 bg-transparent rounded-full transition-all duration-300 overflow-hidden"
+                onClick={togglePasswordVisibility}
+              >
+                {togglePwd ? (
+                  <LuEye className="h-5 w-5" />
+                ) : (
+                  <LuEyeClosed className="h-5 w-5" />
+                )}
+              </button>
+            </div>
+
             <label htmlFor="confirmPassword">Confirm Password :</label>
             <input
               type="password"
               id="confirmPassword"
               name="confirmPassword"
+              placeholder="********"
               value={registerInfo.confirmPassword}
               autoComplete="current-password"
               maxLength={"20ch"}
-              className="border rounded-xs btn btn-sm text-base text-left w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-[#fdfdfd]"
+              className="border rounded-xs btn btn-sm text-sm text-left font-normal w-full backdrop-blur-sm focus:outline-0 border-black/50 bg-[#fdfdfd]"
               onChange={handleChange}
               required
             />

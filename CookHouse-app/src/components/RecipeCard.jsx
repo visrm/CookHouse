@@ -11,12 +11,12 @@ import { timestampFn } from "../utils/extractTime.js";
 const RecipeCard = ({ recipe }) => {
   const [review, setReview] = useState("");
   const recipeMaker = recipe?.user;
-  const isLiked = false;
 
   const { user } = useSelector((store) => store.auth);
   const { loadingRecipe } = useSelector((store) => store.recipes);
 
   const isMyRecipe = recipeMaker?._id === user?._id || user?.role === "admin";
+  const isLiked = user?.likedRecipes?.includes(recipe?._id)
 
   const isCommenting = loadingRecipe;
 

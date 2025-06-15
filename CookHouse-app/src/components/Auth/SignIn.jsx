@@ -5,12 +5,15 @@ import { AUTH_API_END_POINT } from "../../utils/constants.js";
 import { useDispatch } from "react-redux";
 import { setLoading, setUser } from "../../redux/slices/auth.slice.js";
 import toast from "react-hot-toast";
+import { LuEye, LuEyeClosed } from "react-icons/lu";
 
 const SignIn = () => {
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
   });
+  const [togglePwd, setTogglePwd] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -53,6 +56,19 @@ const SignIn = () => {
     }
   };
 
+  function togglePasswordVisibility(e) {
+    const passwordInput = e.target
+      .closest(".form-control")
+      .querySelector("input");
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      setTogglePwd(true);
+    } else {
+      passwordInput.type = "password";
+      setTogglePwd(false);
+    }
+  }
+
   return (
     <>
       <main>
@@ -67,29 +83,47 @@ const SignIn = () => {
               onSubmit={handleSubmit}
             >
               <h2 className="section-title font-bold">Sign In</h2>
+
               <label htmlFor="email">Email Address :</label>
               <input
                 type="email"
                 id="email"
                 name="email"
+                placeholder="yourname@domain.com"
                 value={userInfo.email}
-                className="border rounded-xs btn btn-sm text-base text-left focus:outline-0 w-full backdrop-blur-sm border-black/50 bg-[#fdfdfd]"
+                className="border rounded-xs btn btn-sm text-sm text-left font-normal focus:outline-0 w-full backdrop-blur-sm border-black/50 bg-[#fdfdfd]"
                 autoComplete="username"
                 onChange={handleChange}
                 required
               />
+
               <label htmlFor="password">Password :</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={userInfo.password}
-                maxLength={"20ch"}
-                className="border rounded-xs btn btn-sm text-base text-left focus:outline-0 w-full backdrop-blur-sm border-black/50 bg-[#fdfdfd]"
-                autoComplete="current-password"
-                onChange={handleChange}
-                required
-              />
+              <div className="flex flex-row flex-nowrap form-control">
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="********"
+                  value={userInfo.password}
+                  maxLength={"20ch"}
+                  className="border rounded-xs btn btn-sm text-sm text-left font-normal focus:outline-0 w-full backdrop-blur-sm border-black/50 bg-[#fdfdfd]"
+                  autoComplete="current-password"
+                  onChange={handleChange}
+                  required
+                />
+                <button
+                  type="button"
+                  className="absolute right-5 md:right-9 btn py-0.5 px-1 btn-sm btn-outline-none border-0 bg-transparent rounded-full transition-all duration-300 overflow-hidden"
+                  onClick={togglePasswordVisibility}
+                >
+                  {togglePwd ? (
+                    <LuEye className="h-5 w-5" />
+                  ) : (
+                    <LuEyeClosed className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
+
               <button type="submit" className="submit-btn">
                 Sign In
               </button>

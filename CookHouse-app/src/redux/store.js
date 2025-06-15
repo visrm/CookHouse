@@ -19,6 +19,7 @@ import communitySlice from "./slices/community.slice.js";
 import chatSlice from "./slices/chat.slice.js";
 import eventSlice from "./slices/event.slice.js";
 import errorSlice from "./slices/error.slice.js";
+import feedbackSlice from "./slices/feedback.slice.js";
 
 const persistConfig = {
   key: "root",
@@ -35,6 +36,7 @@ const appReducer = combineReducers({
   chats: chatSlice,
   events: eventSlice,
   error: errorSlice,
+  feedbacks: feedbackSlice,
 });
 
 const rootReducer = (state, action) => {

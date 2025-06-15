@@ -16,7 +16,7 @@ const PostCard = ({ post }) => {
   const { loadingPost } = useSelector((store) => store.posts);
 
   const isMyPost = postOwner?._id === user?._id || user?.role === "admin";
-  const isLiked = user?.likedPosts.includes(post?._id)
+  const isLiked = user?.likedPosts?.includes(post?._id)
 
   let isCommenting = loadingPost;
 

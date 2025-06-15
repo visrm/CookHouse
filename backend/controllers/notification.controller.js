@@ -1,7 +1,6 @@
 import Notification from "../models/notification.model.js";
 
 export const getNotifications = async (req, res) => {
-  
   try {
     const userId = req.id;
     const notifications = await Notification.find({ to: userId })
@@ -74,7 +73,9 @@ export const deleteAllNotifications = async (req, res) => {
         success: false,
       });
 
-    await Notification.deleteMany({ to: userId });
+    const deleteNotifs = await Notification.deleteMany({ to: userId });
+    await Promise.all(deleteNotifs);
+
     return res.status(200).json({
       message: "Notifications deleted successfully.",
       success: true,

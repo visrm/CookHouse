@@ -64,9 +64,10 @@ const MessageInput = () => {
       >
         <div className="flex flex-row flex-nowrap w-full relative items-center">
           {openEmoji && (
-            <div className="absolute bottom-[110%] left-5 z-[100]">
+            <div className="absolute bottom-[110%] left-5 z-[100] cursor-grab">
               <EmojiPicker
                 onEmojiClick={(e) => setMessage(message + e.emoji)}
+                lazyLoadEmojis={true}
                 height="24rem"
                 width="24rem"
               />
@@ -88,6 +89,8 @@ const MessageInput = () => {
           <input
             type="file"
             accept="image/*"
+            name="image-input"
+            id="image-input"
             hidden
             ref={imgRef}
             onChange={handleImgChange}
@@ -97,6 +100,8 @@ const MessageInput = () => {
             className="input border-none text-base font-medium focus:outline-0 rounded-full block w-full p-2.5 text-slate-900"
             placeholder="Send a message"
             maxLength={250}
+            name="text-input"
+            id="text-input"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />

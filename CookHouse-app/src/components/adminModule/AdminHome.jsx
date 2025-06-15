@@ -5,6 +5,7 @@ import EventsTable from "./EventsTable";
 import RecipesTable from "./RecipesTable";
 import PostsTable from "./PostsTable";
 import { MdOutlineRefresh } from "react-icons/md";
+import FeedbacksTable from "./FeedbacksTable";
 
 const AdminHome = () => {
   const [feedType, setFeedType] = useState("users");
@@ -24,7 +25,7 @@ const AdminHome = () => {
 
   return (
     <>
-      <main className="h-full w-full max-w-full min-h-[90svh] md:min-h-screen overflow-hidden">
+      <main className="h-full w-full max-w-full min-h-[90svh] md:min-h-screen overflow-y-auto">
         <section>
           <div className="flex w-full font-semibold bg-[#ffffff] z-50 shadow-md">
             <div
@@ -72,6 +73,15 @@ const AdminHome = () => {
                 <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />
               )}
             </div>
+            <div
+              className="flex justify-center flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
+              onClick={() => setFeedType("feedbacks")}
+            >
+              Feedbacks
+              {feedType === "feedbacks" && (
+                <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />
+              )}
+            </div>
             <div className="flex justify-self-end transition duration-300 relative cursor-pointer">
               <div
                 className="bg-[#fafafa] my-auto tooltip tooltip-left"
@@ -113,6 +123,11 @@ const AdminHome = () => {
             {feedType === "communities" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
                 <CommunitiesTable refreshVar={homeRefresh} />
+              </div>
+            )}
+            {feedType === "feedbacks" && (
+              <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
+                <FeedbacksTable refreshVar={homeRefresh} />
               </div>
             )}
           </div>

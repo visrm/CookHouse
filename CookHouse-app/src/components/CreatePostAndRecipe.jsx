@@ -290,7 +290,7 @@ const CreatePostAndRecipe = () => {
       toast.error(error.response.data.message);
     } finally {
       dispatch(setLoadingPost(false));
-      setOpenEmoji(false)
+      setOpenEmoji(false);
       setText("");
       setImg(null);
     }
@@ -351,8 +351,13 @@ const CreatePostAndRecipe = () => {
 
             <div className="relative flex justify-between border-t py-2 border-t-slate-100">
               {openEmoji && (
-                <div className="absolute top-[90%] md:-left-[50%] z-[200]">
-                  <EmojiPicker onEmojiClick={(e) => setText(text + e.emoji)} height="24rem" width="24rem" />
+                <div className="absolute top-[90%] md:-left-[50%] z-[200] ">
+                  <EmojiPicker
+                    onEmojiClick={(e) => setText(text + e.emoji)}
+                    lazyLoadEmojis={true}
+                    height="24rem"
+                    width="24rem"
+                  />
                 </div>
               )}
               <div className="flex gap-1 sm:gap-2 lg:gap-4 items-center">

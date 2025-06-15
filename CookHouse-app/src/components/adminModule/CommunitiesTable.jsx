@@ -52,7 +52,7 @@ const CommunitiesTable = (refreshVar) => {
 
   return (
     <>
-      <section className="px-2 py-1 h-full">
+      <section className="px-2 py-1 h-full w-full max-w-full">
         <article className="block my-2 md:mt-3">
           <div>
             <form

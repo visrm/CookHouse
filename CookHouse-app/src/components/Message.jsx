@@ -49,7 +49,7 @@ const Message = ({ message }) => {
       <div className={`chat ${chatClassName} p-2`}>
         <div className="chat-image avatar">
           <Link to={`/profile/${selectedConversation?.username}`}>
-            <div className="w-10 rounded-full">
+            <div className="w-10 rounded-full overflow-hidden">
               <img
                 alt="Tailwind CSS chat bubble component"
                 src={profileImg || "/assets/avatar-placeholder.png"}

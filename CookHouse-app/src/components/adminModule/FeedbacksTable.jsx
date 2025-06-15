@@ -1,48 +1,56 @@
-import { useEffect, useState } from "react";
-import useGetAllRecipes from "../Hooks/useGetAllRecipes";
+import { useEffect } from "react";
 import axios from "axios";
-import { RECIPES_API_END_POINT } from "../../utils/constants.js";
+import { FEEDBACKS_API_END_POINT } from "../../utils/constants.js";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../LoadingSpinner.jsx";
 import { MdMoreVert } from "react-icons/md";
-import { useSelector } from "react-redux";
-import { LuSearch } from "react-icons/lu";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setAllFeedbacks,
+  setLoadingFeedback,
+} from "../../redux/slices/feedback.slice.js";
 
-const RecipesTable = (refreshVar) => {
-  const [keyword, setKeyword] = useState("");
-
-  useGetAllRecipes(keyword,refreshVar);
-
-  const { loadingRecipe, allRecipes } = useSelector((store) => store.recipes);
+const FeedbacksTable = (refreshVar) => {
+  const { loadingFeedback, allFeedbacks } = useSelector(
+    (store) => store.feedbacks
+  );
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const keywordFromUrl = urlParams.get("keyword");
-    if (keywordFromUrl) setKeyword(keywordFromUrl);
-  }, [location.search]);
-
-  const handleSearch = (e) => {
-    e.prrecipeDefault();
-    const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set("keyword", keyword);
-  };
+    (async function FetchFeedbacks() {
+      try {
+        dispatch(setLoadingFeedback(true));
+        const response = await axios.get(`${FEEDBACKS_API_END_POINT}/`, {
+          withCredentials: true,
+        });
+        if (response.data.success) {
+          dispatch(setAllFeedbacks(response.data.feedbacks));
+        }
+      } catch (error) {
+        toast.error(error.response.data.message);
+      } finally {
+        dispatch(setLoadingFeedback(false));
+      }
+    })();
+  }, [refreshVar]);
 
   let i = 0;
 
-  const handleDeletion = async (recipeId) => {
+  const handleDeletion = async (feedbackId) => {
     try {
       const response = await axios.delete(
-        `${RECIPES_API_END_POINT}/${recipeId}`,
+        `${FEEDBACKS_API_END_POINT}/${feedbackId}`,
         {
           withCredentials: true,
         }
       );
+
       if (response.data.success) {
         toast.success(response.data.message);
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } 
+    }
   };
 
   return (
@@ -50,33 +58,9 @@ const RecipesTable = (refreshVar) => {
       <section className="px-2 py-1 h-full w-full max-w-full">
         <article className="block my-2 md:mt-3">
           <div>
-            <form
-              onSubmit={handleSearch}
-              className="flex flex-row flex-nowrap gap-1 items-center justify-center w-full"
-              id="evnt-search-bar-form"
-            >
-              <input
-                type="text"
-                name="q"
-                value={keyword}
-                onChange={(e) => {
-                  setKeyword(e.target.value);
-                }}
-                placeholder="Search"
-                className="input input-sm bg-[#fdfdfd] focus:outline-none rounded-full"
-              />
-              <button
-                className="btn btn-sm bg-slate-300 border-none rounded-full"
-                type="submit"
-              >
-                <LuSearch className="h-5 w-4" />
-              </button>
-            </form>
-          </div>
-          <div>
-            {!loadingRecipe && (
+            {!loadingFeedback && (
               <span className="block w-full p-2 sm:px-3 font-bold font-mono text-xs text-left">
-                {`Search results ( ${allRecipes.length} )`}
+                {`Search results ( ${allFeedbacks.length} )`}
               </span>
             )}
           </div>
@@ -87,42 +71,42 @@ const RecipesTable = (refreshVar) => {
               <tr className="text-center">
                 <th></th>
                 <th>ID</th>
-                <th>Community</th>
-                <th>Title</th>
-                <th>Publisher</th>
+                <th>SenderID</th>
+                <th>Email</th>
+                <th>Subject</th>
+                <th>Message</th>
                 <th>Created At</th>
-                <th>Updated At</th>
                 <th></th>
               </tr>
             </thead>
-            {loadingRecipe && (
+            {loadingFeedback && (
               <tbody className="block text-center">
                 <tr>
                   <LoadingSpinner size="lg" />
                 </tr>
               </tbody>
             )}
-            {!loadingRecipe && allRecipes.length === 0 && (
+            {!loadingFeedback && allFeedbacks.length === 0 && (
               <tbody className="flex place-content-center">
                 <tr>
-                  <td>No recipes found.</td>
+                  <td>No feedback(s) found.</td>
                 </tr>
               </tbody>
             )}
             <tbody>
-              {!loadingRecipe &&
-                allRecipes.length > 0 &&
-                allRecipes.map((recipe) => {
+              {!loadingFeedback &&
+                allFeedbacks.length > 0 &&
+                allFeedbacks.map((feedback) => {
                   i++;
                   return (
-                    <tr key={recipe?._id} className="text-center">
+                    <tr key={feedback?._id} className="text-center">
                       <th>{i}</th>
-                      <td>{recipe?._id}</td>
-                      <td>{recipe?.community?._id || "null"}</td>
-                      <td>{recipe?.title}</td>
-                      <td>{recipe?.user?.username}</td>
-                      <td>{recipe?.createdAt.split("T")[0].trim()}</td>
-                      <td>{recipe?.updatedAt.split("T")[0].trim()}</td>
+                      <td>{feedback?._id}</td>
+                      <td>{feedback?.from?._id}</td>
+                      <td>{feedback?.email}</td>
+                      <td>{feedback?.subject}</td>
+                      <td>{feedback?.message}</td>
+                      <td>{feedback?.createdAt.split("T")[0].trim()}</td>
                       <td>
                         <div className="flex justify-end dropdown dropdown-start dropdown-hover mx-2">
                           <div
@@ -141,7 +125,7 @@ const RecipesTable = (refreshVar) => {
                                 className="btn hover:text-red-400 border btn-sm"
                                 onClick={(e) => {
                                   e.preventDefault();
-                                  handleDeletion(recipe?._id);
+                                  handleDeletion(feedback?._id);
                                 }}
                               >
                                 Delete
@@ -161,4 +145,4 @@ const RecipesTable = (refreshVar) => {
   );
 };
 
-export default RecipesTable;
+export default FeedbacksTable;
