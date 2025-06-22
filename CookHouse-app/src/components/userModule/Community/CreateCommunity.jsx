@@ -1,10 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoadingCommunity } from "../redux/slices/community.slice.js";
-import { setSelfCommunity } from "../redux/slices/user.slice.js";
+import { setLoadingCommunity } from "../../../redux/slices/community.slice.js";
+import { setSelfCommunity } from "../../../redux/slices/user.slice.js";
 import toast from "react-hot-toast";
-import { COMMUNITIES_API_END_POINT } from "../utils/constants.js";
+import { COMMUNITIES_API_END_POINT } from "../../../utils/constants.js";
 
 const CreateCommunity = () => {
   const [input, setInput] = useState({

@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { EVENTS_API_END_POINT } from "../utils/constants";
+import { EVENTS_API_END_POINT } from "../utils/constants.js";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { BsEmojiSmileFill } from "react-icons/bs";
-import { setLoadingEvent } from "../redux/slices/event.slice";
+import { setLoadingEvent } from "../redux/slices/event.slice.js";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const CreateEvent = () => {
   const [event, setEvent] = useState({
     title: "",
-    desc: "",
     startDate: "",
     endDate: "",
     location: "",
   });
+  const [desc, setDesc] = useState("")
 
   const isError = false;
 
@@ -32,7 +33,7 @@ const CreateEvent = () => {
       let eventData = {
         user: user?._id,
         title: event.title,
-        description: event.desc,
+        description: desc,
         startDate: event.startDate,
         endDate: event.endDate,
         location: event.location,
@@ -57,11 +58,11 @@ const CreateEvent = () => {
       dispatch(setLoadingEvent(false));
       setEvent({
         title: "",
-        desc: "",
         startDate: "",
         endDate: "",
         location: "",
       });
+      setDesc("")
     }
   };
 
@@ -126,13 +127,13 @@ const CreateEvent = () => {
                 <label className="w-fit font-base text-sm" htmlFor="desc">
                   Description :
                 </label>
-                <input
-                  className="rounded-md input w-full border focus:outline-none bg-[#fdfdfd]  border-slate-300"
+                <ReactQuill
+                  className="w-full max-w-full focus:outline-none bg-[#fdfdfd]  border-slate-300"
                   placeholder="Event description"
                   name="desc"
                   id="desc"
-                  value={event.desc}
-                  onChange={handleInputChange}
+                  value={desc}
+                  onChange={setDesc}
                   maxLength={"500ch"}
                 />
               </div>

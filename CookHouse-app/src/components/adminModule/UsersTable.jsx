@@ -140,6 +140,16 @@ const UsersTable = (refreshVar) => {
                           >
                             <li>
                               <button
+                                className="btn hover:text-indigo-400 border btn-sm"
+                                onClick={(e) => {
+                                  navigate(`/profile/${user?.username}`);
+                                }}
+                              >
+                                View profile
+                              </button>
+                            </li>
+                            <li>
+                              <button
                                 className="btn hover:text-red-400 border btn-sm"
                                 onClick={(e) => {
                                   e.preventDefault();
@@ -147,16 +157,6 @@ const UsersTable = (refreshVar) => {
                                 }}
                               >
                                 Delete account
-                              </button>
-                            </li>
-                            <li>
-                              <button
-                                className="btn hover:text-indigo-400 border btn-sm"
-                                onClick={(e) => {
-                                  navigate(`/profile/${user?.username}`);
-                                }}
-                              >
-                                View profile
                               </button>
                             </li>
                           </ul>

@@ -151,6 +151,16 @@ const CommunitiesTable = (refreshVar) => {
                           >
                             <li>
                               <button
+                                className="btn hover:text-indigo-400 border btn-sm"
+                                onClick={(e) => {
+                                  navigate(`/community/${community._id}`);
+                                }}
+                              >
+                                Visit
+                              </button>
+                            </li>
+                            <li>
+                              <button
                                 className="btn hover:text-red-400 border btn-sm"
                                 onClick={(e) => {
                                   e.preventDefault();
@@ -158,16 +168,6 @@ const CommunitiesTable = (refreshVar) => {
                                 }}
                               >
                                 Delete
-                              </button>
-                            </li>
-                            <li>
-                              <button
-                                className="btn hover:text-indigo-400 border btn-sm"
-                                onClick={(e) => {
-                                  navigate(`/community/${community._id}`);
-                                }}
-                              >
-                                Visit
                               </button>
                             </li>
                           </ul>

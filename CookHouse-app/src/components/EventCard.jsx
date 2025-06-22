@@ -6,6 +6,7 @@ import { setLoadingEvent } from "../redux/slices/event.slice.js";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { EVENTS_API_END_POINT } from "../utils/constants";
+import ReactQuill from "react-quill";
 
 const EventCard = ({ event }) => {
   const organiser = event?.organiser;
@@ -71,12 +72,15 @@ const EventCard = ({ event }) => {
           )}
           {/* Event contents */}
           <div className="mt-2">
-            <h2 className="text-lg font-bold font-serif underline underline-offset-2">
+            <h2 className="text-lg md:text-xl font-bold font-serif underline underline-offset-2">
               {event?.title}
             </h2>
-            <p className="text-base font-base font-sans">
-              {event?.description}
-            </p>
+            <ReactQuill
+              className="block h-full w-full max-w-full py-0 text-base font-base font-sans"
+              value={event?.description}
+              readOnly={true}
+              theme={null}
+            />
           </div>
           <div className="flex flex-col bg-slate-200 w-full p-2 border-0 rounded-sm">
             <span className="flex sm:gap-x-2 items-center">

@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import LoadingSpinner from "../LoadingSpinner";
-import Conversations from "../Conversations.jsx";
-import MessageContainer from "../MessageContainer.jsx";
-import useGetExcludingAuthUsers from "../Hooks/useGetExcludingAuthUsers.jsx";
-import { setSelectedConversation } from "../../redux/slices/chat.slice.js";
+import LoadingSpinner from "../../LoadingSpinner.jsx";
+import Conversations from "./Conversations.jsx";
+import MessageContainer from "./MessageContainer.jsx";
+import useGetExcludingAuthUsers from "../../Hooks/useGetExcludingAuthUsers.jsx";
+import { setSelectedConversation } from "../../../redux/slices/chat.slice.js";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -38,7 +38,7 @@ const ChatsHome = () => {
 
   return (
     <>
-      <main className="h-full w-full max-w-full min-h-[90svh] md:min-h-screen">
+      <main className="h-full w-full max-w-full min-h-[90svh] md:min-h-screen overflow-hidden transition-all duration-300">
         <section className="grid grid-cols-12 h-screen w-full">
           {loading && (
             <div className="grid col-span-4 md:col-span-3 lg:col-span-2 bg-[#fafafa]">

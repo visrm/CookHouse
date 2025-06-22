@@ -10,7 +10,7 @@ const Conversation = ({ user, lastIdx }) => {
   return (
     <>
       <div
-        className={`flex gap-2 items-center w-full h-fit min-w-fit hover:bg-blue-400 p-2 py-1 cursor-pointer transition-all duration-200 ${
+        className={`flex gap-2 items-center w-full h-fit min-w-fit hover:bg-blue-400 p-2 py-1 cursor-pointer transition-all duration-300 ${
           isSelected ? "bg-blue-400 shadow-md" : ""
         }`}
         onClick={() => dispatch(setSelectedConversation(user))}
@@ -29,7 +29,7 @@ const Conversation = ({ user, lastIdx }) => {
 
         <div className="flex flex-col flex-1">
           <div className="flex gap-3 justify-between">
-            <p className="font-semibold text-slate-800">{user?.username}</p>
+            <p className="text-base font-normal text-slate-800">{user?.username}</p>
           </div>
         </div>
       </div>

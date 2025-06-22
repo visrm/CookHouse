@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import MessageInput from "./MessageInput";
-import Messages from "./Messages";
+import MessageInput from "../.././MessageInput";
+import Messages from "../.././Messages";
 import { TiMessages } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedConversation } from "../redux/slices/chat.slice.js";
+import { setSelectedConversation } from "../../../redux/slices/chat.slice.js";
 import { MdOutlineRefresh } from "react-icons/md";
 
 const MessageContainer = () => {
@@ -29,13 +29,13 @@ const MessageContainer = () => {
 
   return (
     <>
-      <div className="md:min-w-[450px] flex flex-col bg-indigo-50">
+      <div className="relative md:min-w-[450px] h-full flex flex-col bg-indigo-50">
         {!selectedConversation ? (
           <NoChatSelected />
         ) : (
           <>
             {/* Header */}
-            <div className="flex flex-row justify-between bg-amber-200/75 px-2 py-2 sm:px-4 mb-2">
+            <div className="sticky top-0 flex flex-row justify-between bg-amber-200/75 px-2 py-2 sm:px-4 mb-2">
               <div>
                 <span className="label-text sm:text-base">To:</span>{" "}
                 <span className="text-slate-900 sm:text-xl font-semibold">
@@ -55,7 +55,7 @@ const MessageContainer = () => {
               </div>
             </div>
             <Messages refreshVar={chatRefresh} />
-            <div className="block sticky bottom-0 w-full bg-[#FECD62] z-10">
+            <div className="block fixed bottom-0 w-full max-w-full bg-[#FECD62] z-10">
               <MessageInput />
             </div>
           </>

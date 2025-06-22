@@ -3,6 +3,7 @@ import LoadingSpinner from "./LoadingSpinner";
 import RecipesCard from "./RecipeCard";
 import useGetAllRecipes from "../components/Hooks/useGetAllRecipes";
 import { useEffect } from "react";
+import RecipeSkeleton from "./Skeleton/RecipeSkeleton";
 
 const Recipes = ({ refreshVar }) => {
   // using getHook for loadingRecipe all posts.
@@ -15,8 +16,8 @@ const Recipes = ({ refreshVar }) => {
     <>
       <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 py-2">
         {loadingRecipe && (
-          <div className="block text-center">
-            <LoadingSpinner size="lg" />
+          <div className="flex flex-col flex-nowrap text-center gap-2 sm:gap-3">
+            { [...Array(3)].map((_, idx) => <RecipeSkeleton key={idx} />)}
           </div>
         )}
         {!loadingRecipe && allRecipes.length === 0 && (

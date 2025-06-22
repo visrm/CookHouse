@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { MdMoreVert } from "react-icons/md";
 import { timestampFn } from "../utils/extractTime.js";
+import ReactQuill from "react-quill";
 
 const PostCard = ({ post }) => {
   const [comment, setComment] = useState("");
@@ -16,7 +17,7 @@ const PostCard = ({ post }) => {
   const { loadingPost } = useSelector((store) => store.posts);
 
   const isMyPost = postOwner?._id === user?._id || user?.role === "admin";
-  const isLiked = user?.likedPosts?.includes(post?._id)
+  const isLiked = user?.likedPosts?.includes(post?._id);
 
   let isCommenting = loadingPost;
 
@@ -99,12 +100,12 @@ const PostCard = ({ post }) => {
 
   return (
     <>
-      <article className="w-[90%] sm:w-[80%] mx-auto glass-morph overflow-hidden">
+      <article className="w-[90%] sm:w-[80%] max-w-4xl mx-auto glass-morph overflow-hidden">
         <div className="flex gap-2 items-start p-4 bg-[#fdfdfd]">
           <div className="avatar h-8">
             <Link
               to={`/profile/${postOwner?.username}`}
-              className="w-8 rounded-full overflow-hidden"
+              className="w-8 bg-white rounded-full overflow-hidden"
             >
               <img
                 src={
@@ -160,16 +161,34 @@ const PostCard = ({ post }) => {
                 </div>
               )}
             </div>
-            <div className="flex flex-col gap-3 w-fit overflow-hidden">
-              <span>{post?.text}</span>
+            <div className="flex flex-col gap-2 w-fit text-sm sm:text-base lg:text-lg overflow-hidden">
+              <div className="block w-full max-w-[85%] h-full">
+                <ReactQuill
+                  className="block h-full w-fit text-base"
+                  value={post?.text}
+                  readOnly={true}
+                  theme={null}
+                />
+              </div>
               {post?.media_url && (
                 <figure className="flex max-w-[90%] min-h-fit aspect-[16/9] mr-auto bg-[#f5f5f5]">
                   <img
                     src={post?.media_url}
                     className="h-80 object-contain border overflow-hidden rounded-lg border-gray-200"
                     alt="post image"
+                    loading="lazy"
                   />
                 </figure>
+              )}
+              {post?.video_url && (
+                <div className="flex w-full max-w-[90%] h-fit aspect-[16/9] mr-auto mb-2 bg-[#f5f5f5]">
+                  <video
+                    src={post?.video_url}
+                    className="h-full object-contain border overflow-hidden rounded-lg border-gray-200"
+                    alt="post video"
+                    controls
+                  />
+                </div>
               )}
             </div>
             <div className="flex justify-between mt-3">

@@ -7,11 +7,25 @@ import Community from "../models/community.model.js";
 
 export const createRecipe = async (req, res) => {
   try {
-    const { title, description, ingredients, instructions } = req.body;
-    let { media_url, cuisine_type, dietary_tags } = req.body;
+    const {
+      title,
+      description,
+      category,
+      cuisine_type,
+      ingredients,
+      instructions,
+    } = req.body;
+    let { media_url, dietary_tags } = req.body;
     const userId = req.id;
 
-    if (!title || !description || !ingredients || !instructions)
+    if (
+      !title ||
+      !description ||
+      !category ||
+      !cuisine_type ||
+      !ingredients ||
+      !instructions
+    )
       return res.status(400).json({
         message: "Required field(s) missing.",
         success: false,
@@ -32,8 +46,9 @@ export const createRecipe = async (req, res) => {
       user: userId,
       title,
       description,
+      category,
       ingredients,
-      instructions: instructions.splice(0, instructions.length - 1),
+      instructions,
       media_url,
       cuisine_type,
       dietary_tags,
@@ -55,6 +70,18 @@ export const createRecipe = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in createRecipe: ", error.message);
+    if (error.code === "LIMIT_FILE_SIZE") {
+      return res.status(413).json({
+        message: "File size too large. Max 5MB allowed.",
+        success: false,
+      });
+    }
+    if (error.type === "entity.too.large") {
+      return res.status(413).json({
+        message: "Request payload too large.",
+        success: false,
+      });
+    }
     res.status(500).json({
       message: "Internal Server Error.",
       success: false,
@@ -64,16 +91,31 @@ export const createRecipe = async (req, res) => {
 
 export const createCommunityRecipe = async (req, res) => {
   try {
-    const { title, description, ingredients, instructions } = req.body;
-    let { media_url, cuisine_type, dietary_tags } = req.body;
+    const {
+      title,
+      description,
+      category,
+      cuisine_type,
+      ingredients,
+      instructions,
+    } = req.body;
+    let { media_url, dietary_tags } = req.body;
     const userId = req.id;
     const { communityId } = req.params;
 
-    if (!title || !description || !ingredients || !instructions)
+    if (
+      !title ||
+      !description ||
+      !category ||
+      !cuisine_type ||
+      !ingredients ||
+      !instructions
+    )
       return res.status(400).json({
         message: "Required field(s) missing.",
         success: false,
       });
+
     const user = await User.findById(userId);
     if (!user)
       return res.status(404).json({
@@ -107,8 +149,9 @@ export const createCommunityRecipe = async (req, res) => {
       user: userId,
       title,
       description,
+      category,
       ingredients,
-      instructions: instructions.splice(0, instructions.length - 1),
+      instructions,
       media_url,
       cuisine_type,
       dietary_tags,
@@ -135,6 +178,18 @@ export const createCommunityRecipe = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in createCommunityRecipe: ", error.message);
+    if (error.code === "LIMIT_FILE_SIZE") {
+      return res.status(413).json({
+        message: "File size too large. Max 5MB allowed.",
+        success: false,
+      });
+    }
+    if (error.type === "entity.too.large") {
+      return res.status(413).json({
+        message: "Request payload too large.",
+        success: false,
+      });
+    }
     res.status(500).json({
       message: "Internal Server Error.",
       success: false,
@@ -372,8 +427,9 @@ export const getAllRecipes = async (req, res) => {
     const query = {
       $or: [
         { title: { $regex: keyword, $options: "i" } },
-        { description: { $regex: keyword, $options: "i" } },
         { ingredients: { $regex: keyword, $options: "i" } },
+        { cuisine_type: { $regex: keyword, $options: "i" } },
+        { category: { $regex: keyword, $options: "i" } },
       ],
     };
     const recipes = await Recipe.find(query)
@@ -531,7 +587,7 @@ export const getUserCommunitiesRecipes = async (req, res) => {
     const query = {
       $or: [{ members: { $in: user._id } }, { owner: user._id }],
     };
-    const communities = await Community.find(query).populate("recipes");
+    const communities = await Community.find(query).sort({createdAt: -1}).populate("recipes");
 
     var Arr = [];
 

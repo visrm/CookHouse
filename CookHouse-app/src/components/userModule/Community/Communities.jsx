@@ -1,9 +1,10 @@
 import { useSelector } from "react-redux";
-import useGetAllCommunities from "./Hooks/useGetAllCommunities";
-import CommunityCard from "./CommunityCard";
-import LoadingSpinner from "./LoadingSpinner";
+import useGetAllCommunities from "../../Hooks/useGetAllCommunities";
+import CommunityCard from "../../CommunityCard";
+import LoadingSpinner from "../../LoadingSpinner";
 import { LuSearch } from "react-icons/lu";
 import { useEffect, useState } from "react";
+import CommunityCardSkeleton from "../../Skeleton/CommunityCardSkeleton";
 
 const Communities = () => {
   const [keyword, setKeyword] = useState("");
@@ -13,7 +14,7 @@ const Communities = () => {
   const { loadingCommunity, allCommunities } = useSelector(
     (store) => store.communities
   );
-  
+
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const keywordFromUrl = urlParams.get("keyword");
@@ -68,8 +69,10 @@ const Communities = () => {
           </article>
           <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 p-2 min-h-full w-full max-w-full">
             {loadingCommunity && (
-              <div className="block text-center p-2 h-52">
-                <LoadingSpinner size="lg" />
+              <div className="block text-center gap-0.5">
+                {[...Array(4)].map((_, idx) => (
+                  <CommunityCardSkeleton key={idx} />
+                ))}
               </div>
             )}
             {!loadingCommunity && allCommunities.length === 0 && (

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const PageNotFound = () => {
   return (
     <>
@@ -7,6 +9,12 @@ const PageNotFound = () => {
           <p className="text-sm font-light">
             Oops!! The page you're looking for does not exist.
           </p>
+          <Link
+            to={"/home"}
+            className="btn amber-gradient w-full max-w-[33%] mx-auto my-2 px-4"
+          >
+            Home
+          </Link>
         </div>
       </main>
     </>

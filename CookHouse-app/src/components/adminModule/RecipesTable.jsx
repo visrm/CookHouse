@@ -5,17 +5,19 @@ import { RECIPES_API_END_POINT } from "../../utils/constants.js";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../LoadingSpinner.jsx";
 import { MdMoreVert } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LuSearch } from "react-icons/lu";
+import { setSearchedRecipeQuery } from "../../redux/slices/recipe.slice.js";
 
 const RecipesTable = (refreshVar) => {
   const [keyword, setKeyword] = useState("");
 
-  useGetAllRecipes(keyword,refreshVar);
-
+  useGetAllRecipes(keyword, refreshVar);
+  const dispatch = useDispatch();
   const { loadingRecipe, allRecipes } = useSelector((store) => store.recipes);
 
   useEffect(() => {
+    dispatch(setSearchedRecipeQuery(""))
     const urlParams = new URLSearchParams(location.search);
     const keywordFromUrl = urlParams.get("keyword");
     if (keywordFromUrl) setKeyword(keywordFromUrl);
@@ -42,7 +44,7 @@ const RecipesTable = (refreshVar) => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
-    } 
+    }
   };
 
   return (
@@ -60,6 +62,7 @@ const RecipesTable = (refreshVar) => {
                 name="q"
                 value={keyword}
                 onChange={(e) => {
+                  dispatch(setSearchedRecipeQuery(e.target.value.trim()));
                   setKeyword(e.target.value);
                 }}
                 placeholder="Search"

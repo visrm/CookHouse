@@ -102,14 +102,14 @@ const Notifications = () => {
           </div>
         )}
         {allNotifications?.length === 0 && (
-          <div className="text-center p-3 font-bold">No notifications 🤔</div>
+          <div className="text-center p-3 font-bold text-sm">No notifications 🤔</div>
         )}
         {allNotifications?.map((notification) => (
           <div
-            className="border-0 flex flex-row justify-between items-center"
+            className="border-0 flex flex-row justify-between items-center text-sm"
             key={notification?._id}
           >
-            <div className="flex gap-2 p-4">
+            <div className="flex gap-0.5 px-4 py-3 items-center">
               {notification?.type === "follow" && (
                 <FaUser className="w-7 h-7 text-primary" />
               )}

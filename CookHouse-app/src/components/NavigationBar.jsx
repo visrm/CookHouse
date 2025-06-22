@@ -20,7 +20,7 @@ const NavigationBar = () => {
 
           {/* Nav Links (to be aligned to the right) */}
           <div className="inline-flex items-center justify-end gap-0.5 w-full max-w-full">
-            {user && (
+            {user && user?.role == "user" && (
               <div className="dropdown dropdown-end dropdown-hover">
                 <div
                   tabIndex={0}
@@ -59,21 +59,15 @@ const NavigationBar = () => {
               </div>
             )}
 
-            <div>
-              <Link to="/contact">
-                <div className="btn btn-sm text-xs sm:text-sm bg-transparent border-0 md:font-semibold">
-                  Contact
-                </div>
-              </Link>
-            </div>
-
-            <div>
-              <Link to="/about">
-                <div className="btn btn-sm text-xs sm:text-sm bg-transparent border-0 md:font-semibold">
-                  About
-                </div>
-              </Link>
-            </div>
+            {user && user?.role == "user" && (
+              <div>
+                <Link to="/contact">
+                  <div className="btn btn-sm text-xs sm:text-sm bg-transparent border-0 md:font-semibold">
+                    Contact
+                  </div>
+                </Link>
+              </div>
+            )}
 
             {!user && (
               <ul className="ml-2 md:ml-4 list-none inline-flex flex-nowrap gap-2 md:gap-4 md:font-semibold">

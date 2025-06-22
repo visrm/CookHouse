@@ -58,7 +58,7 @@ const MessageInput = () => {
   return (
     <>
       <form
-        className="relative px-4 my-3 transition-all duration-300"
+        className="block relative px-4 my-3 w-full max-w-full transition-all duration-300"
         id="messageInputForm"
         onSubmit={handleSubmit}
       >
@@ -95,26 +95,28 @@ const MessageInput = () => {
             ref={imgRef}
             onChange={handleImgChange}
           />
-          <input
-            type="text"
-            className="input border-none text-base font-medium focus:outline-0 rounded-full block w-full p-2.5 text-slate-900"
-            placeholder="Send a message"
-            maxLength={250}
-            name="text-input"
-            id="text-input"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <button
-            type="submit"
-            className="absolute inset-y-0 end-0 flex items-center pe-3"
-          >
-            {loadingMessages ? (
-              <div className="loading loading-spinner"></div>
-            ) : (
-              <BsSend className="h-6 w-6" />
-            )}
-          </button>
+          <div className="relative flex flex-row flex-nowrap w-full max-w-[49.5rem]">
+            <input
+              type="text"
+              className="input block w-[94%] border-none text-base font-medium focus:outline-0 rounded-full p-2.5 text-slate-900"
+              placeholder="Send a message"
+              maxLength={250}
+              name="text-input"
+              id="text-input"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="absolute inset-y-0 end-0 flex items-center pe-3"
+            >
+              {loadingMessages ? (
+                <div className="loading loading-spinner"></div>
+              ) : (
+                <BsSend className="h-7 w-7 p-0.25" />
+              )}
+            </button>
+          </div>
         </div>
       </form>
       {img && (

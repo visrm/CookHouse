@@ -15,7 +15,6 @@ const EditProfileModal = () => {
     username: user?.username || "",
     fullname: user?.fullname || "",
     bio: user?.profile?.bio || "",
-
     email: user?.email || "",
     currentPassword: "",
     newPassword: "",
@@ -53,6 +52,7 @@ const EditProfileModal = () => {
       if (response.data.success) {
         dispatch(setUser(response.data.user));
         toast.success(response.data.message);
+        toast.success("Refresh page to update info");
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -66,7 +66,7 @@ const EditProfileModal = () => {
         currentPassword: "",
         newPassword: "",
       });
-      document.getElementById("editModal").close();
+      document.getElementById("editModal")?.close();
     }
   };
 

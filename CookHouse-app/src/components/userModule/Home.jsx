@@ -9,6 +9,7 @@ import useGetAllFollowingPosts from "../Hooks/useGetAllFollowingPosts.jsx";
 import { MdOutlineRefresh } from "react-icons/md";
 import HomeCarousel from "../HomeCarousel.jsx";
 import useGetMe from "../Hooks/useGetMe.jsx";
+import PostSkeleton from "../Skeleton/PostSkeleton.jsx";
 
 const Home = () => {
   const [feedType, setFeedType] = useState("posts");
@@ -90,8 +91,8 @@ const Home = () => {
             {feedType === "following" && (
               <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 py-2 min-h-full w-full max-w-full">
                 {loadingPost && (
-                  <div className="block text-center">
-                    <LoadingSpinner size="lg" />
+                  <div className="block text-center gap-2">
+                   { [...Array(3)].map((_, idx) => <PostSkeleton key={idx} />)}
                   </div>
                 )}
                 {!loadingPost && followingPosts.length === 0 && (

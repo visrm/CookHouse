@@ -1,5 +1,5 @@
-import { CiImageOn } from "react-icons/ci";
 import { BsEmojiSmileFill } from "react-icons/bs";
+import { MdOutlineImage, MdOutlineVideoLibrary } from "react-icons/md";
 import { useRef, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import axios from "axios";
@@ -12,16 +12,20 @@ import toast from "react-hot-toast";
 import { setLoadingRecipe } from "../redux/slices/recipe.slice.js";
 import { setLoadingPost } from "../redux/slices/post.slice.js";
 import EmojiPicker from "emoji-picker-react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import LoadingSpinner from "./LoadingSpinner.jsx";
 
 const CreateRecipe = () => {
   const [recipe, setRecipe] = useState({
     title: "",
-    desc: "",
+    category: "",
     ingredients: "",
-    instructions: "",
     cuisine_type: "",
     dietary_tags: "",
   });
+  const [desc, setDesc] = useState("");
+  const [instructions, setInstructions] = useState("");
   const [img, setImg] = useState(null);
 
   const imgRef = useRef(null);
@@ -39,9 +43,10 @@ const CreateRecipe = () => {
       let recipeData = {
         user: user?._id,
         title: recipe.title,
-        description: recipe.desc,
+        description: desc,
+        category: recipe.category,
         ingredients: recipe.ingredients.split(","),
-        instructions: recipe.instructions.split("."),
+        instructions: instructions,
         cuisine_type: recipe.cuisine_type,
         dietary_tags: recipe.dietary_tags.split(","),
         media_url: img,
@@ -66,12 +71,13 @@ const CreateRecipe = () => {
       dispatch(setLoadingRecipe(false));
       setRecipe({
         title: "",
-        desc: "",
+        category: "",
         ingredients: "",
-        instructions: "",
         cuisine_type: "",
         dietary_tags: "",
       });
+      setDesc("");
+      setInstructions("");
       setImg(null);
     }
   };
@@ -111,12 +117,13 @@ const CreateRecipe = () => {
                 onClick={() => {
                   setRecipe({
                     title: "",
-                    desc: "",
+                    category: "",
                     ingredients: "",
-                    instructions: "",
                     cuisine_type: "",
                     dietary_tags: "",
                   });
+                  setDesc("");
+                  setInstructions("");
                   setImg(null);
                 }}
               >
@@ -144,35 +151,84 @@ const CreateRecipe = () => {
                   required
                 />
               </div>
+
               <div>
                 <label htmlFor="cuisine_type">Cuisine type :</label>
-                <textarea
-                  className="rounded-md textarea-sm  h-8 min-h-8 w-full p-1 sm:p-2 text-lg resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300 overflow-hidden"
-                  placeholder="Cuisine type (optional)"
+                <select
+                  className="rounded-md inline-block h-8 min-h-8 w-full px-1 sm:px-2 border focus:outline-none bg-[#fdfdfd] border-slate-300 overflow-hidden"
                   name="cuisine_type"
                   id="cuisine_type"
                   value={recipe.cuisine_type}
                   onChange={handleInputChange}
-                  maxLength={"40ch"}
-                />
+                  required
+                >
+                  <option value="">None</option>
+                  <option value="indian">Indian Cuisine</option>
+                  <option value="american">American Cuisine</option>
+                  <option value="mediterranean">Mediterranean Cuisine</option>
+                  <option value="italian">Italian Cuisine</option>
+                  <option value="chinese">Chinese Cuisine</option>
+                  <option value="french">French Cuisine</option>
+                  <option value="spanish">Spanish Cuisine</option>
+                  <option value="middle-eastern">Middle Eastern Cuisine</option>
+                  <option value="mexican">Mexican Cuisine</option>
+                  <option value="japanese">Japanese Cuisine</option>
+                  <option value="korean">Korean Cuisine</option>
+                  <option value="fusion">Fusion Cuisine</option>
+                  <option value="haute">Haute Cuisine</option>
+                  <option value="religious">Religious Cuisine</option>
+                  <option value="other">Other</option>
+                </select>
               </div>
+
+              <div>
+                <label htmlFor="category">Category :</label>
+                <select
+                  className="rounded-md inline-block h-8 min-h-8 w-full px-1 sm:px-2 border focus:outline-none bg-[#fdfdfd] border-slate-300 overflow-hidden"
+                  name="category"
+                  id="category"
+                  value={recipe.category}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">None</option>
+                  <option value="breakfast">Breakfast</option>
+                  <option value="lunch">Lunch</option>
+                  <option value="dinner">Dinner</option>
+                  <option value="appetiser">Appetiser</option>
+                  <option value="salad">Salad</option>
+                  <option value="soup">Soup</option>
+                  <option value="snack">Snack</option>
+                  <option value="main-course">Main course</option>
+                  <option value="side-dish">Side dish</option>
+                  <option value="drinks-beverages">Drinks/Beverages</option>
+                  <option value="baked-good">Baked goods</option>
+                  <option value="vegetarian">Vegetarian</option>
+                  <option value="meat">Meat</option>
+                  <option value="sea-food">Seafood</option>
+                  <option value="miscellaneous">Miscellaneous</option>
+                </select>
+              </div>
+
               <div>
                 <label htmlFor="desc">Description :</label>
-                <textarea
-                  className="rounded-md textarea-sm h-full min-h-12 w-full p-1 sm:p-2 text-base resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300"
-                  placeholder="Desciption"
+                <ReactQuill
+                  className="block h-full min-h-12 w-full max-w-full text-base focus:outline-none bg-[#fdfdfd] border-slate-300"
+                  placeholder="Give a description of your recipe."
                   name="desc"
                   id="desc"
-                  value={recipe.desc}
-                  onChange={handleInputChange}
+                  value={desc}
+                  onChange={setDesc}
+                  theme="snow"
                   maxLength={"500ch"}
                   required
                 />
               </div>
+
               <div>
                 <label htmlFor="ingredients">Ingredients :</label>
                 <textarea
-                  className="rounded-md textarea-sm h-full min-h-14 w-full p-1 sm:p-2 text-base resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300"
+                  className="rounded-md textarea-sm h-full min-h-20 w-full p-1 sm:p-2 text-base resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300"
                   placeholder={`Provide Ingredients seperated by commas(",").`}
                   name="ingredients"
                   id="ingredients"
@@ -181,18 +237,20 @@ const CreateRecipe = () => {
                   required
                 />
               </div>
+
               <div>
                 <label htmlFor="instructions">Instructions :</label>
-                <textarea
-                  className="rounded-md textarea textarea-sm h-full min-h-20 w-full p-1 sm:p-2 text-base resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300"
-                  placeholder={`Example Instruction: \n Fill a kettle with fresh water and bring it to a boil.\n Pour the boiling water over the tea and let it steep for the 3-5 min. `}
+                <ReactQuill
+                  className="h-full min-h-20 w-full max-w-full text-base focus:outline-none bg-[#fdfdfd] border-slate-300"
                   name="instructions"
                   id="instructions"
-                  value={recipe.instructions}
-                  onChange={handleInputChange}
+                  theme="snow"
+                  value={instructions}
+                  onChange={setInstructions}
                   required
                 />
               </div>
+
               <div>
                 <label htmlFor="dietary_tags">Dietary tags :</label>
                 <textarea
@@ -222,7 +280,7 @@ const CreateRecipe = () => {
 
               <div className="relative flex justify-between border-t py-2 border-t-gray-100">
                 <div className="flex gap-1 sm:gap-2 lg:gap-4 items-center">
-                  <CiImageOn
+                  <MdOutlineImage
                     className="fill-slate-700 w-6 h-6 cursor-pointer"
                     onClick={() => imgRef.current.click()}
                     title="Add image"
@@ -253,15 +311,17 @@ const CreateRecipe = () => {
 const CreatePostAndRecipe = () => {
   const [text, setText] = useState("");
   const [img, setImg] = useState(null);
+  const [video, setVideo] = useState(null);
   const [openEmoji, setOpenEmoji] = useState(false);
 
   const imgRef = useRef(null);
+  const videoRef = useRef(null);
 
-  const isPending = false;
-  const isError = false;
+  const maxLimit = 5242880;
 
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.auth);
+  const { loadingPost } = useSelector((store) => store.posts);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -271,6 +331,7 @@ const CreatePostAndRecipe = () => {
         user: user?._id,
         text: text,
         media_url: img,
+        video_url: video,
       };
       const response = await axios.post(
         `${POSTS_API_END_POINT}/create`,
@@ -293,6 +354,7 @@ const CreatePostAndRecipe = () => {
       setOpenEmoji(false);
       setText("");
       setImg(null);
+      setVideo(null);
     }
   };
 
@@ -303,16 +365,37 @@ const CreatePostAndRecipe = () => {
       reader.onload = () => {
         setImg(reader.result);
       };
+      if (file.size > maxLimit) {
+        toast.error("File size exceeds size limit!");
+        e.target.value("");
+        setImg(null);
+      }
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleVideoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setVideo(reader.result);
+      };
+      if (file.size > maxLimit) {
+        toast.error("File size exceeds size limit!");
+        e.target.value("");
+        setVideo(null);
+      }
       reader.readAsDataURL(file);
     }
   };
 
   return (
     <>
-      <article className="flex flex-col min-w-fit w-[75%] md:w-[50%] max-w-[90%] mx-auto glass-morph">
+      <article className="flex flex-col w-[75%] md:w-[50%] max-w-[90%] mx-auto glass-morph">
         <div className="flex flex-col flex-nowrap my-2 sm:my-3 md:my-6 lg:my-8 w-full rounded-xl p-4 items-start gap-4 border-b border-gray-100">
           <div className="avatar">
-            <div className="w-8 rounded-full">
+            <div className="w-8 bg-white rounded-full">
               <img
                 src={
                   user?.profile?.profileImg || "/assets/avatar-placeholder.png"
@@ -321,22 +404,23 @@ const CreatePostAndRecipe = () => {
             </div>
           </div>
           <form
-            className="flex flex-col gap-2 w-full"
+            className="flex flex-col gap-2 w-full max-w-full"
             onSubmit={handleSubmit}
             id="handleCreatePost"
           >
-            <textarea
-              className="textarea sm:textarea-md w-full p-1 sm:p-2 text-base sm:text-lg resize-none border focus:outline-none bg-[#fff] border-slate-300"
+            <ReactQuill
+              className="block h-full min-h-28 w-full max-w-full text-base sm:text-lg focus:outline-none bg-[#fff] border-slate-300"
               placeholder="What's happening?!"
               name="text"
               id="text"
+              theme="snow"
               value={text}
-              onChange={(e) => setText(e.target.value)}
+              onChange={setText}
             />
             {img && (
-              <div className="relative w-72 mx-auto">
+              <div className="relative w-72 mx-auto transition-all duration-300">
                 <IoCloseSharp
-                  className="absolute top-0 right-0 text-white bg-slate-800 rounded-full w-5 h-5 cursor-pointer"
+                  className="absolute top-0 right-0 text-white bg-slate-800 rounded-full w-5 h-5 cursor-pointer hover:scale-110 z-[100]"
                   onClick={() => {
                     setImg(null);
                     imgRef.current.value = null;
@@ -345,6 +429,22 @@ const CreatePostAndRecipe = () => {
                 <img
                   src={img}
                   className="w-full mx-auto h-72 object-contain rounded"
+                />
+              </div>
+            )}
+            {video && (
+              <div className="relative w-72 mx-auto">
+                <IoCloseSharp
+                  className="absolute top-0 right-0 text-white bg-slate-800 rounded-full w-5 h-5 cursor-pointer hover:scale-110 z-[100]"
+                  onClick={() => {
+                    setVideo(null);
+                    videoRef.current.value = null;
+                  }}
+                />
+                <video
+                  src={video}
+                  className="w-full mx-auto h-72 object-contain rounded"
+                  controls
                 />
               </div>
             )}
@@ -361,10 +461,15 @@ const CreatePostAndRecipe = () => {
                 </div>
               )}
               <div className="flex gap-1 sm:gap-2 lg:gap-4 items-center">
-                <CiImageOn
+                <MdOutlineImage
                   className="fill-slate-700 w-6 h-6 cursor-pointer"
                   onClick={() => imgRef.current.click()}
                   title="Add image"
+                />
+                <MdOutlineVideoLibrary
+                  className="fill-slate-700 w-6 h-6 cursor-pointer"
+                  onClick={() => videoRef.current.click()}
+                  title="Add video"
                 />
                 <BsEmojiSmileFill
                   className="fill-slate-700 w-5 h-5 cursor-pointer"
@@ -373,19 +478,25 @@ const CreatePostAndRecipe = () => {
                 />
               </div>
               <input
+                id="image-input"
                 type="file"
                 accept="image/*"
                 hidden
                 ref={imgRef}
                 onChange={handleImgChange}
               />
+              <input
+                id="video-input"
+                type="file"
+                accept="video/*"
+                hidden
+                ref={videoRef}
+                onChange={handleVideoChange}
+              />
               <button className="submit-btn transition-all duration-300">
-                {isPending ? "Posting..." : "Create Post"}
+                {loadingPost ? <LoadingSpinner size="sm" /> : "Create Post"}
               </button>
             </div>
-            {isError && (
-              <div className="text-red-500">Something went wrong</div>
-            )}
           </form>
           <div className="divider my-1 font-semibold">OR</div>
           <div className="block w-full">

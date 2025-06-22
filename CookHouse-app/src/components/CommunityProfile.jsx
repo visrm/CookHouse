@@ -86,14 +86,15 @@ const CommunityProfile = () => {
     }
   };
 
-  const handleImgSubmit = async (communityId) => {
+  const handleImgSubmit = async (e) => {
+    e.preventDefault()
     let updateInfo = {
-      profileImg,
-      coverImg,
+      profileImg: profileImg,
+      coverImg: coverImg,
     };
     try {
       const response = await axios.patch(
-        `${COMMUNITIES_API_END_POINT}/update/${communityId}`,
+        `${COMMUNITIES_API_END_POINT}/update/${singleCommunity?._id}`,
         updateInfo,
         {
           headers: {
@@ -383,9 +384,7 @@ const CommunityProfile = () => {
               {(coverImg || profileImg) && (
                 <button
                   className="btn bg-indigo-500 text-[#fdfdfd] border rounded-full btn-sm w-fit"
-                  onClick={(e) => {
-                    handleImgSubmit(singleCommunity?._id);
-                  }}
+                  onClick={handleImgSubmit}
                 >
                   Update
                 </button>

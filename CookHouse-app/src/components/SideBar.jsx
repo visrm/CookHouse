@@ -150,7 +150,7 @@ const SideBar = () => {
                 className="flex gap-2 item-start"
               >
                 <div className="avatar h-10 hidden md:inline-flex">
-                  <div className="w-10 rounded-full border border-slate-900">
+                  <div className="w-10 bg-white rounded-full border border-slate-900">
                     <img
                       src={
                         user?.profile?.profileImg ||

@@ -13,12 +13,13 @@ import useGetLikedPosts from "../Hooks/useGetLikedPosts.jsx";
 import ProfileSkeleton from "../Skeleton/ProfileSkeleton.jsx";
 import PostsCard from "../PostCard.jsx";
 import RecipesCard from "../RecipeCard.jsx";
-import LoadingSpinner from "../LoadingSpinner.jsx";
 import toast from "react-hot-toast";
 import { setLoading, setSingleUser } from "../../redux/slices/user.slice.js";
 import { getMonth } from "../../utils/extractTime.js";
 import EditProfileModal from "../EditProfileModal.jsx";
 import { setUser } from "../../redux/slices/auth.slice.js";
+import PostSkeleton from "../Skeleton/PostSkeleton.jsx";
+import RecipeSkeleton from "../Skeleton/RecipeSkeleton.jsx";
 
 const Profile = () => {
   const [coverImg, setCoverImg] = useState(null);
@@ -72,6 +73,7 @@ const Profile = () => {
   const isFollowing = user?.following.includes(singleUser?._id);
 
   const handleImgChange = (e, state) => {
+    const maxLimit = 5242880;
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -79,6 +81,12 @@ const Profile = () => {
         state === "coverImg" && setCoverImg(reader.result);
         state === "profileImg" && setProfileImg(reader.result);
       };
+      if (file.size > maxLimit) {
+        toast.error("File size exceeds size limit!");
+        e.target.value("");
+        setCoverImg(null);
+        setProfileImg(null);
+      }
       reader.readAsDataURL(file);
     }
   };
@@ -191,7 +199,7 @@ const Profile = () => {
               />
               {/* User Avatar */}
               <div className="avatar absolute block left-4 -bottom-16 z-0">
-                <div className="relative w-28 sm:w-28 md:w-36 ring-slate-400 rounded-full ring-2 ring-offset-2">
+                <div className="relative w-28 sm:w-28 md:w-36 ring-slate-400 rounded-full ring-2 ring-offset-2 bg-white">
                   <img
                     src={
                       profileImg ||
@@ -338,8 +346,10 @@ const Profile = () => {
             {feedType === "posts" && (
               <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
                 {loading && (
-                  <div className="block text-center">
-                    <LoadingSpinner size="lg" />
+                  <div className="block text-center gap-2">
+                    {[...Array(3)].map((_, idx) => (
+                      <PostSkeleton key={idx} />
+                    ))}
                   </div>
                 )}
                 {!loading && selfPosts.length === 0 && (
@@ -356,8 +366,10 @@ const Profile = () => {
             {feedType === "recipes" && (
               <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
                 {loading && (
-                  <div className="block text-center">
-                    <LoadingSpinner size="lg" />
+                  <div className="flex flex-col flex-nowrap text-center gap-2">
+                    {[...Array(3)].map((_, idx) => (
+                      <RecipeSkeleton key={idx} />
+                    ))}
                   </div>
                 )}
                 {!loading && selfRecipes.length === 0 && (
@@ -374,8 +386,10 @@ const Profile = () => {
             {feedType === "liked" && (
               <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
                 {loadingPost && (
-                  <div className="block text-center">
-                    <LoadingSpinner size="lg" />
+                  <div className="block text-center gap-2">
+                    {[...Array(3)].map((_, idx) => (
+                      <PostSkeleton key={idx} />
+                    ))}
                   </div>
                 )}
                 {!loadingPost && likedPosts.length === 0 && (

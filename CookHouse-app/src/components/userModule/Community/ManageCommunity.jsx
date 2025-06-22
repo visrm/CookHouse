@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import CreateCommunity from "./CreateCommunity";
 import axios from "axios";
-import { COMMUNITIES_API_END_POINT } from "../utils/constants.js";
+import { COMMUNITIES_API_END_POINT } from "../../../utils/constants.js";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading, setSelfCommunity } from "../redux/slices/user.slice.js";
-import LoadingSpinner from "./LoadingSpinner";
-import CommunityCard from "./CommunityCard";
+import { setLoading, setSelfCommunity } from "../../../redux/slices/user.slice.js";
+import LoadingSpinner from "../../LoadingSpinner";
+import CommunityCard from "../../CommunityCard";
 
 const ManageCommunity = () => {
   const [feedType, setFeedType] = useState("manage");

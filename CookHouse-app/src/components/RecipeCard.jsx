@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import { RECIPES_API_END_POINT } from "../utils/constants.js";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { MdMoreVert } from "react-icons/md";
 import { timestampFn } from "../utils/extractTime.js";
+import ReactQuill from "react-quill";
 
 const RecipeCard = ({ recipe }) => {
   const [review, setReview] = useState("");
@@ -16,7 +17,7 @@ const RecipeCard = ({ recipe }) => {
   const { loadingRecipe } = useSelector((store) => store.recipes);
 
   const isMyRecipe = recipeMaker?._id === user?._id || user?.role === "admin";
-  const isLiked = user?.likedRecipes?.includes(recipe?._id)
+  const isLiked = user?.likedRecipes?.includes(recipe?._id);
 
   const isCommenting = loadingRecipe;
 
@@ -104,12 +105,12 @@ const RecipeCard = ({ recipe }) => {
   let i = 1;
   return (
     <>
-      <article className="w-[90%] sm:w-[80%] mx-auto glass-morph overflow-hidden">
+      <article className="w-[90%] sm:w-[80%] max-w-4xl mx-auto glass-morph overflow-hidden">
         <div className="flex gap-2 items-start p-4 bg-[#fdfdfd]">
           <div className="avatar h-8">
             <Link
               to={`/profile/${recipeMaker?.username}`}
-              className="w-8 rounded-full overflow-hidden"
+              className="w-8 bg-white rounded-full overflow-hidden"
             >
               <img
                 src={
@@ -174,7 +175,7 @@ const RecipeCard = ({ recipe }) => {
             {/* Recipe Details */}
             <div className="flex flex-col gap-3 p-2 sm:p-3 transition-all duration-300 w-full max-w-[93%]">
               <div>
-                <hgroup className="flex flex-row flex-wrap w-full max-w-full h-fit items-center gap-2 my-1">
+                <hgroup className="flex flex-row flex-wrap w-full max-w-full h-fit items-center gap-2 sm:gap-3 my-1">
                   <h1 className="font-bold text-lg sm:text-3xl text-left first-letter:capitalize font-serif">
                     {recipe?.title}
                   </h1>
@@ -183,13 +184,20 @@ const RecipeCard = ({ recipe }) => {
                   </h3>
                 </hgroup>
 
-                <span className="block text-xs sm:text-sm h-full w-full my-1 sm:my-2 first-letter:capitalize">
-                  {recipe?.description}
-                </span>
+                <ReactQuill
+                  className="block h-full w-full max-w-[95%] my-1 sm:mt-2 first-letter:capitalize"
+                  value={recipe?.description}
+                  readOnly={true}
+                  theme={null}
+                />
+
                 <div className="flex flex-row flex-wrap gap-2 items-center w-full max-w-full h-full mb-2 sm:mb-4">
-                  {recipe?.dietary_tags.map((tag) => {
+                  {recipe?.dietary_tags.map((tag, id) => {
                     return (
-                      <span className="bg-amber-100 px-4 py-1 rounded-md text-amber-800 font-medium text-xs sm:text-sm">
+                      <span
+                        key={id}
+                        className="bg-amber-100 px-4 py-1 rounded-md text-amber-800 font-medium text-xs sm:text-sm"
+                      >
                         {tag}
                       </span>
                     );
@@ -197,17 +205,17 @@ const RecipeCard = ({ recipe }) => {
                 </div>
 
                 {recipe?.media_url && (
-                  <figure className="flex max-w-full min-h-fit aspect-[16/9] mr-auto bg-[#f5f5f5]">
+                  <figure className="flex max-w-[90%] min-h-fit aspect-[16/9] mr-auto bg-[#f5f5f5]">
                     <img
                       src={recipe?.media_url}
                       className="h-80 object-contain border overflow-hidden rounded-lg border-gray-200"
-                      alt=""
+                      alt="recipe-image"
                       loading="lazy"
                     />
                   </figure>
                 )}
-                <article className="flex flex-col flex-wrap md:flex-row md:flex-nowrap gap-2 mt-2">
-                  <div className="block p-1 sm:p-2 bg-slate-200 border border-slate-300 rounded-md w-full min-w-fit max-w-[33%] h-full">
+                <article className="flex flex-col flex-wrap gap-2 mt-2 sm:mt-4">
+                  <div className="block p-1 sm:p-2 bg-slate-200 border border-slate-300 rounded-md w-full max-w-[66%] h-full">
                     <span className="block text-base text-left font-semibold">
                       Ingredients
                     </span>
@@ -216,7 +224,7 @@ const RecipeCard = ({ recipe }) => {
                         i++;
                         return (
                           <span
-                            className="px-2 rounded-lg text-slate-700 font-medium capitalize"
+                            className="px-2 rounded-lg text-slate-700 font-medium capitalize text-wrap"
                             key={i}
                           >
                             {ingredient.trim()}
@@ -226,29 +234,16 @@ const RecipeCard = ({ recipe }) => {
                     </div>
                   </div>
 
-                  <div className="block p-1 sm:px-2 w-full h-full max-w-[75%] whitespace-normal">
-                    <span className="block font-semibold text-base text-left">
+                  <div className="block p-1 h-full w-full whitespace-normal">
+                    <span className="block font-semibold text-lg text-left">
                       How to prepare?
                     </span>
-                    <ol className="flex flex-col flex-nowrap gap-1 w-full text-xs sm:text-sm list-decimal list-inside">
-                      {recipe?.instructions.length === 0 && (
-                        <li className="list-item first-letter:capitalize">
-                          No Instructions provided.
-                        </li>
-                      )}
-                      {recipe?.instructions?.map((instruction) => {
-                        i++;
-                        if (instruction.trim().length !== 0)
-                          return (
-                            <li
-                              className="list-item first-letter:capitalize"
-                              key={i}
-                            >
-                              {instruction + "."}
-                            </li>
-                          );
-                      })}
-                    </ol>
+                    <ReactQuill
+                      className="block h-full w-full mb-1 sm:mb-2 first-letter:capitalize"
+                      value={recipe?.instructions}
+                      readOnly={true}
+                      theme={null}
+                    />
                   </div>
                 </article>
               </div>

@@ -9,6 +9,7 @@ const postSchema = new mongoose.Schema(
     },
     text: { type: String },
     media_url: { type: String },
+    video_url: { type: String },
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,

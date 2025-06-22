@@ -13,13 +13,13 @@ const Messages = ({ refreshVar }) => {
 
   useEffect(() => {
     setTimeout(() => {
-      lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+      lastMessageRef.current?.scrollIntoView({ behavior: "auto" });
     }, 100);
   }, [lastMessageRef]);
 
   return (
     <>
-      <div className="px-4 flex-1 overflow-hidden">
+      <div className="px-4 flex-1 h-full max-h-[90vh] overflow-scroll">
         {!loadingMessages &&
           singleChatMessages.length > 0 &&
           singleChatMessages.map((message) => {
@@ -27,7 +27,7 @@ const Messages = ({ refreshVar }) => {
               <div
                 key={message?._id}
                 ref={lastMessageRef}
-                className="flex flex-col flex-nowrap w-full gap-2"
+                className="flex flex-col flex-nowrap w-full gap-0.5 mb-2 sm:mb-4 md:mb-6"
               >
                 <Message message={message} />
               </div>

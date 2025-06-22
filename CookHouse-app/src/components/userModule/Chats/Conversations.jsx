@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import Conversation from "./Conversation";
-import LoadingSpinner from "./LoadingSpinner";
+import Conversation from "../../Conversation";
+import LoadingSpinner from "../../LoadingSpinner";
 
 const Conversations = () => {
   const { loading, excludingAuthUser } = useSelector((store) => store.users);

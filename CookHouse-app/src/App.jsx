@@ -9,17 +9,16 @@ import SideBar from "./components/SideBar";
 import Profile from "./components/userModule/Profile";
 import Notifications from "./components/userModule/Notifications";
 import ExplorePage from "./components/userModule/ExplorePage";
-import ChatsHome from "./components/userModule/ChatsHome";
-import Communities from "./components/Communities";
-import CreateCommunity from "./components/CreateCommunity";
+import ChatsHome from "./components/userModule/Chats/ChatsHome";
+import Communities from "./components/userModule/Community/Communities";
+import CreateCommunity from "./components/userModule/Community/CreateCommunity";
+import ManageCommunity from "./components/userModule/Community/ManageCommunity";
 import CommunityProfile from "./components/CommunityProfile";
-import CommunityHome from "./components/userModule/CommunityHome";
-import ManageCommunity from "./components/ManageCommunity";
+import CommunityHome from "./components/userModule/Community/CommunityHome";
 import AdminHome from "./components/adminModule/AdminHome";
 import { Toaster } from "react-hot-toast";
 import PageNotFound from "./components/PageNotFound";
 import Contacts from "./components/Contacts";
-import About from "./components/About";
 import ProtectedRoute from "./components/adminModule/ProtectedRoute";
 import { useSelector } from "react-redux";
 
@@ -95,7 +94,7 @@ function App() {
             element={
               user ? (
                 <ProtectedRoute>
-                  <AdminHome />
+                  <AdminHome />{" "}
                 </ProtectedRoute>
               ) : (
                 <Navigate to="/login" />
@@ -103,7 +102,6 @@ function App() {
             }
           />
           <Route path="/contact" element={<Contacts />} />
-          <Route path="/about" element={<About />} />
           {/* Catch-all route for 404 */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>

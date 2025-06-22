@@ -1,5 +1,5 @@
-import { LuUsers, LuUtensils, LuBookOpen, LuGlobe } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
+import Features from "./LandingFeatures";
 
 const About = () => {
   const navigate = useNavigate();
@@ -9,11 +9,11 @@ const About = () => {
       <main className="relative flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto transition-all duration-300 overflow-x-hidden">
         <div className="max-w-6xl mx-auto px-4 py-12 w-[90%]">
           {/* Hero Section */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-3">
+          <div className="text-center mb-15">
+            <h1 className="text-4xl sm:text-5xl gradient-text text-shadow font-bold mb-3">
               About CookHouse
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-2xl text-gray-600 max-w-3xl mx-auto">
               Bringing together passionate cooks, from beginners to
               professionals, in the world's most flavorful social network.
             </p>
@@ -21,8 +21,8 @@ const About = () => {
 
           {/* Our Story */}
           <div className="mb-20">
-            <h2 className="text-3xl font-bold text-center mb-6">Our Story</h2>
-            <div className="bg-amber-50 p-8 rounded-lg shadow-md">
+            <h2 className="text-4xl font-bold text-center mb-9">Our Story</h2>
+            <div className="bg-amber-100 p-8 rounded-lg shadow-md">
               <div className="md:flex items-center">
                 <div className="md:w-1/2 mb-6 md:mb-0 md:pr-8">
                   <img
@@ -45,7 +45,7 @@ const About = () => {
                     professionals can grow together.
                   </p>
                   <p className="text-base">
-                    Today, CookHouse is more than just a social media
+                    CookHouse is more than just a social media
                     platform—it's a movement that celebrates the universal
                     language of food and the connections it creates between
                     cultures and people.
@@ -57,8 +57,8 @@ const About = () => {
 
           {/* Our Mission */}
           <div className="mb-20">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold">Our Mission</h2>
+            <div className="text-center mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold">Our Mission</h2>
             </div>
             <div className="bg-white p-8 rounded-lg shadow-md text-center">
               <h3 className="text-2xl font-semibold mb-4">
@@ -91,9 +91,12 @@ const About = () => {
             </div>
           </div>
 
+          {/* Features  */}
+          <Features />
+
           {/* Testimonials */}
           <div className="mb-20">
-            <h2 className="text-3xl font-bold text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
               What Our Community Says
             </h2>
             <div className="grid md:grid-cols-2 gap-6">

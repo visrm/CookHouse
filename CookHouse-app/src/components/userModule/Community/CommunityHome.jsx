@@ -1,18 +1,21 @@
 import { useSelector } from "react-redux";
-import useGetAllUserCommunities from "../Hooks/useGetAllUserCommunities";
+import useGetAllUserCommunities from "../../Hooks/useGetAllUserCommunities";
 import { useState } from "react";
-import LoadingSpinner from "../LoadingSpinner";
-import PostCard from "../PostCard";
-import RecipeCard from "../RecipeCard";
-import useGetUsersCommunitiesPosts from "../Hooks/useGetUsersCommunitiesPosts";
-import useGetUsersCommunitiesRecipes from "../Hooks/useGetUsersCommunitiesRecipes";
-import CommunityCard from "../CommunityCard";
-import useGetUsersCommunitiesEvents from "../Hooks/useGetUsersCommunitiesEvents";
-import EventCard from "../EventCard";
+import LoadingSpinner from "../../LoadingSpinner";
+import PostCard from "../../PostCard";
+import RecipeCard from "../../RecipeCard";
+import useGetUsersCommunitiesPosts from "../../Hooks/useGetUsersCommunitiesPosts";
+import useGetUsersCommunitiesRecipes from "../../Hooks/useGetUsersCommunitiesRecipes";
+import CommunityCard from "../../CommunityCard";
+import useGetUsersCommunitiesEvents from "../../Hooks/useGetUsersCommunitiesEvents";
+import EventCard from "../../EventCard";
 import { MdOutlineRefresh } from "react-icons/md";
+import PostSkeleton from "../../Skeleton/PostSkeleton";
+import CommunityCardSkeleton from "../../Skeleton/CommunityCardSkeleton";
+import RecipeSkeleton from "../../Skeleton/RecipeSkeleton";
 
 const CommunityHome = () => {
-  const [feedType, setFeedType] = useState("posts");
+  const [feedType, setFeedType] = useState("communities");
   const [homeRefresh, setHomeRefresh] = useState({});
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -85,6 +88,15 @@ const CommunityHome = () => {
         <section>
           <div className="sticky top-0 flex w-full font-semibold bg-[#fafafa] sm:pt-2 z-50 shadow-md">
             <div
+              className="flex justify-center text-center text-xs sm:text-sm flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
+              onClick={() => setFeedType("communities")}
+            >
+              Your Communities
+              {feedType === "communities" && (
+                <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />
+              )}
+            </div>
+            <div
               className="flex justify-center text-center text-xs sm:text-sm flex-1 p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("posts")}
             >
@@ -111,15 +123,6 @@ const CommunityHome = () => {
                 <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />
               )}
             </div>
-            <div
-              className="flex justify-center text-center text-xs sm:text-sm flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
-              onClick={() => setFeedType("communities")}
-            >
-              Your Communities
-              {feedType === "communities" && (
-                <div className="absolute bottom-0 w-10  h-1 rounded-full bg-indigo-600" />
-              )}
-            </div>
             <div className="flex justify-self-end transition duration-300 relative cursor-pointer">
               <div
                 className="bg-[#fafafa] my-auto tooltip tooltip-left"
@@ -140,8 +143,10 @@ const CommunityHome = () => {
             {feedType === "posts" && (
               <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 py-2 min-h-full w-full max-w-full">
                 {loadingPost && (
-                  <div className="block text-center">
-                    <LoadingSpinner size="lg" />
+                  <div className="block text-center gap-2">
+                    {[...Array(3)].map((_, idx) => (
+                      <PostSkeleton key={idx} />
+                    ))}
                   </div>
                 )}
                 {!loadingPost && usersCommunitiesPosts?.length === 0 && (
@@ -159,8 +164,10 @@ const CommunityHome = () => {
             {feedType === "recipes" && (
               <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 py-2 min-h-full w-full max-w-full">
                 {loadingRecipe && (
-                  <div className="block text-center">
-                    <LoadingSpinner size="lg" />
+                  <div className="block text-center gap-2 sm:gap-3">
+                    {[...Array(3)].map((_, idx) => (
+                      <RecipeSkeleton key={idx} />
+                    ))}
                   </div>
                 )}
                 {!loadingRecipe && usersCommunitiesRecipes?.length === 0 && (
@@ -197,8 +204,10 @@ const CommunityHome = () => {
             {feedType === "communities" && (
               <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 py-2 min-h-full w-full max-w-full">
                 {loadingCommunity && (
-                  <div className="block text-center">
-                    <LoadingSpinner size="lg" />
+                  <div className="block text-center gap-0.5">
+                    {[...Array(3)].map((_, idx) => (
+                      <CommunityCardSkeleton key={idx} />
+                    ))}
                   </div>
                 )}
                 {!loadingCommunity && allUserCommunities?.length === 0 && (

@@ -7,7 +7,7 @@ import Community from "../models/community.model.js";
 export const createPost = async (req, res) => {
   try {
     const { text } = req.body;
-    let { media_url } = req.body;
+    let { media_url, video_url } = req.body;
     const userId = req.id;
 
     const user = await User.findById(userId);
@@ -17,21 +17,33 @@ export const createPost = async (req, res) => {
         success: false,
       });
 
-    if (!text && !media_url)
+    if (!text && !media_url && !video_url)
       return res.status(400).json({
         message: "Post requires atleast a text or image.",
         success: false,
       });
 
     if (media_url) {
-      const uploadedResponse = await cloudinary.uploader.upload(media_url);
+      const uploadedResponse = await cloudinary.uploader.upload(media_url, {
+        resource_type: "image",
+        upload_preset: "cookhouse-images",
+      });
       media_url = uploadedResponse.secure_url;
+    }
+
+    if (video_url) {
+      const uploadedResponse = await cloudinary.uploader.upload(video_url, {
+        resource_type: "video",
+        upload_preset: "cookhouse-videos",
+      });
+      video_url = uploadedResponse.secure_url;
     }
 
     const newPost = await Post.create({
       user: userId,
       text,
       media_url,
+      video_url,
     });
 
     if (!newPost)
@@ -57,7 +69,7 @@ export const createPost = async (req, res) => {
 export const createCommunityPost = async (req, res) => {
   try {
     const { text } = req.body;
-    let { media_url } = req.body;
+    let { media_url, video_url } = req.body;
     const userId = req.id;
     const { communityId } = req.params;
 
@@ -85,21 +97,33 @@ export const createCommunityPost = async (req, res) => {
         success: false,
       });
 
-    if (!text && !media_url)
+    if (!text && !media_url && !video_url)
       return res.status(400).json({
         message: "Post requires atleast a text or image.",
         success: false,
       });
 
     if (media_url) {
-      const uploadedResponse = await cloudinary.uploader.upload(media_url);
+      const uploadedResponse = await cloudinary.uploader.upload(media_url, {
+        resource_type: "image",
+        upload_preset: "cookhouse-images",
+      });
       media_url = uploadedResponse.secure_url;
+    }
+
+    if (video_url) {
+      const uploadedResponse = await cloudinary.uploader.upload(video_url, {
+        resource_type: "video",
+        upload_preset: "cookhouse-videos",
+      });
+      video_url = uploadedResponse.secure_url;
     }
 
     const newPost = await Post.create({
       user: userId,
       text,
       media_url,
+      video_url,
       community: communityId,
     });
 
@@ -319,6 +343,11 @@ export const deletePost = async (req, res) => {
     if (post.media_url) {
       const imgId = post.media_url.split("/").pop().split(".")[0];
       await cloudinary.uploader.destroy(imgId);
+    }
+
+    if (post.video_url) {
+      const vidId = post.video_url.split("/").pop().split(".")[0];
+      await cloudinary.uploader.destroy(vidId);
     }
 
     await Community.updateOne(

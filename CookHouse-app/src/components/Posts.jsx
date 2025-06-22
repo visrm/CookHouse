@@ -1,7 +1,7 @@
 import PostsCard from "./PostCard";
 import { useSelector } from "react-redux";
 import useGetAllPosts from "./Hooks/useGetAllPosts";
-import LoadingSpinner from "./LoadingSpinner";
+import PostSkeleton from "./Skeleton/PostSkeleton";
 
 const Posts = ({ refreshVar }) => {
   // using getHook for loadingPost all posts.
@@ -14,8 +14,8 @@ const Posts = ({ refreshVar }) => {
     <>
       <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 py-2">
         {loadingPost && (
-          <div className="block text-center">
-            <LoadingSpinner size="lg" />
+          <div className="block text-center gap-2">
+            { [...Array(3)].map((_, idx) => <PostSkeleton key={idx} />)}
           </div>
         )}
         {!loadingPost && allPosts.length === 0 && (

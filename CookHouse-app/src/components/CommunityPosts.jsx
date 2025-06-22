@@ -5,10 +5,10 @@ import {
   setLoadingPost,
 } from "../redux/slices/post.slice.js";
 import axios from "axios";
-import LoadingSpinner from "./LoadingSpinner";
 import PostCard from "./PostCard";
 import toast from "react-hot-toast";
 import { POSTS_API_END_POINT } from "../utils/constants.js";
+import PostSkeleton from "./Skeleton/PostSkeleton.jsx";
 
 const CommunityPosts = ({ communityId }) => {
   const dispatch = useDispatch();
@@ -40,8 +40,8 @@ const CommunityPosts = ({ communityId }) => {
     <>
       <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4">
         {loadingPost && (
-          <div className="block text-center">
-            <LoadingSpinner size="lg" />
+          <div className="block text-center gap-2">
+           { [...Array(3)].map((_, idx) => <PostSkeleton key={idx} />)}
           </div>
         )}
         {!loadingPost && communityPosts.length === 0 && (
