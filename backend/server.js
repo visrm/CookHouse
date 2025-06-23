@@ -34,9 +34,15 @@ const __dirname = path.resolve();
 app.use(express.json({ limit: "5mb" })); // to parse req.body - limit shouldn't be too high to prevent DOS
 app.use(express.urlencoded({ extended: true, limit: "5mb" })); // to parse form data(urlencoded)
 app.use(cookieParser());
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://cookhouse.onrender.com/",
+];
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://cookhouse.onrender.com/"],
+  origin: allowedOrigins,
   credentials: true,
+  optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
 
