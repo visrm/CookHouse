@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { MdMoreVert } from "react-icons/md";
 import { timestampFn } from "../utils/extractTime.js";
 import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.bubble.css'
 
 const RecipeCard = ({ recipe }) => {
   const [review, setReview] = useState("");
@@ -198,7 +199,7 @@ const RecipeCard = ({ recipe }) => {
                         key={id}
                         className="bg-amber-100 px-4 py-1 rounded-md text-amber-800 font-medium text-xs sm:text-sm"
                       >
-                        {tag}
+                        {tag.trim().toLowerCase()}
                       </span>
                     );
                   })}
@@ -242,7 +243,7 @@ const RecipeCard = ({ recipe }) => {
                       className="block h-full w-full mb-1 sm:mb-2 first-letter:capitalize"
                       value={recipe?.instructions}
                       readOnly={true}
-                      theme={null}
+                      theme={"bubble"}
                     />
                   </div>
                 </article>

@@ -40,15 +40,20 @@ const CreateRecipe = () => {
     e.preventDefault();
     dispatch(setLoadingRecipe(true));
     try {
+      let ingredientsData = recipe.ingredients.trim().replace(/\,$/, "");
+      let dietaryTagsData = recipe.dietary_tags
+        .trim()
+        .replace(/\,$/, "")
+        .toLowerCase();
       let recipeData = {
         user: user?._id,
         title: recipe.title,
         description: desc,
         category: recipe.category,
-        ingredients: recipe.ingredients.split(","),
-        instructions: instructions,
+        ingredients: ingredientsData.split(","),
+        instructions: instructions.trim(),
         cuisine_type: recipe.cuisine_type,
-        dietary_tags: recipe.dietary_tags.split(","),
+        dietary_tags: dietaryTagsData.split(","),
         media_url: img,
       };
       const response = await axios.post(
@@ -147,7 +152,7 @@ const CreateRecipe = () => {
                   id="title"
                   value={recipe.title}
                   onChange={handleInputChange}
-                  maxLength={"40ch"}
+                  maxLength={"75ch"}
                   required
                 />
               </div>
@@ -317,6 +322,32 @@ const CreatePostAndRecipe = () => {
   const imgRef = useRef(null);
   const videoRef = useRef(null);
 
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link"],
+      ["clean"],
+    ],
+  };
+
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+  ];
+
   const maxLimit = 5242880;
 
   const dispatch = useDispatch();
@@ -414,6 +445,8 @@ const CreatePostAndRecipe = () => {
               name="text"
               id="text"
               theme="snow"
+              modules={modules}
+              formats={formats}
               value={text}
               onChange={setText}
             />

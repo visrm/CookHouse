@@ -227,7 +227,7 @@ const Contacts = () => {
             </div>
           </div>
 
-          <div className="mt-16 text-center">
+          {/* <div className="mt-16 text-center">
             <h2 className="text-2xl font-semibold mb-2">
               Join our Cooking Community
             </h2>
@@ -243,7 +243,7 @@ const Contacts = () => {
             >
               Sign Up Today
             </button>
-          </div>
+          </div> */}
         </div>
       </main>
     </>

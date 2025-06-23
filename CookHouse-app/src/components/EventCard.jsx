@@ -7,6 +7,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { EVENTS_API_END_POINT } from "../utils/constants";
 import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.bubble.css'
 
 const EventCard = ({ event }) => {
   const organiser = event?.organiser;
@@ -41,8 +42,8 @@ const EventCard = ({ event }) => {
 
   return (
     <>
-      <article className="w-[90%] sm:w-[80%] mx-auto">
-        <div className="relative flex flex-col gap-2 items-start p-4 border-b-2 border-gray-300 bg-[#fdfdfd] rounded">
+      <article className="w-[90%] sm:w-[80%] max-w-3xl mx-auto">
+        <div className="relative flex flex-col gap-2 items-start p-4 sm:p-6 md:p-8 border border-gray-300 glass-morph bg-[#fdfdfd] rounded">
           {canManageEvent && (
             <div className="absolute top-1 right-2 flex justify-end flex-1 dropdown dropdown-bottom">
               <div
@@ -72,18 +73,18 @@ const EventCard = ({ event }) => {
           )}
           {/* Event contents */}
           <div className="mt-2">
-            <h2 className="text-lg md:text-xl font-bold font-serif underline underline-offset-2">
+            <h2 className="text-xl md:text-2xl font-bold font-serif">
               {event?.title}
             </h2>
             <ReactQuill
-              className="block h-full w-full max-w-full py-0 text-base font-base font-sans"
+              className="block h-full w-full max-w-[95%] py-0 text-base font-base font-sans"
               value={event?.description}
               readOnly={true}
-              theme={null}
+              theme={"bubble"}
             />
           </div>
-          <div className="flex flex-col bg-slate-200 w-full p-2 border-0 rounded-sm">
-            <span className="flex sm:gap-x-2 items-center">
+          <div className="flex flex-col bg-slate-200 w-full max-w-[90%] p-2 border-0 rounded-sm">
+            <span className="flex sm:gap-x-2 items-center w-full max-w-full">
               <span className="text-sm font-bold font-mono sm:w-10">Date</span>{" "}
               :
               <span className="text-sm font-normal font-sans">
@@ -91,9 +92,9 @@ const EventCard = ({ event }) => {
                 {formattedDate(event?.endDate)}
               </span>
             </span>
-            <span className="flex sm:gap-x-2 items-center">
+            <span className="flex sm:gap-x-2 items-center w-full max-w-full">
               <span className="text-sm font-bold font-mono sm:w-10">Venue</span>{" "}
-              :<span>{event?.location}</span>
+              :<span className="text-sm font-normal font-sans">{event?.location}</span>
             </span>
           </div>
         </div>

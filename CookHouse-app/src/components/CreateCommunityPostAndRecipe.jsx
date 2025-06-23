@@ -43,15 +43,20 @@ const CreateRecipe = () => {
     dispatch(setLoadingRecipe(true));
     try {
       let communityId = singleCommunity._id;
+      let ingredientsData = recipe.ingredients.trim().replace(/\,$/, "");
+      let dietaryTagsData = recipe.dietary_tags
+        .trim()
+        .replace(/\,$/, "")
+        .toLowerCase();
       let recipeData = {
         user: user?._id,
         title: recipe.title,
         description: desc,
         category: recipe.category,
-        ingredients: recipe.ingredients.split(","),
-        instructions: instructions,
+        ingredients: ingredientsData.split(","),
+        instructions: instructions.trim(),
         cuisine_type: recipe.cuisine_type,
-        dietary_tags: recipe.dietary_tags.split(","),
+        dietary_tags: dietaryTagsData.split(","),
         media_url: img,
       };
       const response = await axios.post(
@@ -144,7 +149,7 @@ const CreateRecipe = () => {
               <div>
                 <label htmlFor="title">Recipe title :</label>
                 <textarea
-                  className="rounded-md textarea-md h-8 w-full p-1 sm:px-2 text-lg resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300 overflow-hidden"
+                  className="rounded-md textarea-md h-8 min-h-8 w-full p-1 sm:px-2 text-lg resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300 overflow-hidden"
                   placeholder="Dish Name"
                   name="title"
                   id="title"
@@ -230,7 +235,7 @@ const CreateRecipe = () => {
               <div>
                 <label htmlFor="ingredients">Ingredients :</label>
                 <textarea
-                  className="rounded-md textarea-md h-24 w-full p-1 sm:p-2 text-base resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300"
+                  className="rounded-md textarea-md h-full min-h-20 w-full p-1 sm:p-2 text-base resize-none border focus:outline-none bg-[#fdfdfd] border-slate-300"
                   placeholder={`Provide Ingredients seperated by commas(",").`}
                   name="ingredients"
                   id="ingredients"
@@ -318,6 +323,32 @@ const CreateCommunityPostAndRecipe = ({ isOwner = false }) => {
 
   const maxLimit = 5242880;
   const isError = false;
+
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link"],
+      ["clean"],
+    ],
+  };
+
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+  ];
 
   const { user } = useSelector((store) => store.auth);
   const { singleCommunity } = useSelector((store) => store.communities);
@@ -416,6 +447,8 @@ const CreateCommunityPostAndRecipe = ({ isOwner = false }) => {
               name="text"
               id="text-post"
               theme="snow"
+              modules={modules}
+              formats={formats}
               value={text}
               onChange={setText}
             />

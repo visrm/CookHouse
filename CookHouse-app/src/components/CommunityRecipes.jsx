@@ -5,10 +5,10 @@ import {
   setLoadingRecipe,
 } from "../redux/slices/recipe.slice.js";
 import axios from "axios";
-import LoadingSpinner from "./LoadingSpinner";
 import RecipeCard from "./RecipeCard";
 import toast from "react-hot-toast";
 import { RECIPES_API_END_POINT } from "../utils/constants.js";
+import RecipeSkeleton from "./Skeleton/RecipeSkeleton.jsx";
 
 const CommunityRecipes = ({ communityId }) => {
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const CommunityRecipes = ({ communityId }) => {
       <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4">
         {loadingRecipe && (
           <div className="block text-center">
-            <LoadingSpinner size="lg" />
+             { [...Array(3)].map((_, idx) => <RecipeSkeleton key={idx} />)}
           </div>
         )}
         {!loadingRecipe && communityRecipes.length === 0 && (

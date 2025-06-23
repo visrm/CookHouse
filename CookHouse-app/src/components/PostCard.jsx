@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { MdMoreVert } from "react-icons/md";
 import { timestampFn } from "../utils/extractTime.js";
 import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.bubble.css'
 
 const PostCard = ({ post }) => {
   const [comment, setComment] = useState("");
@@ -167,7 +168,7 @@ const PostCard = ({ post }) => {
                   className="block h-full w-fit text-base"
                   value={post?.text}
                   readOnly={true}
-                  theme={null}
+                  theme={"bubble"}
                 />
               </div>
               {post?.media_url && (

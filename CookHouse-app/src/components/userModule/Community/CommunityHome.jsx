@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import useGetAllUserCommunities from "../../Hooks/useGetAllUserCommunities";
 import { useState } from "react";
-import LoadingSpinner from "../../LoadingSpinner";
 import PostCard from "../../PostCard";
 import RecipeCard from "../../RecipeCard";
 import useGetUsersCommunitiesPosts from "../../Hooks/useGetUsersCommunitiesPosts";
@@ -13,6 +12,7 @@ import { MdOutlineRefresh } from "react-icons/md";
 import PostSkeleton from "../../Skeleton/PostSkeleton";
 import CommunityCardSkeleton from "../../Skeleton/CommunityCardSkeleton";
 import RecipeSkeleton from "../../Skeleton/RecipeSkeleton";
+import EventSkeleton from "../../Skeleton/EventSkeleton";
 
 const CommunityHome = () => {
   const [feedType, setFeedType] = useState("communities");
@@ -185,8 +185,10 @@ const CommunityHome = () => {
             {feedType === "events" && (
               <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 py-2 min-h-full w-full max-w-full">
                 {loadingEvent && (
-                  <div className="block text-center">
-                    <LoadingSpinner size="lg" />
+                  <div className="block text-center gap-2 sm:gap-3">
+                    {[...Array(3)].map((_, id) => {
+                      return <EventSkeleton key={id} />;
+                    })}
                   </div>
                 )}
                 {!loadingEvent && usersCommunitiesEvents?.length === 0 && (
