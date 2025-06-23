@@ -76,7 +76,7 @@ const SignIn = () => {
           <div className="absolute -top-[25%] left-[50%]  amber-gradient rounded-full h-[90%] w-[45%]"></div>
           <div className="absolute top-[15%] left-[25%]  amber-gradient rounded-full h-[21%] w-[10%]"></div>
           <div className="absolute top-[70%] left-[17%]  amber-gradient rounded-full h-[75%] w-[33%]"></div>
-          <article className="p-3 glass-morph rounded-xl md:px-6 lg:px-8 text-left">
+          <article className="p-3 glass-morph rounded-xl md:px-6 lg:px-8 text-left z-10">
             <form
               method="POST"
               className="block min-w-72 md:min-h-74 text-base"
