@@ -52,10 +52,10 @@ app.use("/api/v0/events", eventRoute);
 app.use("/api/v0/feedbacks", feedbackRoute);
 
 if(process.env.NODE_ENV === "production"){
-  app.use(express.static(Path2D.join(__dirname, "/CookHouse-app/dist")))
+  app.use(express.static(path.join(__dirname, "/CookHouse-app/dist")))
 
   app.get("*", (req, res)=> {
-    res.sendFile(Path2D.resolve(__dirname, "CookHouse-app", "dist", "index.html"))
+    res.sendFile(path.resolve(__dirname, "CookHouse-app", "dist", "index.html"))
   })
 }
 
