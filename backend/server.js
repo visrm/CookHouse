@@ -37,7 +37,7 @@ app.use(cookieParser());
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://cookhouse.onrender.com/",
+  "https://cookhouse.onrender.com",
 ];
 const corsOptions = {
   origin: allowedOrigins,
