@@ -1,3 +1,4 @@
+import path from "path"
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -27,6 +28,7 @@ cloudinary.config({
 // Initialise app
 const app = new express();
 const PORT = process.env.PORT || 8000;
+const __dirname = path.resolve()
 
 // middlewares
 app.use(express.json({ limit: "5mb" })); // to parse req.body - limit shouldn't be too high to prevent DOS
@@ -48,6 +50,14 @@ app.use("/api/v0/communities", communityRoute);
 app.use("/api/v0/chats", chatRoute);
 app.use("/api/v0/events", eventRoute);
 app.use("/api/v0/feedbacks", feedbackRoute);
+
+if(process.env.NODE_ENV === "production"){
+  app.use(express.static(Path2D.join(__dirname, "/CookHouse-app/dist")))
+
+  app.get("*", (req, res)=> {
+    res.sendFile(Path2D.resolve(__dirname, "CookHouse-app", "dist", "index.html"))
+  })
+}
 
 // Error handling middleware MUST be the last middleware
 app.use(errorHandler);

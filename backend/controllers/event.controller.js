@@ -227,7 +227,7 @@ export const getUserCommunitiesEvents = async (req, res) => {
     const communityEvents = Arr.map(async (event) => {
       const eventId = event._id;
       const events = await Event.findById(eventId)
-        .sort({ createdAt: -1 })
+        .sort({ startDate: -1 })
         .populate({
           path: "organiser",
           select: "-password",
