@@ -9,8 +9,8 @@ const CommunityCard = ({ community }) => {
           className="flex flex-nowrap gap-2 sm:gap-3 w-full max-w-full h-full min-h-fit supports-[backdrop]:backdrop-blur"
         >
           {/* Community profileImg */}
-          <div className="avatar h-24 inline-flex">
-            <div className="w-24 rounded-full border border-slate-900">
+          <div className="avatar h-16 sm:h-24 inline-flex">
+            <div className="w-16 sm:w-24 rounded-full border border-slate-900">
               <img
                 src={community?.profileImg || "/assets/avatar-placeholder.png"}
               />
@@ -18,20 +18,20 @@ const CommunityCard = ({ community }) => {
           </div>
 
           {/* Community Name & Description */}
-          <div className="block h-full w-full max-w-[75%]">
-            <p className="text-slate-900 font-bold text-lg truncate">
+          <div className="block h-full w-full max-w-[90%] sm:max-w-[75%]">
+            <p className="text-slate-900 font-bold text-base sm:text-lg truncate">
               {community?.name}
             </p>
-            <p className="text-slate-700 text-sm truncate">
+            <p className="text-slate-700 text-xs sm:text-sm truncate">
               {community?.description}
             </p>
 
             {/* For Development stages. To know who created it. */}
-            <p className="text-sm md:text-xs text-slate-600">
+            <p className="text-xs text-slate-600">
               <span className="font-medium">Created By:</span> @
               {community?.owner?.username}
             </p>
-            <p className="text-sm md:text-xs text-slate-600">
+            <p className="text-xs text-slate-600">
               <span className="font-medium">Members:</span>{" "}
               {community?.members.length + 1}
             </p>

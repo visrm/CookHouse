@@ -105,10 +105,10 @@ const CreateRecipe = () => {
 
   return (
     <>
-      <article className="flex flex-col min-w-fit w-[75%] md:w-[50%] max-w-[90%] mx-auto">
+      <article className="flex flex-col w-[75%] md:w-[50%] max-w-[90%] mx-auto">
         {/* You can open the modal using document.getElementById('ID').showModal() method */}
         <button
-          className="submit-btn text-center transition-all duration-300"
+          className="submit-btn  text-sm sm:text-base text-center transition-all duration-300"
           onClick={() => document.getElementById("addRecipeModal").showModal()}
         >
           Add Recipe
@@ -423,7 +423,7 @@ const CreatePostAndRecipe = () => {
 
   return (
     <>
-      <article className="flex flex-col w-[75%] md:w-[50%] max-w-[90%] mx-auto glass-morph">
+      <article className="flex flex-col w-[75%] md:w-[50%] max-w-[95%] sm:max-w-[90%] mx-auto glass-morph">
         <div className="flex flex-col flex-nowrap my-2 sm:my-3 md:my-6 lg:my-8 w-full rounded-xl p-4 items-start gap-4 border-b border-gray-100">
           <div className="avatar">
             <div className="w-8 bg-white rounded-full">
@@ -440,7 +440,7 @@ const CreatePostAndRecipe = () => {
             id="handleCreatePost"
           >
             <ReactQuill
-              className="block h-full min-h-28 w-full max-w-full text-base sm:text-lg focus:outline-none bg-[#fff] border-slate-300"
+              className="block h-full min-h-24 w-full max-w-full text-sm sm:text-lg focus:outline-none bg-[#fff] border-slate-300"
               placeholder="What's happening?!"
               name="text"
               id="text"
@@ -451,7 +451,7 @@ const CreatePostAndRecipe = () => {
               onChange={setText}
             />
             {img && (
-              <div className="relative w-72 mx-auto transition-all duration-300">
+              <div className="relative w-56 sm:w-72 max-w-full mx-auto transition-all duration-300">
                 <IoCloseSharp
                   className="absolute top-0 right-0 text-white bg-slate-800 rounded-full w-5 h-5 cursor-pointer hover:scale-110 z-[100]"
                   onClick={() => {
@@ -461,12 +461,12 @@ const CreatePostAndRecipe = () => {
                 />
                 <img
                   src={img}
-                  className="w-full mx-auto h-72 object-contain rounded"
+                  className="w-full mx-auto h-auto object-contain rounded"
                 />
               </div>
             )}
             {video && (
-              <div className="relative w-72 mx-auto">
+              <div className="relative w-56 sm:w-72 max-w-full mx-auto transition-all duration-300">
                 <IoCloseSharp
                   className="absolute top-0 right-0 text-white bg-slate-800 rounded-full w-5 h-5 cursor-pointer hover:scale-110 z-[100]"
                   onClick={() => {
@@ -476,7 +476,7 @@ const CreatePostAndRecipe = () => {
                 />
                 <video
                   src={video}
-                  className="w-full mx-auto h-72 object-contain rounded"
+                  className="w-full mx-auto h-auto object-contain rounded"
                   controls
                 />
               </div>
@@ -493,19 +493,19 @@ const CreatePostAndRecipe = () => {
                   />
                 </div>
               )}
-              <div className="flex gap-1 sm:gap-2 lg:gap-4 items-center">
+              <div className="flex gap-2 lg:gap-4 items-center">
                 <MdOutlineImage
-                  className="fill-slate-700 w-6 h-6 cursor-pointer"
+                  className="fill-slate-700 w-4 h-4 sm:w-6 sm:h-6 cursor-pointer"
                   onClick={() => imgRef.current.click()}
                   title="Add image"
                 />
                 <MdOutlineVideoLibrary
-                  className="fill-slate-700 w-6 h-6 cursor-pointer"
+                  className="fill-slate-700 w-4 h-4 sm:w-6 sm:h-6 cursor-pointer"
                   onClick={() => videoRef.current.click()}
                   title="Add video"
                 />
                 <BsEmojiSmileFill
-                  className="fill-slate-700 w-5 h-5 cursor-pointer"
+                  className="fill-slate-700 w-4 h-4 sm:w-5 sm:h-5 cursor-pointer"
                   onClick={() => setOpenEmoji(!openEmoji)}
                   title="Add emoji"
                 />
@@ -526,7 +526,7 @@ const CreatePostAndRecipe = () => {
                 ref={videoRef}
                 onChange={handleVideoChange}
               />
-              <button className="submit-btn transition-all duration-300">
+              <button className="submit-btn text-sm sm:text-base transition-all duration-300">
                 {loadingPost ? <LoadingSpinner size="sm" /> : "Create Post"}
               </button>
             </div>

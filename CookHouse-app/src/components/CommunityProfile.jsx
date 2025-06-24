@@ -261,7 +261,7 @@ const CommunityProfile = () => {
                     <span className="text-sm text-slate-800 font-medium">
                       {singleCommunity?.description}
                     </span>
-                    <span className="text-sm text-slate-500 font-medium">
+                    <span className="text-xs sm:text-sm text-slate-500 font-medium">
                       Created By:{" "}
                       <span className="font-normal">
                         @{singleCommunity?.owner?.username}

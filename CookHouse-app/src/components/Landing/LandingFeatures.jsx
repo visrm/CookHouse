@@ -4,9 +4,9 @@ const LandingFeatures = () => {
   return (
     <>
       <section className="p-4 mb-20 transition-all duration-300">
-        <h1 className="section-title font-medium mb-2 md:mb-4">Features</h1>
+        <h1 className="section-title font-medium md:mb-4">Features</h1>
         <article className="grid gap-2 sm:gap-4 md:gap-x-12 grid-cols-1 sm:grid-cols-2 p-2 md:px-4">
-          <article className="feature-grid shadow-lg bg-[#fff] p-2 sm:p-4 rounded-md">
+          <article className="feature-grid shadow-lg bg-[#fff] p-4 rounded-md">
             <span className="block feature-icon">
               <InfoSvgIcon />
             </span>
@@ -20,7 +20,7 @@ const LandingFeatures = () => {
               </p>
             </article>
           </article>
-          <article className="feature-grid shadow-lg bg-[#fff] p-2 sm:p-4 rounded-md">
+          <article className="feature-grid shadow-lg bg-[#fff] p-4 rounded-md">
             <span className="block feature-icon">
               <InfoSvgIcon />
             </span>
@@ -34,7 +34,7 @@ const LandingFeatures = () => {
               </p>
             </article>
           </article>
-          <article className="feature-grid shadow-lg bg-[#fff] p-2 sm:p-4 rounded-md">
+          <article className="feature-grid shadow-lg bg-[#fff] p-4 rounded-md">
             <span className="block feature-icon">
               <InfoSvgIcon />
             </span>
@@ -48,7 +48,7 @@ const LandingFeatures = () => {
               </p>
             </article>
           </article>
-          <article className="feature-grid shadow-lg bg-[#fff] p-2 sm:p-4 rounded-md">
+          <article className="feature-grid shadow-lg bg-[#fff] p-4 rounded-md">
             <span className="block feature-icon">
               <InfoSvgIcon />
             </span>
@@ -62,7 +62,7 @@ const LandingFeatures = () => {
               </p>
             </article>
           </article>
-          <article className="feature-grid shadow-lg bg-[#fff] p-2 sm:p-4 rounded-md">
+          <article className="feature-grid shadow-lg bg-[#fff] p-4 rounded-md">
             <span className="block feature-icon">
               <InfoSvgIcon />
             </span>
@@ -76,7 +76,7 @@ const LandingFeatures = () => {
               </p>
             </article>
           </article>
-          <article className="feature-grid shadow-lg bg-[#fff] p-2 sm:p-4 rounded-md">
+          <article className="feature-grid shadow-lg bg-[#fff] p-4 rounded-md">
             <span className="block feature-icon">
               <InfoSvgIcon />
             </span>

@@ -7,13 +7,13 @@ const About = () => {
   return (
     <>
       <main className="relative flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto transition-all duration-300 overflow-x-hidden">
-        <div className="max-w-6xl mx-auto px-4 py-12 w-[90%]">
+        <div className="max-w-6xl mx-auto p-2 sm:px-4 sm:py-12 w-full sm:w-[90%]">
           {/* Hero Section */}
           <div className="text-center mb-15">
-            <h1 className="text-4xl sm:text-5xl gradient-text text-shadow font-bold mb-3">
+            <h1 className="text-3xl sm:text-4xl sm:text-5xl gradient-text text-shadow font-bold mb-3">
               About CookHouse
             </h1>
-            <p className="text-2xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg sm:text-2xl text-gray-600 max-w-3xl mx-auto">
               Bringing together passionate cooks, from beginners to
               professionals, in the world's most flavorful social network.
             </p>
@@ -21,7 +21,7 @@ const About = () => {
 
           {/* Our Story */}
           <div className="mb-20">
-            <h2 className="text-4xl font-bold text-center mb-9">Our Story</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-6 sm:mb-9">Our Story</h2>
             <div className="bg-amber-100 p-8 rounded-lg shadow-md">
               <div className="md:flex items-center">
                 <div className="md:w-1/2 mb-6 md:mb-0 md:pr-8">
@@ -32,19 +32,19 @@ const About = () => {
                   />
                 </div>
                 <div className="md:w-1/2">
-                  <p className="text-base mb-4">
+                  <p className="text-sm sm:text-base mb-4">
                     CookHouse was born in 2025 when Rahul Murali, a software
                     engineer, shared a meal and a vision: to create a space
                     where cooking knowledge could be democratized and shared
                     across borders.
                   </p>
-                  <p className="text-base mb-4">
+                  <p className="text-sm sm:text-base mb-4">
                     What began as a small recipe-sharing forum quickly evolved
                     into a global platform where culinary traditions blend with
                     innovation, and where both amateur cooks and seasoned
                     professionals can grow together.
                   </p>
-                  <p className="text-base">
+                  <p className="text-sm sm:text-base">
                     CookHouse is more than just a social media
                     platform—it's a movement that celebrates the universal
                     language of food and the connections it creates between
@@ -57,21 +57,21 @@ const About = () => {
 
           {/* Our Mission */}
           <div className="mb-20">
-            <div className="text-center mb-6">
+            <div className="text-center mb-1 sm:mb-6">
               <h2 className="text-3xl md:text-4xl font-bold">Our Mission</h2>
             </div>
-            <div className="bg-white p-8 rounded-lg shadow-md text-center">
-              <h3 className="text-2xl font-semibold mb-4">
+            <div className="bg-white p-4 sm:p-8 rounded-lg shadow-md text-center">
+              <h3 className="text-xl sm:text-2xl font-semibold mb-4">
                 Empowering Culinary Creativity Worldwide
               </h3>
-              <p className="text-lg mb-6">
+              <p className="text-sm sm:text-lg mb-6">
                 We're on a mission to democratize cooking knowledge, preserve
                 culinary traditions, and spark innovation in kitchens around the
                 world. By connecting passionate cooks across geographical and
                 cultural boundaries, we aim to create a global community where
                 food brings people together.
               </p>
-              <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex flex-wrap justify-center gap-1.5 sm:gap-4 text-xs sm:text-sm">
                 <div className="bg-amber-100 px-4 py-2 rounded-full text-amber-800 font-medium">
                   Inclusivity
                 </div>
@@ -96,12 +96,12 @@ const About = () => {
 
           {/* Testimonials */}
           <div className="mb-20">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-5 sm:mb-8">
               What Our Community Says
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-white p-6 rounded-lg shadow-md italic">
-                <p className="mb-4 text-gray-600">
+                <p className="mb-4 text-xs sm:text-sm text-gray-600">
                   "CookHouse transformed my home cooking. I've learned
                   techniques from chefs around the world that I'd never have
                   discovered otherwise. The community is so supportive and
@@ -112,20 +112,20 @@ const About = () => {
                     <img
                       src={"/assets/sarah-j-profile.webp"}
                       alt="User avatar"
-                      className="w-12 h-12 rounded-full mr-4"
+                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full mr-4"
                     />
                   </figure>
 
                   <div>
                     <p className="font-semibold not-italic">Sarah J.</p>
-                    <p className="text-sm text-gray-500 not-italic">
+                    <p className="text-xs sm:text-sm text-gray-500 not-italic">
                       Home Cook, London
                     </p>
                   </div>
                 </div>
               </div>
               <div className="bg-white p-6 rounded-lg shadow-md italic">
-                <p className="mb-4 text-gray-600">
+                <p className="mb-4 text-xs sm:text-sm text-gray-600">
                   "As a professional chef, I was skeptical about yet another
                   food platform. But CookHouse is different—it's authentic,
                   educational, and has connected me with ingredients and
@@ -136,13 +136,13 @@ const About = () => {
                     <img
                       src={"/assets/miguel-r-profile.webp"}
                       alt="User avatar"
-                      className="w-12 h-12 rounded-full mr-4"
+                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full mr-4"
                     />
                   </figure>
 
                   <div>
                     <p className="font-semibold not-italic">Miguel R.</p>
-                    <p className="text-sm text-gray-500 not-italic">
+                    <p className="text-xs sm:text-sm text-gray-500 not-italic">
                       Executive Chef, Barcelona
                     </p>
                   </div>
@@ -152,11 +152,11 @@ const About = () => {
           </div>
 
           {/* Join Us */}
-          <div className="block text-center text-amber-700 bg-amber-100 border border-amber-700 py-12 px-6 rounded-lg shadow-md">
-            <h2 className="text-3xl font-bold mb-4">
+          <div className="block text-center text-amber-700 bg-amber-100 border border-amber-700 p-6 sm:py-12 sm:px-6 rounded-lg shadow-md">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">
               Join Our Culinary Community Today
             </h2>
-            <p className="text-xl mb-8 max-w-3xl w-full mx-auto">
+            <p className="text-lg sm:text-xl mb-8 max-w-3xl w-full mx-auto">
               Whether you're just starting your cooking journey or you're a
               seasoned professional, ChefConnect has something to offer you.
             </p>

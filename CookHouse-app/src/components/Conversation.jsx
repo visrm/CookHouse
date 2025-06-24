@@ -10,26 +10,26 @@ const Conversation = ({ user, lastIdx }) => {
   return (
     <>
       <div
-        className={`flex gap-2 items-center w-full h-fit min-w-fit hover:bg-blue-400 p-2 py-1 cursor-pointer transition-all duration-300 ${
+        className={`flex gap-2 items-center w-full h-fit max-w-full hover:bg-blue-400 p-1 cursor-pointer transition-all duration-300 ${
           isSelected ? "bg-blue-400 shadow-md" : ""
         }`}
         onClick={() => dispatch(setSelectedConversation(user))}
       >
         <div className="avatar">
-          <div className="w-12 rounded-full ring-1 ring-slate-500">
+          <div className="w-8 sm:w-10.5 rounded-full ring-1 ring-slate-500">
             <img
               src={
                 user?.profile?.profileImg || "/assets/avatar-placeholder.png"
               }
               alt="user avatar"
-              className="h-12 rounded-full border border-slate-400"
+              className="h-8 sm:h-10.5 rounded-full border border-slate-400"
             />
           </div>
         </div>
 
-        <div className="flex flex-col flex-1">
-          <div className="flex gap-3 justify-between">
-            <p className="text-base font-normal text-slate-800">{user?.username}</p>
+        <div className="flex flex-col flex-1 truncate w-24 sm:w-fit">
+          <div className="flex justify-between">
+            <p className="text-sm sm:text-base font-semibold text-slate-800">{user?.username}</p>
           </div>
         </div>
       </div>

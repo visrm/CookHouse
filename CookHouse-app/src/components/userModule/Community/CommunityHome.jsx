@@ -88,7 +88,7 @@ const CommunityHome = () => {
         <section>
           <div className="sticky top-0 flex w-full font-semibold bg-[#fafafa] sm:pt-2 z-50 shadow-md">
             <div
-              className="flex justify-center text-center text-xs sm:text-sm flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
+              className="flex justify-center text-center text-xs sm:text-sm flex-1 p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("communities")}
             >
               Your Communities
@@ -97,7 +97,7 @@ const CommunityHome = () => {
               )}
             </div>
             <div
-              className="flex justify-center text-center text-xs sm:text-sm flex-1 p-3 transition duration-300 relative cursor-pointer"
+              className="flex justify-center text-center text-xs sm:text-sm flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("posts")}
             >
               Posts

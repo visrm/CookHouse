@@ -7,7 +7,7 @@ const Conversations = () => {
 
   return (
     <>
-      <div className="mb-1 sm:mb-2 flex flex-col items-start overflow-scroll-y bg-indigo-50">
+      <div className="mb-1 sm:mb-2 flex flex-col items-start overflow-scroll-y bg-indigo-50 w-full max-w-full">
         {loading && (
           <div className="block text-center">
             <LoadingSpinner size="lg" />

@@ -133,7 +133,7 @@ const RecipeCard = ({ recipe }) => {
               ) : (
                 "Admin"
               )}
-              <span className="text-gray-700 flex gap-1 text-sm">
+              <span className="text-gray-700 flex gap-1 text-xs sm:text-sm items-center">
                 {recipeMaker?.role === "user" && (
                   <Link to={`/profile/${recipeMaker?.username}`}>
                     @{recipeMaker?.username}
@@ -174,7 +174,7 @@ const RecipeCard = ({ recipe }) => {
             </div>
 
             {/* Recipe Details */}
-            <div className="flex flex-col gap-3 p-2 sm:p-3 transition-all duration-300 w-full max-w-[93%]">
+            <div className="flex flex-col gap-3 p-1 sm:p-2 md:p-3 transition-all duration-300 w-full max-w-full sm:max-w-[93%]">
               <div>
                 <hgroup className="flex flex-row flex-wrap w-full max-w-full h-fit items-center gap-2 sm:gap-3 my-1">
                   <h1 className="font-bold text-lg sm:text-3xl text-left first-letter:capitalize font-serif">
@@ -186,18 +186,18 @@ const RecipeCard = ({ recipe }) => {
                 </hgroup>
 
                 <ReactQuill
-                  className="block h-full w-full max-w-[95%] my-1 sm:mt-2 first-letter:capitalize"
+                  className="block h-full w-full max-w-full sm:max-w-[95%] my-1 sm:mt-2 text-xs sm:text-base first-letter:capitalize"
                   value={recipe?.description}
                   readOnly={true}
                   theme={null}
                 />
 
-                <div className="flex flex-row flex-wrap gap-2 items-center w-full max-w-full h-full mb-2 sm:mb-4">
+                <div className="flex flex-row flex-wrap gap-1 sm:gap-2 items-center w-full max-w-full h-full mb-2 sm:mb-4">
                   {recipe?.dietary_tags.map((tag, id) => {
                     return (
                       <span
                         key={id}
-                        className="bg-amber-100 px-4 py-1 rounded-md text-amber-800 font-medium text-xs sm:text-sm"
+                        className="bg-amber-100 px-2 sm:px-4 py-1 rounded-md text-amber-800 font-medium text-xs sm:text-sm"
                       >
                         {tag.trim().toLowerCase()}
                       </span>
@@ -206,7 +206,7 @@ const RecipeCard = ({ recipe }) => {
                 </div>
 
                 {recipe?.media_url && (
-                  <figure className="flex max-w-[90%] min-h-fit aspect-[16/9] mr-auto bg-[#f5f5f5]">
+                  <figure className="flex w-full max-w-full sm:max-w-[90%] min-h-fit aspect-[16/9] mr-auto bg-[#f5f5f5]">
                     <img
                       src={recipe?.media_url}
                       className="h-80 object-contain border overflow-hidden rounded-lg border-gray-200"
@@ -215,8 +215,8 @@ const RecipeCard = ({ recipe }) => {
                     />
                   </figure>
                 )}
-                <article className="flex flex-col flex-wrap gap-2 mt-2 sm:mt-4">
-                  <div className="block p-1 sm:p-2 bg-slate-200 border border-slate-300 rounded-md w-full max-w-[66%] h-full">
+                <article className="flex flex-col flex-wrap gap-2 mt-2 sm:mt-4 w-full max-w-full">
+                  <div className="block p-1 sm:p-2 bg-slate-200 border border-slate-300 rounded-md w-full max-w-[75%] sm:max-w-[66%] h-full">
                     <span className="block text-base text-left font-semibold">
                       Ingredients
                     </span>
@@ -235,7 +235,7 @@ const RecipeCard = ({ recipe }) => {
                     </div>
                   </div>
 
-                  <div className="block p-1 h-full w-full whitespace-normal">
+                  <div className="block p-1 h-full w-full max-w-full sm:max-w-[95%] whitespace-normal">
                     <span className="block font-semibold text-lg text-left">
                       How to prepare?
                     </span>

@@ -98,7 +98,7 @@ const MessageInput = () => {
           <div className="relative flex flex-row flex-nowrap w-full max-w-[49.5rem]">
             <input
               type="text"
-              className="input block w-[94%] border-none text-base font-medium focus:outline-0 rounded-full p-2.5 text-slate-900"
+              className="input block w-[75%] sm:w-[94%] max-w-full border-none text-base font-medium focus:outline-0 rounded-full p-1 sm:p-2.5 text-slate-900"
               placeholder="Send a message"
               maxLength={250}
               name="text-input"
@@ -113,14 +113,14 @@ const MessageInput = () => {
               {loadingMessages ? (
                 <div className="loading loading-spinner"></div>
               ) : (
-                <BsSend className="h-7 w-7 p-0.25" />
+                <BsSend className="h-5 w-5 sm:h-7 sm:w-7 p-0.25" />
               )}
             </button>
           </div>
         </div>
       </form>
       {img && (
-        <div className="relative w-72 mx-auto">
+        <div className="relative w-72 h-auto mx-auto">
           <IoCloseSharp
             className="absolute top-0 right-0 text-white bg-slate-800 rounded-full w-5 h-5 cursor-pointer"
             onClick={() => {

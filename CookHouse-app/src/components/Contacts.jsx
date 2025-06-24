@@ -69,43 +69,43 @@ const Contacts = () => {
   return (
     <>
       <main className="relative flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto transition-all duration-300 overflow-x-hidden">
-        <div className="max-w-6xl mx-auto px-4 py-12 w-[90%]">
-          <h1 className="text-4xl sm:text-5xl font-bold text-center mb-6">
+        <div className="max-w-6xl mx-auto sm:px-4 py-12 w-[90%]">
+          <h1 className="text-4xl sm:text-5xl font-bold text-center mb-4 sm:mb-6">
             Contact Us
           </h1>
-          <p className="text-lg text-center text-gray-600 mb-12">
+          <p className="text-sm sm:text-lg text-center text-gray-600 mb-12">
             Have questions about CookHouse? We're here to help the cooking
             community grow together!
           </p>
 
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 gap-8 sm:gap-12">
             {/* Contact Information */}
             <div className="bg-amber-50 p-8 rounded-lg shadow-md">
-              <h2 className="text-2xl font-semibold mb-6">Get in Touch</h2>
+              <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Get in Touch</h2>
 
               <div className="space-y-6">
                 <div className="flex items-center">
-                  <div className="bg-amber-100 p-3 rounded-full mr-4">
+                  <div className="bg-amber-100 p-2 sm:p-3 rounded-full mr-2 sm:mr-4">
                     <LuMail className="h-6 w-6 text-amber-600" />
                   </div>
                   <div>
-                    <h3 className="font-medium">Email</h3>
-                    <p className="text-gray-600">support@cookhouse.com</p>
+                    <h3 className="font-medium text-xs sm:text-sm">Email</h3>
+                    <p className="text-gray-600 text-xs sm:text-sm">support@cookhouse.com</p>
                   </div>
                 </div>
 
                 <div className="flex items-center">
-                  <div className="bg-amber-100 p-3 rounded-full mr-4">
+                  <div className="bg-amber-100 p-2 sm:p-3 rounded-full mr-2 sm:mr-4">
                     <LuPhone className="h-6 w-6 text-amber-600" />
                   </div>
                   <div>
-                    <h3 className="font-medium">Phone</h3>
-                    <p className="text-gray-600">+91 (455) 123-4567</p>
+                    <h3 className="font-medium text-xs sm:text-sm">Phone</h3>
+                    <p className="text-gray-600 text-xs sm:text-sm">+91 (455) 123-4567</p>
                   </div>
                 </div>
               </div>
 
-              <h3 className="text-xl font-semibold mt-8 mb-4">
+              <h3 className="text-xl font-semibold mt-6 sm:mt-8 mb-3 sm:mb-4">
                 Developer Social
               </h3>
               <div className="flex space-x-4 md:space-x-8">
@@ -134,8 +134,8 @@ const Contacts = () => {
             </div>
 
             {/* Contact Form */}
-            <div className="bg-white p-8 rounded-lg shadow-md w-full">
-              <h2 className="text-2xl font-semibold mb-6">Send us a Message</h2>
+            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-full">
+              <h2 className="text-xl sm:text-2xl font-semibold mb-2 sm:mb-6">Send us a Message</h2>
 
               {isSubmitted ? (
                 <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
@@ -143,7 +143,7 @@ const Contacts = () => {
                 </div>
               ) : null}
 
-              <div className="space-y-4">
+              <div className="space-x-3 sm:space-y-4 w-full max-w-full">
                 <div>
                   <label
                     htmlFor="name"
@@ -157,7 +157,7 @@ const Contacts = () => {
                     type="text"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-0 focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                    className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:outline-0 focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
                     placeholder="Your name"
                   />
                 </div>
@@ -175,7 +175,7 @@ const Contacts = () => {
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-0 focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                    className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:outline-0 focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
                     placeholder="your.email@example.com"
                   />
                 </div>
@@ -193,7 +193,7 @@ const Contacts = () => {
                     type="text"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-0 focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                    className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:outline-0 focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
                     placeholder="How can we help?"
                   />
                 </div>
@@ -211,14 +211,14 @@ const Contacts = () => {
                     rows="4"
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-0 focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                    className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:outline-0 focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
                     placeholder="Tell us more about your inquiry..."
                   ></textarea>
                 </div>
 
                 <button
                   onClick={handleSubmit}
-                  className="w-full flex justify-center items-center amber-gradient text-white py-2 px-4 rounded-md hover:bg-amber-600 transition-colors font-medium"
+                  className="flex justify-center items-center w-full max-w-full mt-2 amber-gradient text-white py-2 px-4 rounded-md hover:bg-amber-600 transition-colors font-medium"
                 >
                   Send Message
                   <LuSend className="ml-2 h-4 w-4" />

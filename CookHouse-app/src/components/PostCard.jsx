@@ -125,7 +125,7 @@ const PostCard = ({ post }) => {
               >
                 {postOwner?.fullname}
               </Link>
-              <span className="text-gray-700 flex gap-1 text-sm">
+              <span className="text-gray-700 flex gap-1  text-xs sm:text-sm items-center">
                 <Link to={`/profile/${postOwner?.username}`}>
                   @{postOwner?.username}
                 </Link>
@@ -162,17 +162,19 @@ const PostCard = ({ post }) => {
                 </div>
               )}
             </div>
-            <div className="flex flex-col gap-2 w-fit text-sm sm:text-base lg:text-lg overflow-hidden">
-              <div className="block w-full max-w-[85%] h-full">
+
+            {/* Post Contents */}
+            <div className="flex flex-col gap-2 w-full max-w-full sm:w-fit text-sm sm:text-base lg:text-lg overflow-hidden">
+              <div className="block w-full max-w-full sm:max-w-[85%] h-full">
                 <ReactQuill
-                  className="block h-full w-fit text-base"
+                  className="block h-full w-fit text-xs sm:text-base"
                   value={post?.text}
                   readOnly={true}
                   theme={"bubble"}
                 />
               </div>
               {post?.media_url && (
-                <figure className="flex max-w-[90%] min-h-fit aspect-[16/9] mr-auto bg-[#f5f5f5]">
+                <figure className="flex w-full max-w-full sm:max-w-[90%] min-h-fit aspect-[16/9] mr-auto bg-[#f5f5f5]">
                   <img
                     src={post?.media_url}
                     className="h-80 object-contain border overflow-hidden rounded-lg border-gray-200"
@@ -182,7 +184,7 @@ const PostCard = ({ post }) => {
                 </figure>
               )}
               {post?.video_url && (
-                <div className="flex w-full max-w-[90%] h-fit aspect-[16/9] mr-auto mb-2 bg-[#f5f5f5]">
+                <div className="flex w-full max-w-full sm:max-w-[90%] h-fit aspect-[16/9] mr-auto mb-2 bg-[#f5f5f5]">
                   <video
                     src={post?.video_url}
                     className="h-full object-contain border overflow-hidden rounded-lg border-gray-200"

@@ -46,10 +46,10 @@ const Message = ({ message }) => {
 
   return (
     <>
-      <div className={`chat ${chatClassName} px-2 pb-4`}>
+      <div className={`chat ${chatClassName} sm:px-2 sm:pb-4`}>
         <div className="chat-image avatar">
           <Link to={`/profile/${selectedConversation?.username}`}>
-            <div className="w-10 h-10 rounded-full overflow-hidden">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden">
               <img
                 alt="Tailwind CSS chat bubble component"
                 src={profileImg || "/assets/avatar-placeholder.png"}
@@ -61,9 +61,9 @@ const Message = ({ message }) => {
         <div
           className={`relative chat-bubble text-white ${bubbleBgColor} pb-2 sm:pb-4`}
         >
-          <p className="block my-1">{message?.message}</p>
+          <p className="block my-1 text-xs sm:text-sm">{message?.message}</p>
           {message?.media_url && (
-            <figure className="block h-72 w-auto my-1">
+            <figure className="block h-auto sm:h-72 w-auto my-1">
               <img
                 alt="image"
                 src={message?.media_url}

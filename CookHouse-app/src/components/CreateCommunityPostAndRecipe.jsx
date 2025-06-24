@@ -108,7 +108,7 @@ const CreateRecipe = () => {
 
   return (
     <>
-      <article className="flex flex-col min-w-fit w-[75%] md:w-[50%] max-w-[90%] mx-auto">
+      <article className="flex flex-col w-[75%] md:w-[50%] max-w-[90%] mx-auto">
         {/* You can open the modal using document.getElementById('ID').showModal() method */}
         <button
           className="submit-btn transition-all duration-300"
@@ -425,7 +425,7 @@ const CreateCommunityPostAndRecipe = ({ isOwner = false }) => {
 
   return (
     <>
-      <article className="flex flex-col w-[75%] md:w-[66%] max-w-[90%] mx-auto py-2 glass-morph">
+      <article className="flex flex-col w-[75%] md:w-[66%] max-w-[95%] sm:max-w-[90%] mx-auto py-2 glass-morph">
         <div className="flex flex-col flex-nowrap my-2 sm:my-3 md:my-6 lg:my-8 w-full rounded-xl p-4 items-start gap-4 border-b border-slate-100">
           <div className="avatar">
             <div className="w-8 bg-white rounded-full">

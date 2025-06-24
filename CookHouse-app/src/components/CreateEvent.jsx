@@ -73,7 +73,7 @@ const CreateEvent = () => {
 
   return (
     <>
-      <article className="flex flex-col min-w-fit w-[75%] md:w-[50%] max-w-[90%] mx-auto">
+      <article className="flex flex-col w-[75%] md:w-[50%] max-w-[90%] mx-auto">
         {/* You can open the modal using document.getElementById('ID').showModal() method */}
         <button
           className="submit-btn transition-all duration-300"
@@ -82,7 +82,7 @@ const CreateEvent = () => {
           Add Event
         </button>
         <dialog id="addeventModal" className="modal">
-          <div className="modal-box flex flex-col flex-nowrap my-2  w-full rounded-xl bg-[#fafafa] items-start border-b border-slate-100">
+          <div className="modal-box flex flex-col flex-nowrap my-2 w-full rounded-xl bg-[#fafafa] items-start border-b border-slate-100">
             <form method="dialog" id="handleClosEvent">
               {/* if there is a button in form, it will close the modal */}
               <button

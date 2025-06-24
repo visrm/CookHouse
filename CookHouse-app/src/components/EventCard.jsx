@@ -84,17 +84,17 @@ const EventCard = ({ event }) => {
             />
           </div>
           <div className="flex flex-col bg-slate-200 w-full max-w-[90%] p-2 border-0 rounded-sm">
-            <span className="flex sm:gap-x-2 items-center w-full max-w-full">
-              <span className="text-sm font-bold font-mono sm:w-10">Date</span>{" "}
+            <span className="flex sm:gap-x-2 items-start w-full max-w-full text-xs sm:text-sm">
+              <span className="font-bold font-mono w-12 sm:w-10">Date</span>{" "}
               :
-              <span className="text-sm font-normal font-sans">
+              <span className="font-normal font-sans">
                 {formattedDate(event?.startDate)} -
                 {formattedDate(event?.endDate)}
               </span>
             </span>
-            <span className="flex sm:gap-x-2 items-center w-full max-w-full">
-              <span className="text-sm font-bold font-mono sm:w-10">Venue</span>{" "}
-              :<span className="text-sm font-normal font-sans">{event?.location}</span>
+            <span className="flex sm:gap-x-2 items-start w-full max-w-full text-xs sm:text-sm">
+              <span className="font-bold font-mono w-12 sm:w-10">Venue</span>{" "}
+              :<span className="font-normal font-sans">{event?.location}</span>
             </span>
           </div>
         </div>

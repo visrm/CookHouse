@@ -10,7 +10,7 @@ import RecipeSkeleton from "../Skeleton/RecipeSkeleton.jsx";
 const ExplorePage = () => {
   const [item, setItem] = useState("");
 
-  useGetAllRecipes();
+  useGetAllRecipes("");
 
   const { loadingRecipe, allRecipes, searchedRecipeQuery } = useSelector(
     (store) => store.recipes
@@ -51,7 +51,7 @@ const ExplorePage = () => {
 
   return (
     <>
-      <main className="flex flex-col flex-nowrap max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto transition-all duration-300">
+      <main className="flex flex-col flex-nowrap max-w-6xl sm:max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto transition-all duration-300">
         <section className="relative flex flex-col flex-nowrap w-full h-full backdrop-blur">
           <div className="relative block h-full min-h-full w-full max-w-full">
             <div className="absolute top-[20%] right-[68%] hidden lg:block h-42 w-42 bg-amber-500 rounded-full blur-2xl"></div>
@@ -65,7 +65,7 @@ const ExplorePage = () => {
                 />
               </figure>
 
-              <div className="block p-1 sm:p-2 text-left w-full h-full lg:my-auto">
+              <div className="block p-1 sm:p-2 text-left w-full h-full lg:my-auto ml-2">
                 <div className="z-50 block h-full w-full">
                   <p className="flex max-w-[32rem] text-xs text-amber-500 font-mono font-bold tracking-wide">
                     Delicious..
@@ -87,10 +87,10 @@ const ExplorePage = () => {
             </article>
           </div>
           <article className="block w-full max-w-full p-2 sm:px-4">
-            <div className="flex flex-nowrap flex-row w-full max-w-full">
+            <div className="flex flex-nowrap flex-col sm:flex-row  gap-y-2 w-full max-w-full">
               <form
                 onSubmit={handleSearch}
-                className="flex flex-row flex-nowrap gap-2 items-center justify-center w-[75%]"
+                className="flex flex-row flex-nowrap gap-2 items-center justify-center h-full w-full sm:w-[75%]"
                 id="search-bar-form1"
               >
                 <input

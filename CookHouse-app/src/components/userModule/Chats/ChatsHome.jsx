@@ -39,7 +39,7 @@ const ChatsHome = () => {
   return (
     <>
       <main className="h-full w-full max-w-full min-h-[90svh] md:min-h-screen overflow-hidden transition-all duration-300">
-        <section className="grid grid-cols-12 h-screen w-full">
+        <section className="grid grid-cols-12 h-screen w-full max-w-full">
           {loading && (
             <div className="grid col-span-4 md:col-span-3 lg:col-span-2 bg-[#fafafa]">
               <LoadingSpinner size="lg" />
@@ -50,7 +50,7 @@ const ChatsHome = () => {
               <div>
                 <form
                   onSubmit={handleSubmit}
-                  className="flex flex-wrap items-center gap-2 w-full max-w-full py-2 px-1"
+                  className="flex flex-wrap items-center gap-2 w-full max-w-full py-1.5 px-1"
                   id="seach-conversations-form"
                 >
                   <input
@@ -58,7 +58,7 @@ const ChatsHome = () => {
                     id="conversation"
                     type="text"
                     placeholder="Search…"
-                    className="input input-sm focus:outline-0 rounded-full text-sm bg-[#fdfdfd] text-slate-600"
+                    className="input input-xs sm:input-sm focus:outline-0 rounded-full text-sm bg-[#fdfdfd] text-slate-600 w-24 sm:w-full"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />

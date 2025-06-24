@@ -70,9 +70,9 @@ const Notifications = () => {
   return (
     <>
       <div className="relative flex-[4_4_0] border-gray-700 h-full min-h-[90svh] md:min-h-screen transition-all duration-300">
-        <div className="sticky top-11 md:top-14 flex justify-between items-center p-4 bg-[#fafafa] border-b border-gray-700 z-20">
+        <div className="sticky top-11 md:top-14 flex justify-between items-center py-4 pl-4 bg-[#fafafa] border-b border-gray-700 z-20">
           <p className="font-bold font-serif">Notifications</p>
-          <div className="flex items-center">
+          <div className="flex items-center justify-between">
             <button
               className="flex rounded-full w-fit hover:text-indigo-400 hover:scale-110"
               onClick={handleRefresh}
@@ -106,10 +106,10 @@ const Notifications = () => {
         )}
         {allNotifications?.map((notification) => (
           <div
-            className="border-0 flex flex-row justify-between items-center text-sm"
+            className="border-0 flex flex-col sm:flex-row justify-between sm:items-center text-sm"
             key={notification?._id}
           >
-            <div className="flex gap-0.5 px-4 py-3 items-center">
+            <div className="flex gap-0.5 px-4 py-1 sm:py-3 items-center">
               {notification?.type === "follow" && (
                 <FaUser className="w-7 h-7 text-primary" />
               )}
@@ -117,7 +117,7 @@ const Notifications = () => {
                 <AiFillHeart className="w-7 h-7 text-red-500" />
               )}
               <Link to={`/profile/${notification?.from?.username}`}>
-                <div className="flex gap-1">
+                <div className="flex flex-row flex-nowrap gap-1">
                   <span className="font-bold">
                     @{notification?.from?.username}
                   </span>{" "}
@@ -127,7 +127,7 @@ const Notifications = () => {
                 </div>
               </Link>
             </div>
-            <div className="p-2 flex text-slate-500">
+            <div className="px-2 mb-2 ml-4 sm:m-0 sm:p-2 flex flex-row flex-nowrap text-slate-500 text-xs sm:text-sm">
               {formattedDate(notification?.createdAt)}
             </div>
           </div>
