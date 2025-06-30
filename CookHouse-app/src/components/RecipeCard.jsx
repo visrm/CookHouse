@@ -220,7 +220,7 @@ const RecipeCard = ({ recipe }) => {
                     <span className="block text-base text-left font-semibold">
                       Ingredients
                     </span>
-                    <div className="flex flex-col flex-nowrap sm:gap-1 w-full text-xs sm:text-sm">
+                    <div className="flex flex-col flex-nowrap sm:gap-1 w-full text-xs mt-2">
                       {recipe?.ingredients?.map((ingredient) => {
                         i++;
                         return (

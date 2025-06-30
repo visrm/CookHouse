@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import "./App.css";
+import gsap from "gsap"
+import { ScrollTrigger, SplitText} from "gsap/all"
 import LandingPage from "./components/Landing/LandingPage";
 import SignIn from "./components/Auth/SignIn";
 import SignUp from "./components/Auth/SignUp";
@@ -21,6 +22,8 @@ import PageNotFound from "./components/PageNotFound";
 import Contacts from "./components/Contacts";
 import ProtectedRoute from "./components/adminModule/ProtectedRoute";
 import { useSelector } from "react-redux";
+
+gsap.registerPlugin(ScrollTrigger, SplitText)
 
 function App() {
   const { user } = useSelector((store) => store.auth);

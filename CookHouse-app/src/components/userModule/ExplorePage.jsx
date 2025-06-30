@@ -56,11 +56,11 @@ const ExplorePage = () => {
           <div className="relative block h-full min-h-full w-full max-w-full">
             <div className="absolute top-[20%] right-[68%] hidden lg:block h-42 w-42 bg-amber-500 rounded-full blur-2xl"></div>
             <article className="relative flex flex-row flex-wrap lg:flex-nowrap h-full w-full max-w-full backdrop-blur">
-              <figure className="hidden lg:block w-[33%] min-w-[75%] md:min-w-fit md:max-w-[33%] h-auto z-50">
+              <figure className="hidden lg:block w-[33%] min-w-fit md:max-w-[33%] h-auto z-50">
                 <img
                   src={"/assets/strawberry-bowl.webp"}
                   alt="bowl img"
-                  className="h-full w-full"
+                  className="h-full w-full max-w-full"
                   loading="eager"
                 />
               </figure>
@@ -71,10 +71,10 @@ const ExplorePage = () => {
                     Delicious..
                   </p>
                   <hgroup>
-                    <h1 className="sm:text-7xl text-2xl font-semibold">
+                    <h1 className="md:text-7xl sm:text-5xl text-2xl font-semibold">
                       Recipe for Happiness
                     </h1>
-                    <h4 className="sm:text-5xl text-xl mb-4 font-semibold text-amber-500">
+                    <h4 className="md:text-5xl sm:text-3xl text-xl mb-4 font-semibold text-amber-500">
                       Unlock Flavor. Explore Recipes.
                     </h4>
                   </hgroup>

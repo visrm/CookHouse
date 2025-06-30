@@ -1,17 +1,40 @@
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import InfoSvgIcon from "../InfoSvgIcon";
 
 const LandingFeatures = () => {
+  useGSAP(() => {
+    gsap.fromTo(
+      ".feature-grid",
+      {
+        opacity: 0,
+        y: 20,
+        scale: 0.9,
+      },
+      {
+        ease: "power1.inOut",
+        yoyo: true,
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        stagger: {
+          amount: 1,
+          delay: 1,
+        },
+      }
+    );
+  }, []);
   return (
     <>
       <section className="p-4 mb-20 transition-all duration-300">
-        <h1 className="section-title font-medium md:mb-4">Features</h1>
-        <article className="grid gap-2 sm:gap-4 md:gap-x-12 grid-cols-1 sm:grid-cols-2 p-2 md:px-4">
+        <h1 className="text-3xl md:text-4xl  font-fredericka font-medium text-center md:mb-4">Features</h1>
+        <article className="scroll-animate-gsap grid gap-2 gap-y-6 sm:gap-4 md:gap-x-12 grid-cols-1 sm:grid-cols-2 p-2 md:px-4">
           <article className="feature-grid shadow-lg bg-[#fff] p-4 rounded-md">
             <span className="block feature-icon">
               <InfoSvgIcon />
             </span>
             <article>
-              <h3 className="feature-title font-semibold">
+              <h3 className="feature-title font-medium">
                 User Registration & Profiles
               </h3>
               <p className="feature-description text-neutral-600">
@@ -25,7 +48,7 @@ const LandingFeatures = () => {
               <InfoSvgIcon />
             </span>
             <article>
-              <h3 className="feature-title font-semibold">
+              <h3 className="feature-title font-medium">
                 Menu Creation & Management
               </h3>
               <p className="feature-description text-neutral-600">
@@ -39,7 +62,7 @@ const LandingFeatures = () => {
               <InfoSvgIcon />
             </span>
             <article>
-              <h3 className="feature-title font-semibold">
+              <h3 className="feature-title font-medium">
                 Search & Filtering
               </h3>
               <p className="feature-description text-neutral-600">
@@ -53,7 +76,7 @@ const LandingFeatures = () => {
               <InfoSvgIcon />
             </span>
             <article>
-              <h3 className="feature-title font-semibold">
+              <h3 className="feature-title font-medium">
                 Community Building
               </h3>
               <p className="feature-description text-neutral-600">
@@ -67,7 +90,7 @@ const LandingFeatures = () => {
               <InfoSvgIcon />
             </span>
             <article>
-              <h3 className="feature-title font-semibold">
+              <h3 className="feature-title font-medium">
                 AI Culinary Assistant
               </h3>
               <p className="feature-description text-neutral-600">
@@ -81,10 +104,12 @@ const LandingFeatures = () => {
               <InfoSvgIcon />
             </span>
             <article>
-              <h3 className="feature-title font-semibold">Seamless & Intuitive UI</h3>
+              <h3 className="feature-title font-medium">
+                Seamless & Intuitive UI
+              </h3>
               <p className="feature-description text-neutral-600">
                 Experience cooking and connecting like never before with our
-                beautifully designed and intuitive interface. 
+                beautifully designed and intuitive interface.
               </p>
             </article>
           </article>
