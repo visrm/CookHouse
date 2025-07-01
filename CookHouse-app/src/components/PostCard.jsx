@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { MdMoreVert } from "react-icons/md";
 import { timestampFn } from "../utils/extractTime.js";
 import ReactQuill from "react-quill";
-import 'react-quill/dist/quill.bubble.css'
+import "react-quill/dist/quill.bubble.css";
 
 const PostCard = ({ post }) => {
   const [comment, setComment] = useState("");
@@ -24,15 +24,21 @@ const PostCard = ({ post }) => {
 
   const handleDeletePost = async () => {
     try {
-      const response = await axios.delete(
-        `${POSTS_API_END_POINT}/post/${post?._id}`,
-        {
-          withCredentials: true,
-        }
-      );
+      if (window.confirm("Are you sure you want to delete this post?")) {
+        // User clicked OK, proceed with deletion
+        const response = await axios.delete(
+          `${POSTS_API_END_POINT}/post/${post?._id}`,
+          {
+            withCredentials: true,
+          }
+        );
 
-      if (response.data.success) {
-        toast.success(response.data.message);
+        if (response.data.success) {
+          toast.success(response.data.message);
+        }
+      } else {
+        // User clicked Cancel
+        toast.error("Deletion cancelled.");
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -67,15 +73,21 @@ const PostCard = ({ post }) => {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      const response = await axios.delete(
-        `${POSTS_API_END_POINT}/comment/${post?._id}/${commentId}`,
-        {
-          withCredentials: true,
-        }
-      );
+      if (window.confirm("Are you sure you want to delete this comment?")) {
+        // User clicked OK, proceed with deletion
+        const response = await axios.delete(
+          `${POSTS_API_END_POINT}/comment/${post?._id}/${commentId}`,
+          {
+            withCredentials: true,
+          }
+        );
 
-      if (response.data.success) {
-        toast.success(response.data.message);
+        if (response.data.success) {
+          toast.success(response.data.message);
+        }
+      } else {
+        // User clicked Cancel
+        toast.error("Deletion cancelled.");
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -101,31 +113,30 @@ const PostCard = ({ post }) => {
 
   return (
     <>
-      <article className="w-[90%] sm:w-[80%] max-w-4xl mx-auto glass-morph overflow-hidden">
-        <div className="flex gap-2 items-start p-4 bg-[#fdfdfd]">
-          <div className="avatar h-8">
-            <Link
-              to={`/profile/${postOwner?.username}`}
-              className="w-8 bg-white rounded-full overflow-hidden"
-            >
-              <img
-                src={
-                  postOwner?.profile?.profileImg ||
-                  "/assets/avatar-placeholder.png"
-                }
-              />
-            </Link>
-          </div>
-
-          <div className="flex flex-col flex-1">
-            <div className="flex gap-2 items-center">
+      <article className="relative w-[90%] sm:w-[80%] max-w-4xl mx-auto glass-morph overflow-hidden">
+        <div className="flex flex-col flex-nowrap gap-0 items-start p-3 sm:p-4 bg-[#fdfdfd] w-full max-w-full">
+          <div className="flex flex-row flex-nowrap gap-2 w-full max-w-full">
+            <div className="avatar h-8">
+              <Link
+                to={`/profile/${postOwner?.username}`}
+                className="w-8 bg-white rounded-full overflow-hidden"
+              >
+                <img
+                  src={
+                    postOwner?.profile?.profileImg ||
+                    "/assets/avatar-placeholder.png"
+                  }
+                />
+              </Link>
+            </div>
+            <div className="flex flex-wrap gap-2 items-center">
               <Link
                 to={`/profile/${postOwner?.username}`}
                 className="font-bold"
               >
                 {postOwner?.fullname}
               </Link>
-              <span className="text-gray-700 flex gap-1  text-xs sm:text-sm items-center">
+              <span className="text-gray-700 flex gap-1 text-xs sm:text-sm items-center">
                 <Link to={`/profile/${postOwner?.username}`}>
                   @{postOwner?.username}
                 </Link>
@@ -137,7 +148,7 @@ const PostCard = ({ post }) => {
                 </span>
               </span>
               {isMyPost && (
-                <div className=" flex justify-end flex-1 dropdown dropdown-start">
+                <div className="absolute top-2 right-2 flex justify-end flex-1 dropdown dropdown-start">
                   <div
                     tabIndex={0}
                     role="button"
@@ -162,10 +173,12 @@ const PostCard = ({ post }) => {
                 </div>
               )}
             </div>
+          </div>
 
+          <div className="flex flex-col flex-1 ml-4 sm:ml-6 md:ml-8">
             {/* Post Contents */}
             <div className="flex flex-col gap-2 w-full max-w-full sm:w-fit text-sm sm:text-base lg:text-lg overflow-hidden">
-              <div className="block w-full max-w-full sm:max-w-[85%] h-full">
+              <div className="block text-left w-full max-w-full sm:max-w-[93%] h-full">
                 <ReactQuill
                   className="block h-full w-fit text-xs sm:text-base"
                   value={post?.text}
@@ -174,7 +187,7 @@ const PostCard = ({ post }) => {
                 />
               </div>
               {post?.media_url && (
-                <figure className="flex w-full max-w-full sm:max-w-[90%] min-h-fit aspect-[16/9] mr-auto bg-[#f5f5f5]">
+                <figure className="flex w-full max-w-full sm:max-w-[95%] min-h-fit aspect-[16/9] mr-auto bg-[#f5f5f5]">
                   <img
                     src={post?.media_url}
                     className="h-80 object-contain border overflow-hidden rounded-lg border-gray-200"
@@ -184,7 +197,7 @@ const PostCard = ({ post }) => {
                 </figure>
               )}
               {post?.video_url && (
-                <div className="flex w-full max-w-full sm:max-w-[90%] h-fit aspect-[16/9] mr-auto mb-2 bg-[#f5f5f5]">
+                <div className="flex w-full max-w-full sm:max-w-[95%] h-fit aspect-[16/9] mr-auto mb-2 bg-[#f5f5f5]">
                   <video
                     src={post?.video_url}
                     className="h-full object-contain border overflow-hidden rounded-lg border-gray-200"

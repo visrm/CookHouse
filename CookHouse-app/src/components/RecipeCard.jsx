@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { MdMoreVert } from "react-icons/md";
 import { timestampFn } from "../utils/extractTime.js";
 import ReactQuill from "react-quill";
-import 'react-quill/dist/quill.bubble.css'
+import "react-quill/dist/quill.bubble.css";
 
 const RecipeCard = ({ recipe }) => {
   const [review, setReview] = useState("");
@@ -24,15 +24,21 @@ const RecipeCard = ({ recipe }) => {
 
   const handleDeleteRecipe = async () => {
     try {
-      const response = await axios.delete(
-        `${RECIPES_API_END_POINT}/recipe/${recipe?._id}`,
-        {
-          withCredentials: true,
-        }
-      );
+      if (window.confirm("Are you sure you want to delete this recipe?")) {
+        // User clicked OK, proceed with deletion
+        const response = await axios.delete(
+          `${RECIPES_API_END_POINT}/recipe/${recipe?._id}`,
+          {
+            withCredentials: true,
+          }
+        );
 
-      if (response.data.success) {
-        toast.success(response.data.message);
+        if (response.data.success) {
+          toast.success(response.data.message);
+        }
+      } else {
+        // User clicked Cancel
+        toast.error("Deletion cancelled.");
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -67,15 +73,21 @@ const RecipeCard = ({ recipe }) => {
 
   const handleDeleteReview = async (reviewId) => {
     try {
-      const response = await axios.delete(
-        `${RECIPES_API_END_POINT}/review/${recipe?._id}/${reviewId}`,
-        {
-          withCredentials: true,
-        }
-      );
+      if (window.confirm("Are you sure you want to delete this review?")) {
+        // User clicked OK, proceed with deletion
+        const response = await axios.delete(
+          `${RECIPES_API_END_POINT}/review/${recipe?._id}/${reviewId}`,
+          {
+            withCredentials: true,
+          }
+        );
 
-      if (response.data.success) {
-        toast.success(response.data.message);
+        if (response.data.success) {
+          toast.success(response.data.message);
+        }
+      } else {
+        // User clicked Cancel
+        toast.error("Deletion cancelled.");
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -122,16 +134,16 @@ const RecipeCard = ({ recipe }) => {
             </Link>
           </div>
           <div className="flex flex-col flex-1">
-            <div className="flex gap-2 items-center">
+            <div className="flex flex-wrap gap-2 items-center">
               {recipeMaker?.role === "user" ? (
                 <Link
                   to={`/profile/${recipeMaker?.username}`}
-                  className="font-bold"
+                  className="text-sm font-semibold"
                 >
                   {recipeMaker?.fullname}
                 </Link>
               ) : (
-                "Admin"
+                <span className="text-sm font-semibold">Admin</span>
               )}
               <span className="text-gray-700 flex gap-1 text-xs sm:text-sm items-center">
                 {recipeMaker?.role === "user" && (

@@ -33,12 +33,21 @@ const UsersTable = (refreshVar) => {
 
   const handleDeletion = async (userId) => {
     try {
-      const response = await axios.delete(`${USERS_API_END_POINT}/${userId}`, {
-        withCredentials: true,
-      });
+      if (window.confirm("Are you sure you want to ban this user?")) {
+        // User clicked OK, proceed with deletion
+        const response = await axios.delete(
+          `${USERS_API_END_POINT}/${userId}`,
+          {
+            withCredentials: true,
+          }
+        );
 
-      if (response.data.success) {
-        toast.success(response.data.message);
+        if (response.data.success) {
+          toast.success(response.data.message);
+        }
+      } else {
+        // User clicked Cancel
+        toast.error("Ban cancelled.");
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -156,7 +165,7 @@ const UsersTable = (refreshVar) => {
                                   handleDeletion(user?._id);
                                 }}
                               >
-                                Delete account
+                                Ban account
                               </button>
                             </li>
                           </ul>

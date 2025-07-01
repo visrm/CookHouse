@@ -71,10 +71,10 @@ const NavigationBar = () => {
 
             {!user && (
               <ul className="ml-2 md:ml-4 list-none inline-flex flex-nowrap gap-2 md:gap-4 md:font-semibold">
-                <li className="btn btn-sm border border-black/50 rounded-md bg-slate-200 hover:scale-105">
+                <li className="btn btn-xs sm:btn-sm border border-black/50 rounded-md bg-slate-200 hover:scale-105">
                   <Link to="/login">Login</Link>
                 </li>
-                <li className="btn btn-sm border border-black/50 rounded-md bg-slate-600 text-slate-100 hover:scale-105">
+                <li className="btn btn-xs sm:btn-sm border border-black/50 rounded-md bg-slate-600 text-slate-100 hover:scale-105">
                   <Link to="/register">Register</Link>
                 </li>
               </ul>

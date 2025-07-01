@@ -29,7 +29,7 @@ const Conversation = ({ user, lastIdx }) => {
 
         <div className="flex flex-col flex-1 truncate w-24 sm:w-fit">
           <div className="flex justify-between">
-            <p className="text-sm sm:text-base font-semibold text-slate-800">{user?.username}</p>
+            <p className="text-sm font-medium text-slate-800">{user?.username}</p>
           </div>
         </div>
       </div>

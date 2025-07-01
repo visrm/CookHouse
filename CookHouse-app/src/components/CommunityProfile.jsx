@@ -87,7 +87,7 @@ const CommunityProfile = () => {
   };
 
   const handleImgSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     let updateInfo = {
       profileImg: profileImg,
       coverImg: coverImg,
@@ -136,17 +136,23 @@ const CommunityProfile = () => {
 
   const handleDeletion = async (communityId) => {
     try {
-      dispatch(setLoadingCommunity(true));
-      const response = await axios.delete(
-        `${COMMUNITIES_API_END_POINT}/delete/${communityId}`,
-        {
-          withCredentials: true,
-        }
-      );
+      if (window.confirm("Are you sure you want to delete the community?")) {
+        // User clicked OK, proceed with deletion
+        dispatch(setLoadingCommunity(true));
+        const response = await axios.delete(
+          `${COMMUNITIES_API_END_POINT}/delete/${communityId}`,
+          {
+            withCredentials: true,
+          }
+        );
 
-      if (response.data.success) {
-        toast.success(response.data.message);
-        navigate(-1);
+        if (response.data.success) {
+          toast.success(response.data.message);
+          navigate(-1);
+        }
+      } else {
+        // User clicked Cancel
+        toast.error("Deletion cancelled.");
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -206,7 +212,9 @@ const CommunityProfile = () => {
               <div className="relative block h-fit">
                 <img
                   src={
-                    coverImg || singleCommunity?.coverImg || "/assets/cover.webp"
+                    coverImg ||
+                    singleCommunity?.coverImg ||
+                    "/assets/cover.webp"
                   }
                   className="object-cover w-full max-h-56 z-0"
                 />

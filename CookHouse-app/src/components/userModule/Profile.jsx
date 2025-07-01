@@ -220,15 +220,15 @@ const Profile = () => {
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full bg-[#fafafa]">
               <span className="grid col-start-2 sm:col-start-2 col-span-2 py-1 text-left w-fit">
-                <h1 className="flex gap-1 items-baseline text-xl font-semibold">
+                <h1 className="flex flex-wrap flex-row gap-1 items-baseline text-base sm:text-lg md:text-xl font-medium">
                   {singleUser?.fullname}
-                  <span className="text-lg text-slate-800 font-medium">
+                  <span className="text-sm sm:text-base text-slate-800 font-normal">
                     @{singleUser?.username}
                   </span>
                 </h1>
-                <div className="flex flex-col flex-nowrap gap-0 pr-1 mb-2 text-sm">
-                  <span className="font-semibold">About me :</span>
-                  <p>{singleUser?.profile?.bio}</p>
+                <div className="flex flex-col flex-nowrap gap-0 sm:pr-1 mb-2 text-xs sm:text-sm">
+                  <span className="font-medium">About me :</span>
+                  <p className="font-normal">{singleUser?.profile?.bio}</p>
                 </div>
                 <div className="flex gap-2 items-center mb-2">
                   <IoCalendarOutline className="w-4 h-4 text-slate-500" />

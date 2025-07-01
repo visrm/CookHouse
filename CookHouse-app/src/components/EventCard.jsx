@@ -7,7 +7,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { EVENTS_API_END_POINT } from "../utils/constants";
 import ReactQuill from "react-quill";
-import 'react-quill/dist/quill.bubble.css'
+import "react-quill/dist/quill.bubble.css";
 
 const EventCard = ({ event }) => {
   const organiser = event?.organiser;
@@ -25,13 +25,19 @@ const EventCard = ({ event }) => {
 
   const handleDeleteEvent = async () => {
     try {
-      dispatch(setLoadingEvent(true));
-      const response = await axios.delete(
-        `${EVENTS_API_END_POINT}/delete/${event?._id}`,
-        { withCredentials: true }
-      );
-      if (response.data.success) {
-        toast.success(response.data.message);
+      if (window.confirm("Are you sure you want to cancel the event?")) {
+        // User clicked OK, proceed with deletion
+        dispatch(setLoadingEvent(true));
+        const response = await axios.delete(
+          `${EVENTS_API_END_POINT}/delete/${event?._id}`,
+          { withCredentials: true }
+        );
+        if (response.data.success) {
+          toast.success(response.data.message);
+        }
+      } else {
+        // User clicked Cancel
+        toast.error("Deletion cancelled.");
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -85,16 +91,15 @@ const EventCard = ({ event }) => {
           </div>
           <div className="flex flex-col bg-slate-200 w-full max-w-[90%] p-2 border-0 rounded-sm">
             <span className="flex sm:gap-x-2 items-start w-full max-w-full text-xs sm:text-sm">
-              <span className="font-bold font-mono w-12 sm:w-10">Date</span>{" "}
-              :
+              <span className="font-bold font-mono w-12 sm:w-10">Date</span> :
               <span className="font-normal font-sans">
                 {formattedDate(event?.startDate)} -
                 {formattedDate(event?.endDate)}
               </span>
             </span>
             <span className="flex sm:gap-x-2 items-start w-full max-w-full text-xs sm:text-sm">
-              <span className="font-bold font-mono w-12 sm:w-10">Venue</span>{" "}
-              :<span className="font-normal font-sans">{event?.location}</span>
+              <span className="font-bold font-mono w-12 sm:w-10">Venue</span> :
+              <span className="font-normal font-sans">{event?.location}</span>
             </span>
           </div>
         </div>

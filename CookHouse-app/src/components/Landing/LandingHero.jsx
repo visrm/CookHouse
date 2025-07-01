@@ -13,8 +13,8 @@ const LandingHero = () => {
         ease: "power1.inOut",
         yoyo: true,
         stagger: {
-          amount: 1,
-          delay: 0.5,
+          amount: 0.75,
+          delay: 0.25,
         },
       }
     );
@@ -33,7 +33,7 @@ const LandingHero = () => {
           <hgroup className="flex flex-col flex-nowrap text-amber-200 w-full max-w-full items-center">
             <h1
               id="hero-title"
-              className="stagger-box text-4xl sm:text-7xl lg:text-8xl text-shadow-2xs"
+              className="stagger-box text-5xl sm:text-7xl lg:text-8xl text-shadow-2xs"
             >
               CookHouse
             </h1>

@@ -23,7 +23,7 @@ const FilterRecipe = () => {
           className="flex flex-nowrap w-full max-w-full sm:px-4 md:px-6 items-center"
           onSubmit={handleSubmit}
         >
-          <h1 className="text-sm sm:text-base font-semibold text-nowrap px-2">
+          <h1 className="text-sm sm:text-base font-semibold text-nowrap sm:px-2">
             Filter Recipes
           </h1>
           <div className="flex flex-row flex-nowrap w-full max-w-full px-2 gap-2 sm:gap-4">

@@ -13,11 +13,36 @@ import PostSkeleton from "../../Skeleton/PostSkeleton";
 import CommunityCardSkeleton from "../../Skeleton/CommunityCardSkeleton";
 import RecipeSkeleton from "../../Skeleton/RecipeSkeleton";
 import EventSkeleton from "../../Skeleton/EventSkeleton";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const CommunityHome = () => {
   const [feedType, setFeedType] = useState("communities");
   const [homeRefresh, setHomeRefresh] = useState({});
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      yoyo: true,
+    });
+
+    tl.from(
+      ".animate-class",
+      {
+        opacity: 0,
+        yPercent: 100,
+        duration: 1.5,
+        ease: "expo.inOut",
+        stagger: { amount: 0.06, delay: 1 },
+      },
+      "+=1"
+    ).from(".animate-img", {
+      xPercent: 100,
+      opacity: 0,
+      scale: 0.9,
+      ease: "expo.out",
+    });
+  }, []);
 
   useGetAllUserCommunities(homeRefresh);
   useGetUsersCommunitiesPosts(homeRefresh);
@@ -55,18 +80,18 @@ const CommunityHome = () => {
           <article className="relative flex w-full bg-[#fafafa]">
             <div className="p-1 sm:p-2 text-center w-full h-full lg:my-auto">
               <div className="z-50 block h-full w-full text-center">
-                <p className="text-xs text-amber-500 font-mono font-bold tracking-wide">
+                <p className="animate-class text-xs text-amber-500 font-mono font-bold tracking-wide">
                   😊
                 </p>
                 <hgroup>
-                  <h1 className="sm:text-6xl text-2xl font-semibold">
+                  <h1 className="animate-class sm:text-6xl text-3xl font-semibold">
                     Your Kitchen, Our Community.
                   </h1>
-                  <h4 className="sm:text-4xl text-xl mb-4 font-semibold text-amber-500">
+                  <h4 className="animate-class sm:text-4xl text-2xl mb-4 font-semibold text-amber-500">
                     Flavor Shared, Skills Inspired.
                   </h4>
                 </hgroup>
-                <p className="sm:py-2 text-xs sm:text-sm font-light tracking-wide w-full items-center">
+                <p className="animate-class sm:py-2 text-xs sm:text-sm font-light tracking-wide w-full items-center">
                   Discover the joy of cooking together. Share your family
                   favorites, explore global flavors, and build lasting culinary
                   connections.
@@ -78,7 +103,7 @@ const CommunityHome = () => {
                 <img
                   src={"/assets/community-gathering.png"}
                   alt="bowl img"
-                  className="h-full w-full"
+                  className="animate-img h-full w-full"
                   loading="eager"
                 />
               </figure>

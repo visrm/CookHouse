@@ -35,15 +35,21 @@ const CommunitiesTable = (refreshVar) => {
 
   const handleDeletion = async (communityId) => {
     try {
-      const response = await axios.delete(
-        `${COMMUNITIES_API_END_POINT}/delete/${communityId}`,
-        {
-          withCredentials: true,
-        }
-      );
+      if (window.confirm("Are you sure you want to delete this community?")) {
+        // User clicked OK, proceed with deletion
+        const response = await axios.delete(
+          `${COMMUNITIES_API_END_POINT}/delete/${communityId}`,
+          {
+            withCredentials: true,
+          }
+        );
 
-      if (response.data.success) {
-        toast.success(response.data.message);
+        if (response.data.success) {
+          toast.success(response.data.message);
+        }
+      } else {
+        // User clicked Cancel
+        toast.error("Deletion cancelled.");
       }
     } catch (error) {
       toast.error(error.response.data.message);

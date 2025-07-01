@@ -3,8 +3,11 @@ import CreateCommunity from "./CreateCommunity";
 import axios from "axios";
 import { COMMUNITIES_API_END_POINT } from "../../../utils/constants.js";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading, setSelfCommunity } from "../../../redux/slices/user.slice.js";
-import LoadingSpinner from "../../LoadingSpinner";
+import {
+  setLoading,
+  setSelfCommunity,
+} from "../../../redux/slices/user.slice.js";
+import CommunityCardSkeleton from "../../Skeleton/CommunityCardSkeleton";
 import CommunityCard from "../../CommunityCard";
 
 const ManageCommunity = () => {
@@ -36,7 +39,7 @@ const ManageCommunity = () => {
     <>
       <main className="relative h-full w-full max-w-full min-h-[90svh] md:min-h-screen overflow-hidden">
         <section>
-          <div className="sticky flex w-full font-semibold bg-[#fafafa] z-[100] shadow-md">
+          <div className="sticky flex w-full font-medium text-sm bg-[#fafafa] z-[100] shadow-md">
             <div
               className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("manage")}
@@ -58,10 +61,12 @@ const ManageCommunity = () => {
           </div>
           <div className="flex w-full mt-2 sm:mt-3 justify-center py-2">
             {feedType === "manage" && (
-              <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
+              <div className="flex flex-col flex-nowrap py-2 gap-2 sm:gap-3 lg:gap-4 min-h-full w-full max-w-full">
                 {loading && (
-                  <div className="block text-center">
-                    <LoadingSpinner size="lg" />
+                  <div className="block text-center gap-0.5">
+                    {[...Array(3)].map((_, idx) => (
+                      <CommunityCardSkeleton key={idx} />
+                    ))}
                   </div>
                 )}
                 {!loading && selfCommunity.length === 0 && (

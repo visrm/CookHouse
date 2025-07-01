@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import CreatePostAndRecipe from "../CreatePostAndRecipe.jsx";
 import Posts from "../Posts";
-import LoadingSpinner from "../LoadingSpinner";
 import PostsCard from "../PostCard.jsx";
 import Recipes from "../Recipes.jsx";
 import useGetAllFollowingPosts from "../Hooks/useGetAllFollowingPosts.jsx";
+import useGetAllRecipes from "../Hooks/useGetAllRecipes";
 import { MdOutlineRefresh } from "react-icons/md";
 import HomeCarousel from "../HomeCarousel.jsx";
 import useGetMe from "../Hooks/useGetMe.jsx";
@@ -16,6 +16,7 @@ const Home = () => {
   const [homeRefresh, setHomeRefresh] = useState({});
   const [isRefreshing, setIsRefreshing] = useState(false);
   useGetAllFollowingPosts(homeRefresh);
+  useGetAllRecipes("");
   useGetMe(homeRefresh)
 
   const { loadingPost, followingPosts } = useSelector((store) => store.posts);

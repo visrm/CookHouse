@@ -14,7 +14,7 @@ const PostSkeleton = () => {
             <div className="skeleton w-[75%] h-3"></div>
             <div className="skeleton w-[60%] h-3"></div>
         </div>
-        <div className="skeleton w-[90%] h-80 ml-4"></div>
+        <div className="skeleton w-[90%] h-90 ml-4"></div>
       </article>
     </>
   );

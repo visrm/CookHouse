@@ -38,15 +38,21 @@ const FeedbacksTable = (refreshVar) => {
 
   const handleDeletion = async (feedbackId) => {
     try {
-      const response = await axios.delete(
-        `${FEEDBACKS_API_END_POINT}/${feedbackId}`,
-        {
-          withCredentials: true,
-        }
-      );
+      if (window.confirm("Are you sure you want to delete the feedback?")) {
+        // User clicked OK, proceed with deletion
+        const response = await axios.delete(
+          `${FEEDBACKS_API_END_POINT}/${feedbackId}`,
+          {
+            withCredentials: true,
+          }
+        );
 
-      if (response.data.success) {
-        toast.success(response.data.message);
+        if (response.data.success) {
+          toast.success(response.data.message);
+        }
+      } else {
+        // User clicked Cancel
+        toast.error("Deletion cancelled.");
       }
     } catch (error) {
       toast.error(error.response.data.message);

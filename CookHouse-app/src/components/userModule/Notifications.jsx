@@ -41,11 +41,17 @@ const Notifications = () => {
 
   const deleteNotifications = async () => {
     try {
-      const response = await axios.delete(`${NOTIFICATIONS_API_END_POINT}`, {
-        withCredentials: true,
-      });
-      if (response.data.success) {
-        toast.success(response.data.message);
+      if (window.confirm("Are you sure you want to delete all notification?")) {
+        // User clicked OK, proceed with deletion
+        const response = await axios.delete(`${NOTIFICATIONS_API_END_POINT}`, {
+          withCredentials: true,
+        });
+        if (response.data.success) {
+          toast.success(response.data.message);
+        }
+      } else {
+        // User clicked Cancel
+        toast.error("Deletion cancelled.");
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -63,7 +69,9 @@ const Notifications = () => {
   const refreshAnimate = isRefreshing ? "loading loading-md" : "";
 
   const formattedDate = (string) => {
-    var dateString = ` ${string.split("T")[0].split("-")[2]}/${string.split("T")[0].split("-")[1]}, ${extractTime(string)}`;
+    var dateString = ` ${string.split("T")[0].split("-")[2]}/${
+      string.split("T")[0].split("-")[1]
+    }, ${extractTime(string)}`;
     return dateString.trim();
   };
 
@@ -102,7 +110,9 @@ const Notifications = () => {
           </div>
         )}
         {allNotifications?.length === 0 && (
-          <div className="text-center p-3 font-bold text-sm">No notifications 🤔</div>
+          <div className="text-center p-3 font-bold text-sm">
+            No notifications 🤔
+          </div>
         )}
         {allNotifications?.map((notification) => (
           <div

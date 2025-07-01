@@ -3,15 +3,33 @@ import RecipeCard from "../RecipeCard";
 import useGetAllRecipes from "../Hooks/useGetAllRecipes";
 import { useEffect, useState } from "react";
 import { LuSearch } from "react-icons/lu";
+import { MdOutlineRefresh } from "react-icons/md";
 import FilterRecipe from "../FilterRecipe";
 import { setSearchedRecipeQuery } from "../../redux/slices/recipe.slice.js";
 import RecipeSkeleton from "../Skeleton/RecipeSkeleton.jsx";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const ExplorePage = () => {
   const [item, setItem] = useState("");
+  const [homeRefresh, setHomeRefresh] = useState({});
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  useGetAllRecipes("");
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      yoyo: true,
+    });
 
+    tl.from(".animate-img", {
+      duration: 1,
+      xPercent: -150,
+      opacity: 0,
+      scale: 0.5,
+      ease: "expo.inOut",
+    });
+  }, []);
+
+  useGetAllRecipes("", homeRefresh);
   const { loadingRecipe, allRecipes, searchedRecipeQuery } = useSelector(
     (store) => store.recipes
   );
@@ -23,6 +41,17 @@ const ExplorePage = () => {
     e.preventDefault();
     dispatch(setSearchedRecipeQuery(item.trim()));
   };
+
+  const handleRefresh = (e) => {
+    e.preventDefault();
+    setIsRefreshing(true);
+    setHomeRefresh({});
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 2000);
+  };
+
+  const refreshAnimate = isRefreshing ? "loading loading-md" : "";
 
   useEffect(() => {
     if (searchedRecipeQuery) {
@@ -51,34 +80,40 @@ const ExplorePage = () => {
 
   return (
     <>
-      <main className="flex flex-col flex-nowrap max-w-6xl sm:max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto transition-all duration-300">
+      <main className="flex flex-col flex-nowrap max-w-6xl sm:max-w-full h-full w-full min-h-[90svh] md:min-h-screen mx-auto">
         <section className="relative flex flex-col flex-nowrap w-full h-full backdrop-blur">
           <div className="relative block h-full min-h-full w-full max-w-full">
             <div className="absolute top-[20%] right-[68%] hidden lg:block h-42 w-42 bg-amber-500 rounded-full blur-2xl"></div>
             <article className="relative flex flex-row flex-wrap lg:flex-nowrap h-full w-full max-w-full backdrop-blur">
-              <figure className="hidden lg:block w-[33%] min-w-fit md:max-w-[33%] h-auto z-50">
+              <figure
+                id="bowl-img"
+                className="hidden lg:block w-[33%] min-w-fit md:max-w-[33%] h-auto rounded-full z-50"
+              >
                 <img
                   src={"/assets/strawberry-bowl.webp"}
                   alt="bowl img"
-                  className="h-full w-full max-w-full"
+                  className="animate-img h-full w-full max-w-full"
                   loading="eager"
                 />
               </figure>
 
-              <div className="block p-1 sm:p-2 text-left w-full h-full lg:my-auto ml-2">
+              <div
+                id="explore-recipe-hero"
+                className="block p-1 sm:p-2 text-left w-full h-full lg:my-auto ml-2"
+              >
                 <div className="z-50 block h-full w-full">
-                  <p className="flex max-w-[32rem] text-xs text-amber-500 font-mono font-bold tracking-wide">
+                  <p className="animate-class flex max-w-[32rem] text-xs text-amber-500 font-mono font-bold tracking-wide">
                     Delicious..
                   </p>
                   <hgroup>
-                    <h1 className="md:text-7xl sm:text-5xl text-2xl font-semibold">
+                    <h1 className="animate-class md:text-7xl sm:text-5xl text-3xl font-semibold">
                       Recipe for Happiness
                     </h1>
-                    <h4 className="md:text-5xl sm:text-3xl text-xl mb-4 font-semibold text-amber-500">
+                    <h4 className="animate-class md:text-5xl sm:text-3xl text-2xl mb-4 font-semibold text-amber-500">
                       Unlock Flavor. Explore Recipes.
                     </h4>
                   </hgroup>
-                  <p className="flex sm:py-2 max-w-[32rem] text-sm font-light tracking-wide">
+                  <p className="animate-class flex sm:py-2 max-w-[32rem] text-sm font-light tracking-wide">
                     Ready to cook something amazing? Dive into our recipe
                     library and find your next culinary adventure.
                   </p>
@@ -113,11 +148,29 @@ const ExplorePage = () => {
               <FilterRecipe />
             </div>
             <div>
-              {!loadingRecipe && (
-                <span className="block w-full p-2 sm:px-3 my-2 md:my-3 font-bold font-mono text-xs text-left">
-                  {`Search results (${filterRecipes.length})`}
-                </span>
-              )}
+              <div className="relative flex flex-row flex-nowrap w-full max-w-full">
+                {loadingRecipe && (
+                  <span className="block w-36 h-3 ml-2 mt-4 skeleton rounded-sm"></span>
+                )}
+                {!loadingRecipe && (
+                  <span className="block w-full p-2 sm:px-3 my-2 md:my-3 font-bold font-mono text-xs text-left">
+                    {`Search results (${filterRecipes.length})`}
+                  </span>
+                )}
+                <div
+                  className="absolute top-2 right-2 bg-[#fafafa] my-auto tooltip tooltip-left"
+                  data-tip="Refresh"
+                >
+                  <button
+                    className="flex items-center rounded-full w-fit hover:text-indigo-600 p-1.5 sm:mr-2"
+                    onClick={handleRefresh}
+                  >
+                    <MdOutlineRefresh
+                      className={`h-5 w-5 ${refreshAnimate} transition-all duration-300`}
+                    />
+                  </button>
+                </div>
+              </div>
             </div>
           </article>
           <section>
@@ -127,7 +180,9 @@ const ExplorePage = () => {
             >
               {loadingRecipe && (
                 <div className="flex flex-col flex-nowrap text-center gap-2 sm:gap-4">
-                   { [...Array(3)].map((_, idx) => <RecipeSkeleton key={idx} />)}
+                  {[...Array(3)].map((_, idx) => (
+                    <RecipeSkeleton key={idx} />
+                  ))}
                 </div>
               )}
               {!loadingRecipe && filterRecipes.length === 0 && (

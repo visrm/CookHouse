@@ -17,7 +17,7 @@ const RecipesTable = (refreshVar) => {
   const { loadingRecipe, allRecipes } = useSelector((store) => store.recipes);
 
   useEffect(() => {
-    dispatch(setSearchedRecipeQuery(""))
+    dispatch(setSearchedRecipeQuery(""));
     const urlParams = new URLSearchParams(location.search);
     const keywordFromUrl = urlParams.get("keyword");
     if (keywordFromUrl) setKeyword(keywordFromUrl);
@@ -33,14 +33,20 @@ const RecipesTable = (refreshVar) => {
 
   const handleDeletion = async (recipeId) => {
     try {
-      const response = await axios.delete(
-        `${RECIPES_API_END_POINT}/${recipeId}`,
-        {
-          withCredentials: true,
+      if (window.confirm("Are you sure you want to delete the recipe?")) {
+        // User clicked OK, proceed with deletion
+        const response = await axios.delete(
+          `${RECIPES_API_END_POINT}/${recipeId}`,
+          {
+            withCredentials: true,
+          }
+        );
+        if (response.data.success) {
+          toast.success(response.data.message);
         }
-      );
-      if (response.data.success) {
-        toast.success(response.data.message);
+      } else {
+        // User clicked Cancel
+        toast.error("Deletion cancelled.");
       }
     } catch (error) {
       toast.error(error.response.data.message);

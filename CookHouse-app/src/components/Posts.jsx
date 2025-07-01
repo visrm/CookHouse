@@ -12,10 +12,15 @@ const Posts = ({ refreshVar }) => {
 
   return (
     <>
-      <div className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 py-2">
+      <div
+        id="post-card-id"
+        className="flex flex-col flex-nowrap gap-2 sm:gap-3 lg:gap-4 py-2"
+      >
         {loadingPost && (
           <div className="block text-center gap-2">
-            { [...Array(3)].map((_, idx) => <PostSkeleton key={idx} />)}
+            {[...Array(3)].map((_, idx) => (
+              <PostSkeleton key={idx} />
+            ))}
           </div>
         )}
         {!loadingPost && allPosts.length === 0 && (
@@ -26,7 +31,9 @@ const Posts = ({ refreshVar }) => {
         {!loadingPost &&
           allPosts.length > 0 &&
           allPosts.map((post) => {
-            return <PostsCard post={post} key={post?._id} />;
+            return (
+              <PostsCard post={post} key={post?._id} />
+            );
           })}
       </div>
     </>
