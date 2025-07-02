@@ -97,7 +97,7 @@ const EventsTable = (refreshVar) => {
           </div>
         </article>
         <div className="rounded-box border border-base-content/5 bg-base-200 h-full max-w-full">
-          <table className="table table-xs">
+          <table className="table table-xs text-xs">
             <thead>
               <tr className="text-center">
                 <th></th>
@@ -156,7 +156,7 @@ const EventsTable = (refreshVar) => {
                           </div>
                           <ul
                             tabIndex={0}
-                            className="menu dropdown-content gap-0.5 border-1 border-slate-200 bg-[#fdfdfd] rounded-box z-1 mt-9 w-38 p-0.5 shadow-sm text-xs font-semibold"
+                            className="menu dropdown-content gap-0.5 border-1 border-slate-200 bg-[#fdfdfd] rounded-box z-1 mt-9 w-38 p-0.5 shadow-sm text-xs font-medium"
                           >
                             <li>
                               <button

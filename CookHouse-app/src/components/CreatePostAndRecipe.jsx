@@ -540,4 +540,5 @@ const CreatePostAndRecipe = () => {
     </>
   );
 };
+
 export default CreatePostAndRecipe;

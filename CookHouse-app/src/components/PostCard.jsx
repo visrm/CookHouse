@@ -132,7 +132,7 @@ const PostCard = ({ post }) => {
             <div className="flex flex-wrap gap-2 items-center">
               <Link
                 to={`/profile/${postOwner?.username}`}
-                className="font-bold"
+                className="font-semibold"
               >
                 {postOwner?.fullname}
               </Link>
@@ -177,15 +177,21 @@ const PostCard = ({ post }) => {
 
           <div className="flex flex-col flex-1 ml-4 sm:ml-6 md:ml-8">
             {/* Post Contents */}
-            <div className="flex flex-col gap-2 w-full max-w-full sm:w-fit text-sm sm:text-base lg:text-lg overflow-hidden">
-              <div className="block text-left w-full max-w-full sm:max-w-[93%] h-full">
+            <div className="flex flex-col w-full max-w-full sm:w-fit text-sm sm:text-base lg:text-lg overflow-hidden">
+              {post?.text && (
                 <ReactQuill
-                  className="block h-full w-fit text-xs sm:text-base"
+                  className="block h-full w-full max-w-full sm:max-w-[93%] text-xs sm:text-base"
                   value={post?.text}
                   readOnly={true}
                   theme={"bubble"}
+                  style={{
+                    padding: "0",
+                    fontSize: "1rem",
+                    fontFamily: "sans-serif",
+                  }}
                 />
-              </div>
+              )}
+
               {post?.media_url && (
                 <figure className="flex w-full max-w-full sm:max-w-[95%] min-h-fit aspect-[16/9] mr-auto bg-[#f5f5f5]">
                   <img
@@ -197,7 +203,7 @@ const PostCard = ({ post }) => {
                 </figure>
               )}
               {post?.video_url && (
-                <div className="flex w-full max-w-full sm:max-w-[95%] h-fit aspect-[16/9] mr-auto mb-2 bg-[#f5f5f5]">
+                <div className="flex w-full max-w-full sm:max-w-[95%] h-fit aspect-[16/9] mr-auto my-2 bg-[#f5f5f5]">
                   <video
                     src={post?.video_url}
                     className="h-full object-contain border overflow-hidden rounded-lg border-gray-200"

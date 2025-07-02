@@ -9,12 +9,14 @@ import {
   setAllFeedbacks,
   setLoadingFeedback,
 } from "../../redux/slices/feedback.slice.js";
+import { useNavigate } from "react-router-dom";
 
 const FeedbacksTable = (refreshVar) => {
   const { loadingFeedback, allFeedbacks } = useSelector(
     (store) => store.feedbacks
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async function FetchFeedbacks() {
@@ -72,7 +74,7 @@ const FeedbacksTable = (refreshVar) => {
           </div>
         </article>
         <div className="rounded-box border border-base-content/5 bg-base-200 h-full max-w-full">
-          <table className="table table-xs">
+          <table className="table table-xs text-xs">
             <thead>
               <tr className="text-center">
                 <th></th>
@@ -124,8 +126,19 @@ const FeedbacksTable = (refreshVar) => {
                           </div>
                           <ul
                             tabIndex={0}
-                            className="menu dropdown-content gap-0.5 border-1 border-slate-200 bg-[#fdfdfd] rounded-box z-1 mt-9 w-38 p-0.5 shadow-sm text-xs font-semibold"
+                            className="menu dropdown-content gap-0.5 border-1 border-slate-200 bg-[#fdfdfd] rounded-box z-1 mt-9 w-38 p-0.5 shadow-sm text-xs font-medium"
                           >
+                            <li>
+                              <button
+                                className="btn hover:text-indigo-400 border btn-sm"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  navigate(`/feedback/${feedback?._id}`);
+                                }}
+                              >
+                                View Feedback
+                              </button>
+                            </li>
                             <li>
                               <button
                                 className="btn hover:text-red-400 border btn-sm"
@@ -134,7 +147,7 @@ const FeedbacksTable = (refreshVar) => {
                                   handleDeletion(feedback?._id);
                                 }}
                               >
-                                Delete
+                                Delete Feedback
                               </button>
                             </li>
                           </ul>

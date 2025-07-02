@@ -27,9 +27,9 @@ const AdminHome = () => {
     <>
       <main className="h-full w-full max-w-full min-h-[90svh] md:min-h-screen overflow-y-auto">
         <section>
-          <div className="flex w-full font-semibold bg-[#ffffff] z-50 shadow-md">
+          <div className="flex w-full max-w-full font-xs sm:font-base font-medium bg-[#ffffff] z-50 shadow-md">
             <div
-              className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
+              className="flex justify-center flex-1 px-2 py-1 sm:p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("users")}
             >
               Users
@@ -38,7 +38,7 @@ const AdminHome = () => {
               )}
             </div>
             <div
-              className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
+              className="flex justify-center flex-1 px-2 py-1 sm:p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("posts")}
             >
               Posts
@@ -47,7 +47,7 @@ const AdminHome = () => {
               )}
             </div>
             <div
-              className="flex justify-center flex-1 p-3 transition duration-300 relative cursor-pointer"
+              className="flex justify-center flex-1 px-2 py-1 sm:p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("recipes")}
             >
               Recipes
@@ -56,7 +56,7 @@ const AdminHome = () => {
               )}
             </div>
             <div
-              className="flex justify-center flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
+              className="flex justify-center flex-1 px-2 py-1 sm:p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("events")}
             >
               Events
@@ -65,7 +65,7 @@ const AdminHome = () => {
               )}
             </div>
             <div
-              className="flex justify-center flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
+              className="flex justify-center flex-1 px-2 py-1 sm:p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("communities")}
             >
               Communities
@@ -74,7 +74,7 @@ const AdminHome = () => {
               )}
             </div>
             <div
-              className="flex justify-center flex-1 p-3 text-slate-600 transition duration-300 relative cursor-pointer"
+              className="flex justify-center flex-1 px-2 py-1 sm:p-3 transition duration-300 relative cursor-pointer"
               onClick={() => setFeedType("feedbacks")}
             >
               Feedbacks
@@ -99,7 +99,7 @@ const AdminHome = () => {
             </div>
           </div>
 
-          <div className="flex w-full mt-2 justify-center">
+          <div className="flex w-full max-w-full mt-2 justify-center">
             {feedType === "users" && (
               <div className="flex flex-col flex-nowrap min-h-full w-full max-w-full">
                 <UsersTable refreshVar={homeRefresh} />

@@ -16,15 +16,12 @@ const ExplorePage = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   useGSAP(() => {
-    const tl = gsap.timeline({
-      yoyo: true,
-    });
-
-    tl.from(".animate-img", {
-      duration: 1,
+    gsap.from(".animate-img", {
+      duration: 0.9,
       xPercent: -150,
       opacity: 0,
       scale: 0.5,
+      yoyo: true,
       ease: "expo.inOut",
     });
   }, []);

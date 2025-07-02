@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoadingEvent } from "../redux/slices/event.slice.js";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { EVENTS_API_END_POINT } from "../utils/constants";
+import { EVENTS_API_END_POINT } from "../utils/constants.js";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 
@@ -83,10 +83,15 @@ const EventCard = ({ event }) => {
               {event?.title}
             </h2>
             <ReactQuill
-              className="block h-full w-full max-w-[95%] py-0 text-base font-base font-sans"
+              className="block h-full w-full max-w-[95%] text-base font-base font-sans"
               value={event?.description}
               readOnly={true}
               theme={"bubble"}
+              style={{
+                padding: "0",
+                fontSize: "1rem",
+                fontFamily: "sans-serif",
+              }}
             />
           </div>
           <div className="flex flex-col bg-slate-200 w-full max-w-[90%] p-2 border-0 rounded-sm">

@@ -1,4 +1,5 @@
 import Feedback from "../models/feedback.model.js";
+import User from "../models/user.model.js";
 
 export const createFeedback = async (req, res) => {
   try {
@@ -8,6 +9,13 @@ export const createFeedback = async (req, res) => {
     if (!name || !email || !subject || !message)
       return res.status(400).json({
         message: "Required field(s) missing!",
+        success: false,
+      });
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
         success: false,
       });
 
@@ -41,6 +49,14 @@ export const createFeedback = async (req, res) => {
 
 export const getFeedbacks = async (req, res) => {
   try {
+    const userId = req.id;
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
     const feedbacks = await Feedback.find().sort({ createdAt: -1 }).populate({
       path: "from",
       select: "-password",
@@ -61,20 +77,70 @@ export const getFeedbacks = async (req, res) => {
   }
 };
 
+export const getFeedbackById = async (req, res) => {
+  try {
+    const feedbackId = req.params.id;
+    const userId = req.id;
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
+    const feedback = await Feedback.findById(feedbackId)
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "from",
+        select: "-password",
+      });
+
+    await Feedback.updateOne({ _id: feedbackId }, { read: true });
+    return res.status(200).json({
+      message: "feedbacks fetched successfully.",
+      feedback,
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error in getFeedbackBYId: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};
+
 export const deleteFeedback = async (req, res) => {
   try {
     const feedbackId = req.params.id;
+    const userId = req.id;
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
 
     if (!feedbackId)
       return res.status(400).json({
         message: "Provide a valid feedback Id.",
         success: false,
       });
-    const feedback = await Feedback.findById(feedbackId);
 
+    const feedback = await Feedback.findById(feedbackId);
     if (!feedback)
       return res.status(404).json({
         message: "feedback not found.",
+        success: false,
+      });
+
+    let cantDeleteFeedback =
+      feedback.from.toString() !== userId.toString() && user.role !== "admin";
+    if (cantDeleteFeedback)
+      return res.status(401).json({
+        message: "Unauthorized to delete feedback.",
         success: false,
       });
 
@@ -84,7 +150,7 @@ export const deleteFeedback = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log("Error in deletefeedback: ", error.message);
+    console.log("Error in deleteFeedback: ", error.message);
     res.status(500).json({
       message: "Internal Server Error.",
       success: false,
@@ -94,10 +160,26 @@ export const deleteFeedback = async (req, res) => {
 
 export const deleteAllFeedbacks = async (req, res) => {
   try {
+    const userId = req.id;
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
     const feedbacks = await Feedback.find();
     if (!feedbacks)
       return res.status(404).json({
         message: "feedbacks not found.",
+        success: false,
+      });
+
+    let cantDeleteFeedbacks = user.role !== "admin";
+    if (cantDeleteFeedbacks)
+      return res.status(401).json({
+        message: "Unauthorized to delete feedbacks.",
         success: false,
       });
 

@@ -203,19 +203,21 @@ const RecipeCard = ({ recipe }) => {
                   readOnly={true}
                   theme={null}
                 />
-
-                <div className="flex flex-row flex-wrap gap-1 sm:gap-2 items-center w-full max-w-full h-full mb-2 sm:mb-4">
-                  {recipe?.dietary_tags.map((tag, id) => {
-                    return (
-                      <span
-                        key={id}
-                        className="bg-amber-100 px-2 sm:px-4 py-1 rounded-md text-amber-800 font-medium text-xs sm:text-sm"
-                      >
-                        {tag.trim().toLowerCase()}
-                      </span>
-                    );
-                  })}
-                </div>
+                
+                {recipe?.dietary_tags && (
+                  <div className="flex flex-row flex-wrap gap-1 sm:gap-2 items-center w-full max-w-full h-full mb-2 sm:mb-4">
+                    {recipe?.dietary_tags.map((tag, id) => {
+                      return (
+                        <span
+                          key={id}
+                          className="bg-amber-100 px-2 sm:px-4 py-1 rounded-md text-amber-800 font-medium text-xs sm:text-sm"
+                        >
+                          {tag.trim().toLowerCase()}
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
 
                 {recipe?.media_url && (
                   <figure className="flex w-full max-w-full sm:max-w-[90%] min-h-fit aspect-[16/9] mr-auto bg-[#f5f5f5]">

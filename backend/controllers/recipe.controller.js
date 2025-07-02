@@ -514,7 +514,7 @@ export const getUserRecipes = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate({
         path: "user",
-        select: "-passoword",
+        select: "-password",
       })
       .populate({
         path: "comments.user",
@@ -587,7 +587,9 @@ export const getUserCommunitiesRecipes = async (req, res) => {
     const query = {
       $or: [{ members: { $in: user._id } }, { owner: user._id }],
     };
-    const communities = await Community.find(query).sort({createdAt: -1}).populate("recipes");
+    const communities = await Community.find(query)
+      .sort({ createdAt: -1 })
+      .populate("recipes");
 
     var Arr = [];
 
@@ -631,6 +633,50 @@ export const getUserCommunitiesRecipes = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in getUserCommunitiesRecipes: ", error.message);
+    res.status(500).json({
+      message: "Internal Server Error.",
+      success: false,
+    });
+  }
+};
+
+export const getRecipeById = async (req, res) => {
+  try {
+    const recipeId = req.params.id;
+    const userId = req.id;
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+
+    const recipe = await Recipe.findById(recipeId)
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "user",
+        select: "-password",
+      })
+      .populate({
+        path: "comments.user",
+        select: "-password",
+      })
+      .populate("community");
+
+    if (!recipe)
+      return res.status(404).json({
+        message: "Recipe not found.",
+        success: false,
+      });
+
+    return res.status(200).json({
+      message: "Recipe fetched successfully",
+      recipe,
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error in getRecipeById: ", error.message);
     res.status(500).json({
       message: "Internal Server Error.",
       success: false,

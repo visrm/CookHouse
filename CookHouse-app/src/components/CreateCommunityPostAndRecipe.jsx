@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import CreateEvent from "./CreateEvent";
 import { setLoadingPost } from "../redux/slices/post.slice.js";
-import { setLoadingRecipe } from "../redux/slices/recipe.slice";
+import { setLoadingRecipe } from "../redux/slices/recipe.slice.js";
 import EmojiPicker from "emoji-picker-react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";

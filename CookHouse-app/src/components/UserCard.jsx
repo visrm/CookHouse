@@ -20,7 +20,7 @@ const UserCard = ({ user }) => {
           </div>
           <div className="flex justify-between flex-1">
             <div className="hidden md:block">
-              <p className="text-slate-900 font-bold text-sm w-20 truncate">
+              <p className="text-slate-900 font-semibold text-sm w-20 truncate">
                 {user?.fullname}
               </p>
               <p className="text-slate-700 text-xs">@{user?.username}</p>

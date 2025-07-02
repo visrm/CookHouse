@@ -51,7 +51,6 @@ const SideBar = () => {
                 <Link
                   to="/home"
                   className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
-                  replace
                 >
                   <MdOutlineHome className="w-8 h-8" />
                   <span className="text-base hidden font-semibold md:block">
@@ -63,7 +62,6 @@ const SideBar = () => {
                 <Link
                   to="/notifications"
                   className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
-                  replace
                 >
                   <MdNotificationsNone className="w-8 h-8" />
                   <span className="text-base hidden font-semibold md:block">
@@ -88,7 +86,6 @@ const SideBar = () => {
                   <Link
                     to="/recipes"
                     className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
-                    replace
                   >
                     <TbFileDescription className="w-8 h-8" />
                     <span className="text-base hidden font-semibold md:block">
@@ -103,7 +100,6 @@ const SideBar = () => {
                   <Link
                     to="/conversations"
                     className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
-                    replace
                   >
                     <RiWechatLine className="w-8 h-8" />
                     <span className="text-base hidden font-semibold md:block">
@@ -118,7 +114,6 @@ const SideBar = () => {
                   <Link
                     to="/community"
                     className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
-                    replace
                   >
                     <RiCommunityLine className="w-8 h-8" />
                     <span className="text-base hidden font-semibold md:block">
@@ -133,7 +128,6 @@ const SideBar = () => {
                   <Link
                     to="/admin"
                     className="flex gap-3 items-center py-2 pl-2 pr-4 max-w-fit cursor-pointer"
-                    replace
                   >
                     <MdOutlineAdminPanelSettings className="w-8 h-8" />
                     <span className="text-base hidden font-semibold md:block">
@@ -161,7 +155,7 @@ const SideBar = () => {
                 </div>
                 <div className="flex justify-between flex-1">
                   <div className="hidden md:block">
-                    <p className="text-slate-900 font-bold text-sm w-20 truncate">
+                    <p className="text-slate-900 font-semibold text-sm w-20 truncate">
                       {user?.fullname}
                     </p>
                     <p className="text-slate-700 text-xs">@{user?.username}</p>

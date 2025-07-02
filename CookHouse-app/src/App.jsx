@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import gsap from "gsap"
-import { ScrollTrigger, SplitText} from "gsap/all"
+import gsap from "gsap";
+import { ScrollTrigger, SplitText } from "gsap/all";
 import LandingPage from "./components/Landing/LandingPage";
 import SignIn from "./components/Auth/SignIn";
 import SignUp from "./components/Auth/SignUp";
@@ -22,8 +22,10 @@ import PageNotFound from "./components/PageNotFound";
 import Contacts from "./components/Contacts";
 import ProtectedRoute from "./components/adminModule/ProtectedRoute";
 import { useSelector } from "react-redux";
+import SingleRecipe from "./components/SingleRecipe";
+import SingleFeedback from "./components/SingleFeedback";
 
-gsap.registerPlugin(ScrollTrigger, SplitText)
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 function App() {
   const { user } = useSelector((store) => store.auth);
@@ -55,6 +57,10 @@ function App() {
           <Route
             path="/recipes"
             element={user ? <ExplorePage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/recipe/:id"
+            element={user ? <SingleRecipe /> : <Navigate to="/login" />}
           />
           <Route
             path="/profile"
@@ -98,6 +104,18 @@ function App() {
               user ? (
                 <ProtectedRoute>
                   <AdminHome />{" "}
+                </ProtectedRoute>
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/feedback/:id"
+            element={
+              user ? (
+                <ProtectedRoute>
+                  <SingleFeedback />{" "}
                 </ProtectedRoute>
               ) : (
                 <Navigate to="/login" />

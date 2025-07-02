@@ -5,6 +5,7 @@ const feedbackSlice = createSlice({
   initialState: {
     loadingFeedback: false,
     allFeedbacks: [],
+    singleFeedback: null,
   },
   reducers: {
     // actions
@@ -14,8 +15,12 @@ const feedbackSlice = createSlice({
     setAllFeedbacks: (state, action) => {
       state.allFeedbacks = action.payload;
     },
+    setSingleFeedback: (state, action) => {
+      state.singleFeedback = action.payload;
+    },
   },
 });
 
-export const { setLoadingFeedback, setAllFeedbacks } = feedbackSlice.actions;
+export const { setLoadingFeedback, setAllFeedbacks, setSingleFeedback } =
+  feedbackSlice.actions;
 export default feedbackSlice.reducer;

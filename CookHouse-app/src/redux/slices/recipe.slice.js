@@ -5,6 +5,7 @@ const recipeSlice = createSlice({
   initialState: {
     loadingRecipe: false,
     fetching: false,
+    singleRecipe: null,
     allRecipes: [],
     communityRecipes: [],
     likedRecipes: [],
@@ -19,6 +20,9 @@ const recipeSlice = createSlice({
     },
     setLikedRecipes: (state, action) => {
       state.likedRecipes = action.payload;
+    },
+    setSingleRecipe: (state, action) => {
+      state.singleRecipe = action.payload;
     },
     setAllRecipes: (state, action) => {
       state.allRecipes = action.payload;
@@ -40,11 +44,12 @@ const recipeSlice = createSlice({
 
 export const {
   setLoadingRecipe,
+  setSingleRecipe,
   setAllRecipes,
   setCommunityRecipes,
   setLikedRecipes,
   setFollowingRecipes,
   setUsersCommunitiesRecipes,
-  setSearchedRecipeQuery
+  setSearchedRecipeQuery,
 } = recipeSlice.actions;
 export default recipeSlice.reducer;

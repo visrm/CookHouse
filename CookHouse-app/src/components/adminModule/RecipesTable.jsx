@@ -8,11 +8,13 @@ import { MdMoreVert } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { LuSearch } from "react-icons/lu";
 import { setSearchedRecipeQuery } from "../../redux/slices/recipe.slice.js";
+import { useNavigate } from "react-router-dom";
 
 const RecipesTable = (refreshVar) => {
   const [keyword, setKeyword] = useState("");
 
   useGetAllRecipes(keyword, refreshVar);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loadingRecipe, allRecipes } = useSelector((store) => store.recipes);
 
@@ -91,7 +93,7 @@ const RecipesTable = (refreshVar) => {
           </div>
         </article>
         <div className="rounded-box border border-base-content/5 bg-base-200 h-full max-w-full">
-          <table className="table table-xs">
+          <table className="table table-xs text-xs">
             <thead>
               <tr className="text-center">
                 <th></th>
@@ -143,8 +145,19 @@ const RecipesTable = (refreshVar) => {
                           </div>
                           <ul
                             tabIndex={0}
-                            className="menu dropdown-content gap-0.5 border-1 border-slate-200 bg-[#fdfdfd] rounded-box z-1 mt-9 w-38 p-0.5 shadow-sm text-xs font-semibold"
+                            className="menu dropdown-content gap-0.5 border-1 border-slate-200 bg-[#fdfdfd] rounded-box z-1 mt-9 w-38 p-0.5 shadow-sm text-xs font-medium"
                           >
+                            <li>
+                              <button
+                                className="btn hover:text-indigo-400 border btn-sm"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  navigate(`/recipe/${recipe?._id}`);
+                                }}
+                              >
+                                View Recipe
+                              </button>
+                            </li>
                             <li>
                               <button
                                 className="btn hover:text-red-400 border btn-sm"
@@ -153,7 +166,7 @@ const RecipesTable = (refreshVar) => {
                                   handleDeletion(recipe?._id);
                                 }}
                               >
-                                Delete
+                                Delete Recipe
                               </button>
                             </li>
                           </ul>
