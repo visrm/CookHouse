@@ -6,6 +6,7 @@ import { v2 as cloudinary } from "cloudinary";
 export const createCommunity = async (req, res) => {
   try {
     const { name, description } = req.body;
+    let { profileImg, coverImg } = req.body
     const userId = req.id;
 
     if (!name || !description) {
@@ -25,10 +26,30 @@ export const createCommunity = async (req, res) => {
         success: false,
       });
 
+    let isExistingCommunity = await Community.findOne({ name });
+    if (isExistingCommunity)
+      return res.status(400).json({
+        message: "Community name unavailable!",
+        success: false,
+      }); 
+
+    // upload profileImg
+    if (profileImg) {
+      const uploadedResponse = await cloudinary.uploader.upload(profileImg);
+      profileImg = uploadedResponse.secure_url;
+    }
+    // upload coverImg
+    if (coverImg) {
+      const uploadedResponse = await cloudinary.uploader.upload(coverImg);
+      coverImg = uploadedResponse.secure_url;
+    }
+
     const community = await Community.create({
       owner: userId,
       name,
       description,
+      profileImg,
+      coverImg,
     });
 
     if (!community) {

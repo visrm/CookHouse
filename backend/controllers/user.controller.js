@@ -34,8 +34,10 @@ export const getProfile = async (req, res) => {
 export const followUnfollowUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const userById = await User.findById(id);
-    const currentUser = await User.findById(req.id).select("-password");
+    const userId = req.id;
+    var userById = await User.findById(id);
+    var currentUser = await User.findById(userId).select("-password");
+    var messageContent = "";
 
     if (userById._id == currentUser._id) {
       return res.status(400).json({
@@ -51,42 +53,41 @@ export const followUnfollowUser = async (req, res) => {
 
     if (isFollowing) {
       // then unfollow user
-      await User.findByIdAndUpdate(req.id, {
+      let updateCurrentUser = await User.findByIdAndUpdate(userId, {
         $pull: { following: id },
       });
-      await User.findByIdAndUpdate(id, {
-        $pull: { followers: req.id },
+      let updateUserById = await User.findByIdAndUpdate(id, {
+        $pull: { followers: userId },
       });
 
-      return res.status(200).json({
-        message: "User unfollowed successfully!",
-        currentUser,
-        success: true,
-      });
+      await Promise.all([updateCurrentUser, updateUserById]);
+      messageContent = "User unfollowed successfully!";
     } else {
       // then follow user
-      await User.findByIdAndUpdate(req.id, {
+      let updateCurrentUser = await User.findByIdAndUpdate(userId, {
         $push: { following: id },
       });
-      await User.findByIdAndUpdate(id, {
-        $push: { followers: req.id },
+      let updateUserById = await User.findByIdAndUpdate(id, {
+        $push: { followers: userId },
       });
 
       const newNotification = new Notification({
         type: "follow",
-        from: req.id,
+        from: userId,
         to: userById._id,
       });
-
-      await newNotification.save();
+      let newNotif = await newNotification.save();
 
       // TODO return the id of the user as a response
-      return res.status(200).json({
-        message: "User followed successfully!",
-        currentUser,
+      await Promise.all([updateCurrentUser, updateUserById, newNotif]);
+      messageContent = "User followed successfully!";
+    }
+
+    return res.status(200).json({
+        message: messageContent,
         success: true,
       });
-    }
+
   } catch (error) {
     console.log("Error in followUnfollowUser: ", error.message);
     res.status(500).json({

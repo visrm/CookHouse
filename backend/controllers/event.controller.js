@@ -37,6 +37,13 @@ export const createEvent = async (req, res) => {
         success: false,
       });
 
+    let isExistingEvent = await Event.findOne({ title: title, startDate: new Date(startDate) , endDate: new Date(endDate) });
+    if (isExistingEvent)
+      return res.status(400).json({
+        message: "Event already exists!",
+        success: false,
+      });
+
     const newEvent = await Event.create({
       organiser: userId,
       title,

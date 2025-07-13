@@ -30,10 +30,18 @@ export const createRecipe = async (req, res) => {
         message: "Required field(s) missing.",
         success: false,
       });
+
     const user = await User.findById(userId);
     if (!user)
       return res.status(404).json({
         message: "User not found.",
+        success: false,
+      });
+
+    let isExistingRecipe = await Recipe.findOne({ title });
+    if (isExistingRecipe)
+      return res.status(400).json({
+        message: "Recipe already exists!",
         success: false,
       });
 
@@ -120,6 +128,13 @@ export const createCommunityRecipe = async (req, res) => {
     if (!user)
       return res.status(404).json({
         message: "User not found.",
+        success: false,  
+      });
+
+    let isExistingRecipe = await Recipe.findOne({ title });
+    if (isExistingRecipe)
+      return res.status(400).json({
+        message: "Recipe already exists!",
         success: false,
       });
 
@@ -453,7 +468,7 @@ export const getAllRecipes = async (req, res) => {
 
     return res.status(200).json({
       message: "Recipe fetched successfully",
-      recipes,
+      recipes: recipes.slice(0, 25),
       success: true,
     });
   } catch (error) {
