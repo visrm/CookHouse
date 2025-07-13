@@ -179,8 +179,8 @@ const PostCard = ({ post }) => {
             {/* Post Contents */}
             <div className="flex flex-col w-full max-w-full sm:w-fit text-sm sm:text-base lg:text-lg overflow-hidden">
               {post?.text && (
+                <div className="block h-full w-full pr-2 sm:pr-4 text-xs sm:text-base">
                 <ReactQuill
-                  className="block h-full w-full max-w-full sm:max-w-[93%] text-xs sm:text-base"
                   value={post?.text}
                   readOnly={true}
                   theme={"bubble"}
@@ -190,6 +190,7 @@ const PostCard = ({ post }) => {
                     fontFamily: "sans-serif",
                   }}
                 />
+                </div>
               )}
 
               {post?.media_url && (

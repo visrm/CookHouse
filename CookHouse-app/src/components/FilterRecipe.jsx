@@ -8,7 +8,8 @@ const FilterRecipe = () => {
   const dispatch = useDispatch();
 
   useEffect(()=>{
-    dispatch(setSearchedRecipeQuery(""))
+    dispatch(setSearchedRecipeQuery(""));
+    setRecipe({ cuisine_type: "", category: "" });
   },[])
 
   const handleSubmit = async (e) => {

@@ -7,6 +7,7 @@ import {
   LuPhone,
   LuSend,
 } from "react-icons/lu";
+import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom";
 import { FEEDBACKS_API_END_POINT } from "../utils/constants.js";
 import toast from "react-hot-toast";
@@ -21,6 +22,7 @@ const Contacts = () => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const {user} = useSelector((store) => store.auth);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -51,11 +53,11 @@ const Contacts = () => {
       );
       if (response.data.success) {
         toast.success(response.data.message);
+        setIsSubmitted(true);
       }
     } catch (error) {
       toast.error(err.response.data.message);
     } finally {
-      setIsSubmitted(true);
       setTimeout(() => setIsSubmitted(false), 3000);
       setFormData({
         name: "",
@@ -227,7 +229,7 @@ const Contacts = () => {
             </div>
           </div>
 
-          {/* <div className="mt-16 text-center">
+          {!user && ( <div className="mt-16 text-center">
             <h2 className="text-2xl font-semibold mb-2">
               Join our Cooking Community
             </h2>
@@ -243,7 +245,7 @@ const Contacts = () => {
             >
               Sign Up Today
             </button>
-          </div> */}
+          </div> )}
         </div>
       </main>
     </>

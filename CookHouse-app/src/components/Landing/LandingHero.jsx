@@ -11,10 +11,10 @@ const LandingHero = () => {
         scale: 1,
         x: 0,
         ease: "power1.inOut",
+        duration: 0.75,
         yoyo: true,
         stagger: {
-          amount: 0.75,
-          delay: 0.25,
+          amount: 0.5,
         },
       }
     );

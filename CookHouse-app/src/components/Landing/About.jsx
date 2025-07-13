@@ -28,7 +28,7 @@ const About = () => {
             scrollTrigger: {
               trigger: box,
               start: "top, bottom", // when the bottom of the trigger hits the bottom of the viewport
-              end: "top 75%", // end after viewport reaches 75% from top
+              end: "top 70%", // end after viewport reaches 70% from top
               scrub: true,
             },
           }

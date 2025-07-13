@@ -8,11 +8,11 @@ const NavigationBar = () => {
   return (
     <>
       <header className="sticky top-0 left-0 block w-full max-w-full min-h-full md:min-h-14 bg-amber-500 z-[1000]">
-        <nav className="p-2 md:p-4 border shadow-md border-black/25 flex flex-row flex-nowrap justify-between text-sm font-sans bg-white/25">
+        <nav className="p-2 md:p-4 border shadow-md border-black/25 flex flex-row flex-nowrap justify-between text-sm font-sans bg-white/25 transition-all duration-300">
           {/* AppName with Logo(optional) (to be aligned to the left) */}
           <div className="inline-flex self-start">
             <Link to="/">
-              <span className="font-semibold md:font-bold text-lg md:text-xl font-sans">
+              <span className="font-semibold md:font-bold text-lg md:text-xl font-sans hover:scale-105">
                 CookHouse
               </span>
             </Link>

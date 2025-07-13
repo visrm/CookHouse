@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 // import { useGetLikedPosts } from "../Hooks/useGetLikedPosts.jsx";
+import useGetMe from "../Hooks/useGetMe";
 import useGetUserPosts from "../Hooks/useGetUserPosts.jsx";
 import useGetUserRecipes from "../Hooks/useGetUserRecipes.jsx";
 import useGetLikedPosts from "../Hooks/useGetLikedPosts.jsx";
@@ -65,12 +66,13 @@ const Profile = () => {
   }, [userName, singleUserProfile]);
 
   // console.log(user);
+  useGetMe(singleUserProfile);
   useGetUserPosts(userName, singleUserProfile);
   useGetUserRecipes(userName, singleUserProfile);
   useGetLikedPosts(user?._id, singleUserProfile);
 
   const isMyProfile = user?._id.toString() === singleUser?._id.toString();
-  const isFollowing = user?.following.includes(singleUser?._id);
+  var isFollowing = user?.following.includes(singleUser?._id);
 
   const handleImgChange = (e, state) => {
     const maxLimit = 5242880;
@@ -81,7 +83,7 @@ const Profile = () => {
         state === "coverImg" && setCoverImg(reader.result);
         state === "profileImg" && setProfileImg(reader.result);
       };
-      if (file.size > maxLimit) {
+      if (file.size >= maxLimit) {
         toast.error("File size exceeds size limit!");
         e.target.value("");
         setCoverImg(null);
@@ -139,7 +141,6 @@ const Profile = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        dispatch(setUser(response.data.currentUser));
         setSingleUserProfile({});
       }
     } catch (error) {
@@ -278,7 +279,7 @@ const Profile = () => {
                     handleFollows(singleUser?._id);
                   }}
                 >
-                  {isFollowing ? "Follow" : "Unfollow"}
+                  {isFollowing ? "Unfollow" : "Follow"}
                 </button>
               )}
               {(coverImg || profileImg) && (
