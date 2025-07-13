@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoadingCommunity } from "../../../redux/slices/community.slice.js";
@@ -11,6 +11,12 @@ const CreateCommunity = () => {
     name: "",
     description: "",
   });
+  const [profileImg, setProfileImg] = useState(null);
+  const [coverImg, setCoverImg] = useState(null);
+
+  const profileImgRef = useRef(null);
+  const coverImgRef = useRef(null);
+
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.auth);
 
@@ -22,6 +28,25 @@ const CreateCommunity = () => {
     });
   };
 
+  const handleImgChange = (e, state) => {
+  const maxLimit = 5242880;
+  const file = e.target.files[0];
+  if(file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      state == "profileImg" && setProfileImg(reader.result);
+      state == "coverImg" && setCoverImg(reader.result); 
+    } 
+    if(file.size >= maxLimit) {
+        e.target.value("");
+        toast.error("File size exceeds size limits!");
+        setProfileImg(null)
+        setCoverImg(null)
+      }
+    reader.readAsDataURL(file);
+  }
+  }
+
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
@@ -29,6 +54,8 @@ const CreateCommunity = () => {
       let communityInfo = {
         name: input.name,
         description: input.description,
+        profileImg: profileImg,
+        coverImg: coverImg,
         owner: user?._id,
       };
 
@@ -54,6 +81,10 @@ const CreateCommunity = () => {
         name: "",
         description: "",
       });
+      setCoverImg(null);
+      setProfileImg(null);
+      profileImgRef.current.value = ""
+      coverImgRef.current.value = ""
     }
   };
 
@@ -70,11 +101,11 @@ const CreateCommunity = () => {
             <h2 className="block font-bold font-serif text-base sm:text-xl my-1 sm:my-2 mx-auto">
               Add Community
             </h2>
-            <label htmlFor="name" className="block font-semibold text-sm">
+            <label htmlFor="name" className="block font-medium text-sm">
               Name :
             </label>
             <textarea
-              className="rounded-md textarea-sm sm:textarea-md min-h-7.5 h-8 w-full max-w-full p-1 sm:p-2 text-sm sm:text-base resize-none border focus:outline-none border-black/50 bg-[#fff] overflow-hidden"
+              className="rounded-md textarea-sm sm:textarea-md h-8 w-full max-w-full p-1 text-sm resize-none border focus:outline-none border-black/50 bg-[#fff] overflow-hidden"
               placeholder="Community Name"
               type="text"
               id="name"
@@ -88,12 +119,12 @@ const CreateCommunity = () => {
 
             <label
               htmlFor="description"
-              className="block font-semibold text-sm"
+              className="block font-medium text-sm"
             >
               Description :
             </label>
             <textarea
-              className="rounded-md textarea-sm sm:textarea-md min-h-18 h-12 w-full max-w-full p-1 sm:p-2 text-sm sm:text-base resize-none border focus:outline-none border-black/50 bg-[#fff]"
+              className="rounded-md textarea-sm sm:textarea-md min-h-12 h-14 w-full max-w-full p-1 text-sm resize-y border focus:outline-none border-black/50 bg-[#fff]"
               placeholder="Desciption"
               id="description"
               name="description"
@@ -102,7 +133,39 @@ const CreateCommunity = () => {
               maxLength={"500ch"}
               required
             />
-            <button type="submit" className="submit-btn text-xs sm:text-sm">
+
+            <label
+              htmlFor="profileImg"
+              className="block font-medium text-sm"
+            >
+              Profile Image :
+            </label>
+            <input
+              className="rounded-md h-8 max-w-full p-1 text-sm sm:text-xs border focus:outline-none border-black/50 bg-[#fff]"
+              id="profileImg"
+              name="profileImg"
+              type="file"
+              accept="image/*"
+              ref={profileImgRef}
+              onChange={(e) => handleImgChange(e, "profileImg")}
+            />
+
+            <label
+              htmlFor="coverImg"
+              className="block font-medium text-sm"
+            >
+              Cover Image :
+            </label>
+            <input
+              className="rounded-md h-8 max-w-full p-1 text-sm sm:text-xs border focus:outline-none border-black/50 bg-[#fff]"
+              id="coverImg"
+              name="coverImg"
+              type="file"
+              accept="image/*"
+              ref={coverImgRef}
+              onChange={(e) => handleImgChange(e, "coverImg")}
+            />
+            <button type="submit" className="submit-btn text-xs sm:text-sm mt-2">
               Create
             </button>
           </form>

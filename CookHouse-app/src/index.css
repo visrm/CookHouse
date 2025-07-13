@@ -33,6 +33,13 @@ img {
   width: 100%;
 }
 
+input[type="file"]::file-selector-button {
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  background-color:rgba(0, 0, 0, 0.1);
+}
+
 /* Utilities */
 .section-title {
   font-size: clamp(2rem, calc(1vw + 0.5rem), 2.5rem);
