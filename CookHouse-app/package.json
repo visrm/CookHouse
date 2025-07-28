@@ -13,7 +13,7 @@
     "@gsap/react": "^2.1.2",
     "@reduxjs/toolkit": "^2.6.1",
     "@tailwindcss/vite": "^4.1.2",
-    "axios": "^1.7.9",
+    "axios": "^1.11.0",
     "cookhouse": "file:..",
     "daisyui": "^5.0.12",
     "emoji-picker-react": "^4.12.2",
