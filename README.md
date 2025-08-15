@@ -1,4 +1,4 @@
-[![CodeFactor](https://www.codefactor.io/repository/github/visrm/c-assignments/badge)](https://www.codefactor.io/repository/github/visrm/c-assignments)
+[![CodeFactor](https://www.codefactor.io/repository/github/visrm/cookhouse/badge)](https://www.codefactor.io/repository/github/visrm/cookhouse) ![Static Badge](https://img.shields.io/badge/Render-grey?style=for-the-badge&logo=render)
 
 # CookHouse: The Social Culinary Webapp
 A Simple, User-friendly, specialized social webapp for professional chefs, house cooks and avid food enthusiasts alike.
