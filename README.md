@@ -1,3 +1,5 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/visrm/c-assignments/badge)](https://www.codefactor.io/repository/github/visrm/c-assignments)
+
 # CookHouse: The Social Culinary Webapp
 A Simple, User-friendly, specialized social webapp for professional chefs, house cooks and avid food enthusiasts alike.
 
@@ -8,9 +10,14 @@ A Simple, User-friendly, specialized social webapp for professional chefs, house
 - [Demo](#demo)
 
 ## Tech Stack
-- ReactJS, NodeJS, ExpressJS, MongoDB(MERN Stack)
-- TailwindCSS, DaisyUI, ReduxJS
-- React-icons, React-hot-toast, React-quill
+![Static Badge](https://img.shields.io/badge/React-black?style=for-the-badge&logo=react&logoSize=auto) 
+![Static Badge](https://img.shields.io/badge/node-black?style=for-the-badge&logo=nodedotjs&logoSize=auto) 
+![Static Badge](https://img.shields.io/badge/express-black?style=for-the-badge&logo=express&logoSize=auto) 
+![Static Badge](https://img.shields.io/badge/MongoDB-black?style=for-the-badge&logo=mongodb&logoSize=auto) 
+![Static Badge](https://img.shields.io/badge/Tailwind%20CSS-black?style=for-the-badge&logo=tailwindcss&logoSize=auto) 
+![Static Badge](https://img.shields.io/badge/DaisyUI-black?style=for-the-badge&logo=daisyui&logoSize=auto) 
+![Static Badge](https://img.shields.io/badge/Redux-black?style=for-the-badge&logo=redux&logoSize=auto)
+
 
 ## Prerequisites 
 - Node.js 22.x or higher
