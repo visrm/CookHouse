@@ -10,6 +10,7 @@ A Simple, User-friendly, specialized social webapp for professional chefs, house
 - [Demo](#demo)
 
 ## Tech Stack
+![Static Badge](https://img.shields.io/badge/Vite-black?style=for-the-badge&logo=vite&logoSize=auto) 
 ![Static Badge](https://img.shields.io/badge/React-black?style=for-the-badge&logo=react&logoSize=auto) 
 ![Static Badge](https://img.shields.io/badge/node-black?style=for-the-badge&logo=nodedotjs&logoSize=auto) 
 ![Static Badge](https://img.shields.io/badge/express-black?style=for-the-badge&logo=express&logoSize=auto) 
@@ -24,17 +25,14 @@ A Simple, User-friendly, specialized social webapp for professional chefs, house
 - Windows, MacOS or Linux operating system 
 
 ## Installation 
-1.Clone the repository: 
+1. Clone the repository: 
+   `git clone https://github.com/visrm/cookhouse.git`
 
-`git clone https://github.com/visrm/cookhouse.git`
+2. Open folder path in terminal: 
+    `cd Cookhouse`
 
-2.Open folder path in terminal 
-
-`cd Cookhouse`
-
-3.Install node_modules & start server
-
-`npm install && npm run dev`
+3. Build & start server
+  `npm run build && npm run dev`
 
 ## Usage
 To use the Cookhouse Webapp you need to :
