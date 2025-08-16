@@ -1,6 +1,4 @@
-[![CodeFactor](https://www.codefactor.io/repository/github/visrm/cookhouse/badge)](https://www.codefactor.io/repository/github/visrm/cookhouse) ![Static Badge](https://img.shields.io/badge/Render-grey?logo=render)
-
-# CookHouse: The Social Culinary Webapp
+# CookHouse : The Social Culinary Webapp [![CodeFactor](https://www.codefactor.io/repository/github/visrm/cookhouse/badge)](https://www.codefactor.io/repository/github/visrm/cookhouse) 
 A Simple, User-friendly, specialized social webapp for professional chefs, house cooks and avid food enthusiasts alike.
 
 ## Table of Contents
@@ -41,4 +39,6 @@ To use the Cookhouse Webapp you need to :
 2. Login using registered email & password.
 
 ## Demo
-https://cookhouse.onrender.com/
+<img width="1347" height="693" alt="image" src="https://github.com/user-attachments/assets/4fcbd5ad-cbdf-4903-a16d-0777a0197637" />
+
+[Click here to visit CookHouse](https://cookhouse.onrender.com/)
