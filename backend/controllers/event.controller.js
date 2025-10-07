@@ -137,6 +137,7 @@ export const deleteEvent = async (req, res) => {
 export const getCommunityEvents = async (req, res) => {
   try {
     const { communityId } = req.params;
+    const currentDateTime = new Date();
 
     const community = await Community.findById(communityId);
     if (!community)
@@ -145,13 +146,17 @@ export const getCommunityEvents = async (req, res) => {
         success: false,
       });
 
-    const events = await Event.find({ community: communityId })
+    const fetchEvents = await Event.find({ community: communityId })
       .sort({ createdAt: -1 })
       .populate({
         path: "organiser",
         select: "-password -profile.communities",
       })
       .populate("community");
+
+
+      
+    const events = await fetchEvents.filter((event) => event.endDate < currentDateTime);
 
     return res.status(200).json({
       message: "Events fetched successfully",
@@ -170,6 +175,7 @@ export const getCommunityEvents = async (req, res) => {
 export const getAllEvents = async (req, res) => {
   try {
     const userId = req.id;
+    const currentDateTime = new Date();
 
     const user = await User.findById(userId);
     if (!user)
@@ -189,6 +195,7 @@ export const getAllEvents = async (req, res) => {
         select: "-password -profile.communities",
       })
       .populate("community");
+
 
     if (events.length === 0)
       return res.status(200).json({
@@ -214,6 +221,7 @@ export const getAllEvents = async (req, res) => {
 export const getUserCommunitiesEvents = async (req, res) => {
   try {
     const userId = req.id;
+    const currentDateTime = new Date();
 
     const user = await User.findById(userId);
     if (!user)
@@ -233,19 +241,20 @@ export const getUserCommunitiesEvents = async (req, res) => {
 
     const communityEvents = Arr.map(async (event) => {
       const eventId = event._id;
-      const events = await Event.findById(eventId)
+      const fetchEvents = await Event.findById(eventId)
         .sort({ startDate: -1 })
         .populate({
           path: "organiser",
           select: "-password",
         });
-
-      if (!events)
+      
+      if (!fetchEvents)
         return res.status(404).json({
-          message: "event not found.",
+          message: "event(s) not found.",
           success: false,
         });
-
+        
+      const events = await fetchEvents.filter((event)=> event.endDate < currentDateTime);
       return events;
     });
 
@@ -253,13 +262,13 @@ export const getUserCommunitiesEvents = async (req, res) => {
 
     if (events.length === 0)
       return res.status(200).json({
-        message: "events fetched successfully",
+        message: "event(s) fetched successfully",
         events: [],
         success: true,
       });
 
     return res.status(200).json({
-      message: "events fetched successfully",
+      message: "event(s) fetched successfully",
       events,
       success: true,
     });

@@ -1,4 +1,3 @@
-import { Link, useNavigate } from "react-router-dom";
 import {
   MdOutlineHome,
   MdNotificationsNone,
@@ -8,7 +7,7 @@ import { LuUserRound } from "react-icons/lu";
 import { RiCommunityLine, RiWechatLine } from "react-icons/ri";
 import { TbFileDescription, TbLogout } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading, setUser } from "../redux/slices/auth.slice.js";
+import { setLoading } from "../redux/slices/auth.slice.js";
 import { AUTH_API_END_POINT } from "../utils/constants.js";
 import axios from "axios";
 import toast from "react-hot-toast";
