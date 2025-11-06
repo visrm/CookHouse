@@ -41,4 +41,4 @@ To use the Cookhouse Webapp you need to :
 ## Demo
 <img width="1347" height="693" alt="image" src="https://github.com/user-attachments/assets/4fcbd5ad-cbdf-4903-a16d-0777a0197637" />
 
-[Click here to visit CookHouse](https://cookhouse.onrender.com/)
+[Click here to visit CookHouse](https://cook-house.vercel.app/)
