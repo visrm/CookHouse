@@ -9,7 +9,14 @@
   </url>
 
   <url>
-    <loc>https://cook-house.vercel.app/about</loc>
+    <loc>https://cook-house.vercel.app/recipes</loc>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://cook-house.vercel.app/community</loc>
     <lastmod>2026-05-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
